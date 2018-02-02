@@ -18,13 +18,13 @@ module.exports = {
         arrivalCityCountry: 'Seoul, South Korea',
         DepartureLocationId: i,
         ArrivalLocationId: Math.floor(Math.random() * 50) + 1,
-        departureTerminal: `Terminal ${Math.floor(Math.random() * 4) + 1}`,
-        arrivalTerminal: `Terminal ${Math.floor(Math.random() * 4) + 1}`,
+        departureTerminal: `${Math.floor(Math.random() * 4) + 1}`,
+        arrivalTerminal: `${Math.floor(Math.random() * 4) + 1}`,
         startDay: 1,
         endDay: 2,
         startLoadSequence: 4,
         endLoadSequence: 1,
-        startTime:  79200, // 10pm flight overnight
+        startTime: 79200, // 10pm flight overnight
         endTime: 21600, // 6am arrival
         durationMins: 480,
         departureNotes: casual.sentences(3),
@@ -45,8 +45,8 @@ module.exports = {
         arrivalCityCountry: 'Singapore, Singapore',
         DepartureLocationId: Math.floor(Math.random() * 50) + 1,
         ArrivalLocationId: i,
-        departureTerminal: 'Terminal 2',
-        arrivalTerminal: 'Terminal 4',
+        departureTerminal: '2',
+        arrivalTerminal: '4',
         startDay: 6,
         endDay: 6,
         startLoadSequence: 2,

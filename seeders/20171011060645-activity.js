@@ -9,13 +9,15 @@ module.exports = {
       seedArr.push({
         ItineraryId: i,
         LocationId: i,
+        locationAlias: 'Seeded Activity Alias',
         loadSequence: 3,
         startDay: 2,
         endDay: 2,
         description: `Seeded Activity ${i}`,
         notes: casual.sentences(3),
         startTime: 50400, // 2pm 1970
-        endTime:  57600, // 4pm
+        endTime: 57600, // 4pm
+        utcOffset: 480,
         cost: Math.floor(Math.random() * 100) + 1,
         currency: casual.currency_code,
         bookingStatus: true,

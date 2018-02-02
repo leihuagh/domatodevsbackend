@@ -38,7 +38,10 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      notes: {
+      arrivalNotes: {
+        type: Sequelize.TEXT
+      },
+      departureNotes: {
         type: Sequelize.TEXT
       },
       startDay: {

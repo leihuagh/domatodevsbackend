@@ -58,6 +58,7 @@ const FlightInstance = {
         })
       })
       .then(updatedInstance => {
+        console.log('updatedInstance', updatedInstance)
         // add or remove attachments
         var attachmentsPromiseArr = []
         if (data.addAttachments && data.addAttachments.length) {
