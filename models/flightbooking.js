@@ -23,9 +23,7 @@ module.exports = function (sequelize, DataTypes) {
 
   FlightBooking.associate = function (models) {
     FlightBooking.belongsTo(models.Itinerary)
-    // FlightBooking.hasMany(models.FlightInstance, {onDelete: 'CASCADE', hooks: true})
     FlightBooking.hasMany(models.FlightInstance)
-    // FlightBooking.hasMany(models.Attachment)
   }
 
   FlightBooking.beforeDestroy((instance, options) => {

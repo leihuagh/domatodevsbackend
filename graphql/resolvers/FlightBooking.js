@@ -201,11 +201,20 @@ const FlightBooking = {
       // DELETE ALL ATTACHMENTS IN FLIGHT INSTANCES FROM CLOUD
       var deleteAttachmentsPromiseArr = []
       db.FlightBooking.findById(data.id)
+      // .then(booking => {
+      //   booking.getFlightInstances()
+      //   .then(instance => {
+      //     var deletePromise = deleteAttachmentsFromCloud('FlightInstance', instance.id)
+      //     deleteAttachmentsPromiseArr.push(deletePromise)
+      //   })
+      // })
       .then(booking => {
         booking.getFlightInstances()
-        .then(instance => {
-          var deletePromise = deleteAttachmentsFromCloud('FlightInstance', instance.id)
-          deleteAttachmentsPromiseArr.push(deletePromise)
+        .then(instanceArr => {
+          instanceArr.forEach(instance => {
+            var deletePromise = deleteAttachmentsFromCloud('FlightInstance', instance.id)
+            deleteAttachmentsPromiseArr.push(deletePromise)
+          })
         })
       })
       return Promise.all(deleteAttachmentsPromiseArr)
