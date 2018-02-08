@@ -2,6 +2,8 @@ const Mutation = `
   type Mutation {
     changingLoadSequence(input:[LoadSequence]): Boolean
 
+    deleteMultipleEvents(input:[EventsToBeDeleted]): Boolean
+
     createUser(name:String!,email:String!,CountryId:Int!,password:String!): User
 
     updateUser(id:ID!,name:String, email:String, CountryId:Int,password:String, profilePic:String):User

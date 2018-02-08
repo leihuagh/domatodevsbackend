@@ -7,6 +7,10 @@ const Input = `
     start: Boolean
     diff: Int
   }
+  input EventsToBeDeleted {
+    type: String!
+    id: Int!
+  }
   input googlePlaceData {
     placeId: String!
     countryCode: String
