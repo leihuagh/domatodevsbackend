@@ -9,12 +9,12 @@ module.exports = {
       var booking1 = {
         ItineraryId: i,
         paxAdults: 2,
-        paxChildren: 2,
+        paxChildren: 1,
         paxInfants: 0,
-        cost: (Math.floor(Math.random() * 20) + 1) * 100,
-        currency: casual.currency_code,
+        cost: 8000,
+        currency: 'USD',
         classCode: 'Business',
-        departureDate: 1521072000, //15th march
+        departureDate: 1521072000, // 15th march
         returnDate: 1521504000,
         departureIATA: 'SIN',
         arrivalIATA: 'SEL',
