@@ -5,7 +5,6 @@ module.export = function (sequelize, DataTypes) {
   var Event = sequelize.define('Event', {
     PostId: DataTypes.INTEGER,
     ParentEventId: DataTypes.INTEGER,
-    // add self-reference association (event, subevent)
     loadSequence: DataTypes.INTEGER,
     content: DataTypes.STRING
   })

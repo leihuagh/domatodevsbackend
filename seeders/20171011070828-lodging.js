@@ -13,7 +13,6 @@ module.exports = {
         startLoadSequence: 2,
         endLoadSequence: 1,
         description: `Seeded Lodging ${i}`,
-        // notes: casual.sentences(3),
         arrivalNotes: casual.sentences(3),
         departureNotes: casual.sentences(3),
         startDay: 2,
