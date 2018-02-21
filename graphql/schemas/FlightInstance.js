@@ -2,7 +2,7 @@ const FlightInstance = `
   type FlightInstance {
     id: ID!
     FlightBookingId: ID!
-    flightNumber: Int
+    flightNumber: String
     airlineCode: String
     airlineName: String
     departureIATA: String

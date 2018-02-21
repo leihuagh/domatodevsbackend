@@ -2,7 +2,7 @@
 module.exports = function (sequelize, DataTypes) {
   var FlightInstance = sequelize.define('FlightInstance', {
     FlightBookingId: DataTypes.INTEGER,
-    flightNumber: DataTypes.INTEGER,
+    flightNumber: DataTypes.STRING,
     airlineCode: DataTypes.STRING,
     airlineName: DataTypes.STRING,
     departureIATA: DataTypes.STRING,

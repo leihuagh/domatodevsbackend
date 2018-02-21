@@ -39,7 +39,7 @@ const Input = `
     fileSize: String
   }
   input createFlightInstanceInput {
-    flightNumber: Int
+    flightNumber: String
     airlineCode: String
     airlineName: String
     departureIATA: String
@@ -66,7 +66,7 @@ const Input = `
   input updateFlightInstanceInput {
     id: ID
     FlightBookingId: ID
-    flightNumber: Int,
+    flightNumber: String,
     airlineCode: String,
     airlineName: String,
     departureIATA: String
