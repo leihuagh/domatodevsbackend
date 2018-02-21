@@ -8,7 +8,7 @@ module.exports = {
     for (var i = 1; i <= 50; i++) {
       seedArr.push({
         ItineraryId: i,
-        LocationId: i,
+        LocationId: 2,
         locationAlias: 'Seeded Food Alias',
         loadSequence: 3,
         startDay: 1,

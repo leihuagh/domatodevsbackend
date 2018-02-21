@@ -8,8 +8,8 @@ module.exports = {
     for (var i = 1; i <= 50; i++) {
       seedArr.push({
         ItineraryId: i,
-        DepartureLocationId: i,
-        ArrivalLocationId: Math.floor(Math.random() * 50) + 1,
+        DepartureLocationId: 4,
+        ArrivalLocationId: 5,
         startLoadSequence: 1,
         endLoadSequence: 2,
         startDay: 1,
