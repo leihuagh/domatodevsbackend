@@ -19,7 +19,8 @@ var location1 = {
     'Friday: Open 24 hours',
     'Saturday: Open 24 hours',
     'Sunday: Open 24 hours'
-  ])
+  ]),
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipNnHWWvYGWLjprsAVgRY2d-MONTg_dDzvQTgcOG=w200-k'
 }
 var location2 = {
   CountryId: 135,
@@ -39,7 +40,8 @@ var location2 = {
     'Friday: Open 24 hours',
     'Saturday: Open 24 hours',
     'Sunday: Open 24 hours'
-  ])
+  ]),
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipO6HVtRN8bFWhUmCnJ5-RN2zBYukiGuWmyC2Enk=w200-k'
 }
 var location3 = {
   CountryId: 119,
@@ -51,7 +53,8 @@ var location3 = {
   longitude: 126.44069569999999,
   utcOffset: 540,
   openingHours: null,
-  openingHoursText: null
+  openingHoursText: null,
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipMtGRXJbYKJlmF8A0Pbh1YbCj-NuhYBZ0ynoM_I=w200-k'
 }
 var location4 = {
   CountryId: 119,
@@ -63,7 +66,8 @@ var location4 = {
   longitude: 126.98797850000005,
   utcOffset: 540,
   openingHours: null,
-  openingHoursText: null
+  openingHoursText: null,
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipNzZakD1Nc4KldwdnqW3Dtvwxwoh39fXvxZ9up4=w200-k'
 }
 var location5 = {
   CountryId: 119,
@@ -90,7 +94,8 @@ var location5 = {
     'Friday: 9:00 am – 12:00 pm',
     'Saturday: 9:00 am – 12:00 pm',
     'Sunday: 9:00 am – 12:00 pm'
-  ])
+  ]),
+  imageUrl: null
 }
 var location6 = {
   CountryId: 119,
@@ -102,7 +107,8 @@ var location6 = {
   longitude: 126.98582959999999,
   utcOffset: 540,
   openingHours: null,
-  openingHoursText: null
+  openingHoursText: null,
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipOU-XrQBXA8-Zj7H2oa5_air8zwF2WJ0YBBKrlK=w200-k'
 }
 var location7 = {
   CountryId: 119,
@@ -130,7 +136,8 @@ var location7 = {
     'Friday: 10:00 am – 11:00 pm',
     'Saturday: 10:00 am – 11:00 pm',
     'Sunday: 10:00 am – 11:00 pm'
-  ])
+  ]),
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipMuF82Qmq9Z201EIcXx6SVYi0Z_sO_Vxs1Q_J37=w200-k'
 }
 var location8 = {
   CountryId: 119,
@@ -158,7 +165,8 @@ var location8 = {
     'Friday: 8:00 am – 9:00 pm',
     'Saturday: 8:00 am – 9:00 pm',
     'Sunday: 8:00 am – 9:00 pm'
-  ])
+  ]),
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipPTWEl81aanh8TyQte73giYSeUOFzN3a3HCr4Yd=w200-k'
 }
 var location9 = {
   CountryId: 119,
@@ -170,7 +178,8 @@ var location9 = {
   longitude: 126.97386800000004,
   utcOffset: 540,
   openingHours: null,
-  openingHoursText: null
+  openingHoursText: null,
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipMKFrNdgVY0Nd0_xIu9qH5qCHqCENbPjvUlXxjP=w200-k'
 }
 var location10 = {
   CountryId: 119,
@@ -182,7 +191,8 @@ var location10 = {
   longitude: 129.039356,
   utcOffset: 540,
   openingHours: null,
-  openingHoursText: null
+  openingHoursText: null,
+  imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipOcqRTzEwfYCEa5FF6cScoWaK6J53ZHmVdDJUJ0=w200-k'
 }
 
 var seedArr = [location1, location2, location3, location4, location5, location6, location7, location8, location9, location10]

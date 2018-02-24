@@ -21,7 +21,8 @@ const Input = `
     longitude: Float
     utcOffset: Int
     openingHours: [openingHoursPeriodsInput]
-    openingHoursText: [String]
+    openingHoursText: [String],
+    imageUrl: String
   }
   input openingHoursPeriodsInput {
     close: periodObjInput

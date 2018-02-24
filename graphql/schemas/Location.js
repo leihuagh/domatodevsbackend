@@ -11,7 +11,8 @@ const Location = `
     longitude: Float
     utcOffset: Int
     openingHours: [openingHoursPeriods]
-    openingHoursText: [String]
+    openingHoursText: [String],
+    imageUrl: String
   }
   type openingHoursPeriods {
     open: periodObj

@@ -21,7 +21,8 @@ function findOrCreateLocation (google) {
               longitude: google.longitude,
               utcOffset: google.utcOffset,
               openingHours: google.openingHours,
-              openingHoursText: google.openingHoursText
+              openingHoursText: google.openingHoursText,
+              imageUrl: google.imageUrl
             })
             .then(createdLocation => {
               return createdLocation.id
@@ -64,7 +65,8 @@ function findOrCreateLocation (google) {
                   longitude: google.longitude,
                   address: google.address,
                   openingHours: google.openingHours,
-                  openingHoursText: google.openingHoursText
+                  openingHoursText: google.openingHoursText,
+                  imageUrl: google.imageUrl
                 })
                 .then(createdLocation => {
                   return createdLocation.id

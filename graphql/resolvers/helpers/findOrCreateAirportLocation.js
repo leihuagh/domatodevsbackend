@@ -40,7 +40,7 @@ function findOrCreateAirportLocation (iata) {
         .then(json => {
           var result = json.result
           // console.log('RESULT IN RESPONSE', result)
-          var googlePlaceData = {
+          var temp = {
             placeId: placeId,
             countryCode: region,
             name: result.name,
@@ -49,6 +49,20 @@ function findOrCreateAirportLocation (iata) {
             longitude: result.geometry.location.lng,
             utcOffset: result.utc_offset,
             address: result.formatted_address
+          }
+
+          if (result.photos && result.photos[0]) {
+            var photoReference = result.photos[0].photo_reference
+            // fetch google place photos api and shorten url
+            var photoApiUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoReference}&key=${apiKey}`
+            var googlePlaceData = fetch(photoApiUrl)
+            .then(response => {
+              console.log('imageUrl', response.url)
+              temp.imageUrl = response.imageUrl
+              return Promise.resolve(temp)
+            })
+          } else {
+            googlePlaceData = Promise.resolve(temp)
           }
           return googlePlaceData
         })

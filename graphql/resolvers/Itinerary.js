@@ -17,7 +17,7 @@ const Itinerary = {
         })
     },
     events (itinerary) {
-      console.log('itinerary', itinerary)
+      // console.log('itinerary', itinerary)
       var ItineraryId = itinerary.id
 
       var models = ['Activity', 'Food', 'Lodging', 'FlightBooking', 'LandTransport', 'SeaTransport', 'Train']
@@ -171,7 +171,7 @@ const Itinerary = {
           var sorted = events.sort(function (a, b) {
             return a.day - b.day || a.loadSequence - b.loadSequence
           })
-          console.log('sorted', sorted)
+          // console.log('sorted', sorted)
           return sorted
         })
     }

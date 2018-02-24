@@ -10,7 +10,8 @@ module.exports = function (sequelize, DataTypes) {
     longitude: DataTypes.FLOAT,
     utcOffset: DataTypes.INTEGER,
     openingHours: DataTypes.JSON,
-    openingHoursText: DataTypes.JSON
+    openingHoursText: DataTypes.JSON,
+    imageUrl: DataTypes.STRING
   })
 
   Location.associate = function (models) {

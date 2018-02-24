@@ -45,6 +45,9 @@ module.exports = {
       openingHoursText: {
         type: Sequelize.JSON
       },
+      imageUrl: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE
