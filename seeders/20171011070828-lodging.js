@@ -32,7 +32,7 @@ module.exports = {
         ItineraryId: i,
         LocationId: 4,
         startLoadSequence: 5,
-        endLoadSequence: 4,
+        endLoadSequence: 5,
         startDay: 1,
         endDay: 2,
         startTime: 66600, // 6.30pm checkin

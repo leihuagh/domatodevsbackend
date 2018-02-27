@@ -52,7 +52,7 @@ module.exports = {
         ItineraryId: i,
         LocationId: 8,
         locationAlias: 'Seeded Food Alias',
-        loadSequence: 3,
+        loadSequence: 4,
         startDay: 2,
         endDay: 2,
         description: `doggo's favrit chikken nuggers`,

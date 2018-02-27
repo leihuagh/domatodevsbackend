@@ -31,8 +31,8 @@ module.exports = {
         ItineraryId: i,
         DepartureLocationId: 9,
         ArrivalLocationId: 10,
-        startLoadSequence: 5,
-        endLoadSequence: 6,
+        startLoadSequence: 6,
+        endLoadSequence: 1,
         startDay: 2,
         endDay: 3,
         startTime: 82800, // 11pm

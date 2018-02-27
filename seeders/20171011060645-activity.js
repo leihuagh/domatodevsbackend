@@ -59,7 +59,7 @@ module.exports = {
         description: `Buying souveneirs at Myeongdong`,
         notes: casual.sentences(3),
         startTime: 39600, // 11am
-        endTime: 43200, // 12nn
+        endTime: 41400, // 11.30am
         utcOffset: 540,
         cost: 50000,
         currency: 'KRW',
@@ -79,6 +79,27 @@ module.exports = {
         endDay: 2,
         description: `Massage`,
         notes: casual.sentences(3),
+        startTime: 41400, // 11.30am
+        endTime: 43200, // 12nn
+        utcOffset: 540,
+        cost: 30000,
+        currency: 'KRW',
+        bookingStatus: true,
+        bookedThrough: faker.internet.url(),
+        bookingConfirmation: faker.internet.url(),
+        backgroundImage: 'https://storage.googleapis.com/domatodevs/activityDefaultBackground.jpg',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+      var activity4 = {
+        ItineraryId: i,
+        LocationId: 7,
+        locationAlias: 'Seeded Activity Alias',
+        loadSequence: 3,
+        startDay: 2,
+        endDay: 2,
+        description: `Massage Again`,
+        notes: casual.sentences(3),
         startTime: 43200, // 12nn
         endTime: 46800, // 1pm
         utcOffset: 540,
@@ -91,7 +112,7 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       }
-      seedArr.push(activity1, activity2, activity3)
+      seedArr.push(activity1, activity2, activity3, activity4)
     }
     return queryInterface.bulkInsert('Activities', seedArr, {})
   },
