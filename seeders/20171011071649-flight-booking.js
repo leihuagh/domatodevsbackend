@@ -35,7 +35,7 @@ module.exports = {
         cost: 8000,
         currency: 'USD',
         classCode: 'Economy',
-        departureDate: 1521072000, // 15th march
+        departureDate: 1523750400, // 15th april
         returnDate: null,
         departureIATA: 'SIN',
         arrivalIATA: 'SEL',
