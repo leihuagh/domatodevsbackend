@@ -1,14 +1,24 @@
 'use strict'
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.createTable('Events', {
+    return queryInterface.createTable('Posts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      PostId: {
+      BlogId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Blogs'
+          }
+        },
+        key: 'id'
+      },
+      ParentPostId: {
+        allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: {
@@ -17,12 +27,12 @@ module.exports = {
         },
         key: 'id'
       },
-      ParentEventId: {
+      LocationId: {
         allowNull: true,
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: 'Events'
+            tableName: 'Locations'
           }
         },
         key: 'id'
@@ -30,7 +40,28 @@ module.exports = {
       loadSequence: {
         type: Sequelize.INTEGER
       },
-      content: {
+      textContent: {
+        type: Sequelize.TEXT
+      },
+      title: {
+        type: Sequelize.STRING
+      },
+      contentOnly: {
+        type: Sequelize.BOOLEAN
+      },
+      description: {
+        type: Sequelize.STRING
+      },
+      start: {
+        type: Sequelize.BOOLEAN
+      },
+      startDay: {
+        type: Sequelize.INTEGER
+      },
+      endDay: {
+        type: Sequelize.INTEGER
+      },
+      eventType: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -45,6 +76,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable('Events')
+    return queryInterface.dropTable('Posts')
   }
 }
