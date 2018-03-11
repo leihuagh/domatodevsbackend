@@ -14,7 +14,8 @@ const Post = `
     startDay: Int
     endDay: Int
     blog: Blog
-    childPosts: [Post] 
+    location: Location
+    childPosts: [Post]
   }
 `
 module.exports = Post

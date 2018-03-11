@@ -7,6 +7,9 @@ const Post = {
     },
     childPosts (post) {
       return post.getChildPosts()
+    },
+    location (post) {
+      return post.getLocation()
     }
   },
   Query: {

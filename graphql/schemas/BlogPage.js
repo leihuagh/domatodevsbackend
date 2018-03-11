@@ -3,7 +3,7 @@ const BlogPage = `
     type: String
     modelId: ID
     loadSequence: Int
-    Heading: Heading
+    BlogHeading: BlogHeading
     Post: Post
   }
 `

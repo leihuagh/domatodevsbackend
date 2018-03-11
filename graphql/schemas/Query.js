@@ -18,6 +18,7 @@ const Query = `
     findTrain(id: ID!): Train
     findBlogHeading(id: ID!): BlogHeading
     findPost(id: ID!): Post
+    findBlog(id: ID!): Blog
     authorization: Boolean
     findCountriesItineraries(CountryId: ID!, ItineraryId: ID!): CountriesItineraries
     permissions(UserId: ID!, ItineraryId: ID!): UsersItineraries

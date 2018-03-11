@@ -6,8 +6,10 @@ const Blog = `
     published: Boolean
     title: String
     textContent: String
+    user: User
     headings: [BlogHeading]
     posts: [Post]
+    pages: [BlogPage]
   }
 `
 module.exports = Blog
