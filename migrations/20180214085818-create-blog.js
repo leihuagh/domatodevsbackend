@@ -35,6 +35,9 @@ module.exports = {
       published: {
         type: Sequelize.BOOLEAN
       },
+      views: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE

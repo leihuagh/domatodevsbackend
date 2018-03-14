@@ -11,6 +11,9 @@ const Blog = {
     user (blog) {
       return blog.getUser()
     },
+    likes (blog) {
+      return blog.getLikes()
+    },
     pages (blog) {
       const blogId = blog.id
       const models = ['BlogHeading', 'Post']

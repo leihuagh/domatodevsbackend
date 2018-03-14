@@ -11,7 +11,6 @@ module.exports = {
     })
     seedArr.push({
       BlogId: 1,
-      ParentPostId: 1,
       loadSequence: 4,
       textContent: 'Seeded Child Post 1',
       contentOnly: false,
@@ -24,7 +23,7 @@ module.exports = {
     })
     seedArr.push({
       BlogId: 1,
-      ParentPostId: 1,
+      ParentPostId: 2,
       loadSequence: 5,
       textContent: 'Seeded Child Post 2',
       contentOnly: false,
