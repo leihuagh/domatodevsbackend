@@ -24,7 +24,11 @@ var db = {
   LandTransport: sequelize.import('../models/landtransport'),
   SeaTransport: sequelize.import('../models/seatransport'),
   Train: sequelize.import('../models/train'),
-  Attachment: sequelize.import('../models/attachment')
+  Attachment: sequelize.import('../models/attachment'),
+  Blog: sequelize.import('../models/blog'),
+  BlogHeading: sequelize.import('../models/blogheading'),
+  Post: sequelize.import('../models/post'),
+  BlogLikesUsers: sequelize.import('../models/bloglikesusers')
 }
 
 Object.keys(db).forEach(function (modelName) {

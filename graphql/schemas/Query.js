@@ -3,6 +3,7 @@ const Query = `
     allCountries: [Country!]!
     allUsers: [User!]!
     allItineraries: [Itinerary]
+    allBlogs: [Blog]
     itinerariesByUser: [Itinerary]
     findUser(id: ID!): User
     findItinerary(id: ID!): Itinerary
@@ -15,6 +16,9 @@ const Query = `
     findLandTransport(id:ID!): LandTransport
     findSeaTransport(id: ID!): SeaTransport
     findTrain(id: ID!): Train
+    findBlogHeading(id: ID!): BlogHeading
+    findPost(id: ID!): Post
+    findBlog(id: ID!): Blog
     authorization: Boolean
     findCountriesItineraries(CountryId: ID!, ItineraryId: ID!): CountriesItineraries
     permissions(UserId: ID!, ItineraryId: ID!): UsersItineraries

@@ -29,8 +29,12 @@ const Train = require('./Train')
 const Input = require('./Input')
 const Attachment = require('./Attachment')
 const Event = require('./Event')
+const Blog = require('./Blog')
+const BlogHeading = require('./BlogHeading')
+const Post = require('./Post')
+const BlogPage = require('./BlogPage')
 
 module.exports = makeExecutableSchema({
-  typeDefs: [SchemaDefinition, Query, Mutation, Country, User, Itinerary, Location, Activity, Lodging, FlightBooking, FlightInstance, FlightEvent, Food, LandTransport, SeaTransport, Train, Input, Attachment, Event],
+  typeDefs: [SchemaDefinition, Query, Mutation, Country, User, Itinerary, Location, Activity, Lodging, FlightBooking, FlightInstance, FlightEvent, Food, LandTransport, SeaTransport, Train, Input, Attachment, Event, Blog, BlogHeading, Post, BlogPage],
   resolvers: mergedResolvers
 })

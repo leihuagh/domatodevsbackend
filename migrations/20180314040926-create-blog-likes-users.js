@@ -1,27 +1,28 @@
 'use strict'
+
 module.exports = {
-  up: function (queryInterface, Sequelize) {
-    return queryInterface.createTable('Posts', {
+  up: (queryInterface, Sequelize) => {
+    return queryInterface.createTable('BlogLikesUsers', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      BlogId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Blogs'
+          },
+          key: 'id'
+        }
+      },
       UserId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
             tableName: 'Users'
-          }
-        },
-        key: 'id'
-      },
-      ItineraryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'Itineraries'
           },
           key: 'id'
         }
@@ -37,7 +38,7 @@ module.exports = {
     })
   },
 
-  down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable('Posts')
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.dropTable('BlogLikesUsers')
   }
 }
