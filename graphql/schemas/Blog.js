@@ -12,6 +12,8 @@ const Blog = `
     headings: [BlogHeading]
     posts: [Post]
     pages: [BlogPage]
+    media: [MediaObject]
+    createdAt: String
   }
   type BlogLikesUsers {
     BlogId: ID!
