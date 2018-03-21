@@ -1,15 +1,23 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
+  // var User = sequelize.define('User', {
+  //   name: DataTypes.STRING,
+  //   email: DataTypes.STRING,
+  //   CountryId: DataTypes.INTEGER,
+  //   profilePic: DataTypes.STRING,
+  //   password: DataTypes.STRING
+  // })
+
   var User = sequelize.define('User', {
-    name: DataTypes.STRING,
+    fullName: DataTypes.STRING,
+    username: DataTypes.STRING,
     email: DataTypes.STRING,
-    CountryId: DataTypes.INTEGER,
     profilePic: DataTypes.STRING,
-    password: DataTypes.STRING
+    CountryId: DataTypes.INTEGER
   })
 
   User.associate = function (models) {
-    User.belongsTo(models.Country)
+    // User.belongsTo(models.Country)
     User.belongsToMany(models.Itinerary, {through: 'UsersItineraries'})
     User.belongsToMany(models.Blog, {
       as: 'Likes',
@@ -19,6 +27,3 @@ module.exports = function (sequelize, DataTypes) {
 
   return User
 }
-
-
-// AUTH0 USER DETAILS. USERNAME, EMAIL, FULLNAME.

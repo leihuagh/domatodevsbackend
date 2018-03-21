@@ -1,5 +1,7 @@
 require('dotenv').config()
 const express = require('express')
+// const os = require('os')
+
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
@@ -12,13 +14,25 @@ const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 const app = express()
 
 // only allow front end server to access
-const corsOptions = {
-  origin: 'http://localhost:3000'
-}
+// const corsOptions = {
+//   origin: ['http://localhost:3000']
+// }
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 
-app.use('/graphql', bodyParser.json())
+app.use(cors())
+
+// app.post('/graphql', function (req, res) {
+//   console.log('REQUEST', req)
+//   res.send('endpoint hit')
+// })
+app.use('/', bodyParser.json())
+// app.use('/graphql', bodyParser.json())
+
+// app.post('/', function (req, res) {
+//   console.log('BACKEND REQ', req.body)
+//   res.send('HELLO')
+// })
 
 function insertNewlines (certificate) {
   for (var i = 64; i < certificate.length; i += 65) {
@@ -47,6 +61,7 @@ function verifyAuth0Token (req, res, next) {
   var certificate = key.x5c[0]
   var pem = getPEM(certificate)
   // console.log('pem', pem)
+
   var accessToken = req.headers.authorization.substring(7)
   jwt.verify(accessToken, pem, {
     audience: 'http://localhost:3001',
@@ -54,7 +69,7 @@ function verifyAuth0Token (req, res, next) {
     ignoreExpiration: false,
     algorithms: ['RS256']}, function (err, payload) {
     if (err) {
-      console.log('err', err)
+      console.log('ACCESS TOKEN MISSING OR NOT VALID')
     }
     if (payload) {
       console.log('payload', payload)
@@ -66,7 +81,6 @@ function verifyAuth0Token (req, res, next) {
 }
 
 app.use('/graphql', verifyAuth0Token)
-
 
 // PASS AUTH0 USERID INTO CONTEXT
 app.use('/graphql', graphqlExpress(req => ({
@@ -84,3 +98,6 @@ const port = process.env.PORT || 3001
 app.listen(port, function () {
   console.log(`Graphql is running on port ${port}`)
 })
+
+// var networkInterfaces = os.networkInterfaces()
+// console.log('ip address', networkInterfaces)

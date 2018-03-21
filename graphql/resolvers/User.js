@@ -16,6 +16,7 @@ const User = {
       return db.User.findAll()
     },
     findUser: (__, data) => {
+      console.log('data received', data)
       return db.User.findById(data.id)
     },
     authorization: (__, data, context) => {
@@ -79,6 +80,9 @@ const User = {
           return err
         })
     }
+    // onAuth0UserAuthentication: (__, data) => {
+    //   console.log('data', data)
+    // }
   }
 }
 

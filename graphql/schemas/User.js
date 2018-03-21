@@ -1,13 +1,24 @@
+// const User = `
+//   type User {
+//     id: ID!
+//     name: String!
+//     email: String!
+//     password: String!
+//     profilePic: String
+//     country: Country!
+//     itineraries: [Itinerary]
+//   }
+// `
+
 const User = `
   type User {
     id: ID!
-    name: String!
-    email: String!
-    password: String!
+    fullName: String
+    username: String
+    email: String
     profilePic: String
     country: Country!
     itineraries: [Itinerary]
   }
 `
-
 module.exports = User
