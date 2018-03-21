@@ -27,6 +27,9 @@ module.exports = function (sequelize, DataTypes) {
       as: 'ChildPosts',
       foreignKey: 'ParentPostId'
     })
+    Post.belongsToMany(models.Medium, {
+      through: 'MediaPosts'
+    })
     // Post.hasMany(models.Attachment)
   }
 

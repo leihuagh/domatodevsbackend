@@ -48,6 +48,39 @@ const Blog = {
           })
           return sorted
         })
+    },
+    media (blog) {
+      const blogId = blog.id
+      return db.MediaBlogs.findAll({where: {BlogId: blogId}})
+        .then(foundRows => {
+          let arr = []
+          foundRows.forEach(e => {
+            let obj = {
+              loadSequence: e.loadSequence,
+              caption: e.caption,
+              id: e.MediumId
+            }
+            arr.push(obj)
+          })
+          return Promise.all(arr)
+        })
+        .then(results => {
+          let arr = []
+          results.forEach(e => {
+            const innerPromise = db.Medium.findById(e.id)
+             .then(medium => {
+               const obj = {...e,
+                 ...{
+                   url: medium.url,
+                   type: medium.type
+                 }
+               }
+               return obj
+             })
+            arr.push(innerPromise)
+          })
+          return Promise.all(arr)
+        })
     }
   },
   Query: {
