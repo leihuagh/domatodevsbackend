@@ -19,3 +19,6 @@ module.exports = function (sequelize, DataTypes) {
 
   return User
 }
+
+
+// AUTH0 USER DETAILS. USERNAME, EMAIL, FULLNAME.

@@ -39,45 +39,45 @@ const User = {
     },
     updateUser: (__, data) => {
       return db.User.findById(data.id)
-      .then((found) => {
-        return found.update({
-          name: data.name,
-          email: data.email,
-          password: data.password
+        .then((found) => {
+          return found.update({
+            name: data.name,
+            email: data.email,
+            password: data.password
+          })
         })
-      })
-      .then(updated => {
-        return updated
-      })
+        .then(updated => {
+          return updated
+        })
     },
     deleteUser: (__, data) => {
       return db.User.destroy({where: {id: data.id}})
-      .then(status => {
-        return status
-      })
+        .then(status => {
+          return status
+        })
     },
     createToken: (__, data) => {
       console.log('data', data)
       return db.User.findOne({
         where: {email: data.email}
       })
-      .then(found => {
-        return bcrypt.compare(data.password, found.password)
-        .then(compared => {
-          if (compared) {
-            var token = jwt.sign({id: found.id, email: found.email}, process.env.JWT)
-            console.log('jwt', process.env.JWT)
-            console.log('token')
-            return token
-          } else {
-            return 'unauthorized. password incorrect'
-          }
+        .then(found => {
+          return bcrypt.compare(data.password, found.password)
+            .then(compared => {
+              if (compared) {
+                var token = jwt.sign({id: found.id, email: found.email}, process.env.JWT)
+                console.log('jwt', process.env.JWT)
+                console.log('token')
+                return token
+              } else {
+                return 'unauthorized. password incorrect'
+              }
+            })
         })
-      })
-      .catch(err => {
-        console.log('err', err)
-        return err
-      })
+        .catch(err => {
+          console.log('err', err)
+          return err
+        })
     }
   }
 }

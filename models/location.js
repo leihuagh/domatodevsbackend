@@ -13,7 +13,6 @@ module.exports = function (sequelize, DataTypes) {
     openingHoursText: DataTypes.JSON,
     imageUrl: DataTypes.STRING
   })
-
   Location.associate = function (models) {
     Location.hasMany(models.Activity)
     Location.hasMany(models.Food)

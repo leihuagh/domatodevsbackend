@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
+
 const jwt = require('jsonwebtoken')
 
 const schema = require('./graphql/schemas/mergedSchema')
@@ -10,37 +11,64 @@ const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 
 const app = express()
 
-app.use(cors())
+// only allow front end server to access
+const corsOptions = {
+  origin: 'http://localhost:3000'
+}
+
+app.use(cors(corsOptions))
 
 app.use('/graphql', bodyParser.json())
 
-function verifyToken (req, res, next) {
-  console.log('endpoint', req.body.operationName)
-  // console.log(req.headers)
-  // 3 possibilities here.
-  // http req was set to no auth (no authorization req). hence no header
-  // auth was required but no header given. (forgot to attach token)
-  // token is undefined or 'undefined' or ''
-  var authHeader = req.headers.authorization
-  // console.log('header', authHeader)
-  if (authHeader) {
-    var token = authHeader.substring(7)
+function insertNewlines (certificate) {
+  for (var i = 64; i < certificate.length; i += 65) {
+    certificate = certificate.slice(0, i) + '\n' + certificate.slice(i)
   }
-  // console.log('token', token)
+  return certificate
+}
 
-  if (token && token !== 'undefined' && token !== '' && token !== 'null') {
-    // console.log('pre verify')
-    var user = jwt.verify(token, process.env.JWT)
-    if (user) {
-      req.user = user.id
-      // console.log('req.user', req.user)
+function addBoundaries (certificate) {
+  return '-----BEGIN CERTIFICATE-----\n' + certificate + '\n-----END CERTIFICATE-----'
+}
+
+function getPEM (certificate) {
+  certificate = insertNewlines(certificate)
+  certificate = addBoundaries(certificate)
+  return certificate
+}
+
+function verifyAuth0Token (req, res, next) {
+  // console.log('headers', req.headers.authorization)
+  const jwks = require('./auth0jwks.json')
+  // console.log('jwks', jwks)
+
+  // obtain x5c certificate chain from jwk obj
+  var key = jwks.keys[0]
+  var certificate = key.x5c[0]
+  var pem = getPEM(certificate)
+  // console.log('pem', pem)
+  var accessToken = req.headers.authorization.substring(7)
+  jwt.verify(accessToken, pem, {
+    audience: 'http://localhost:3001',
+    issuer: 'https://domatodevs.auth0.com/',
+    ignoreExpiration: false,
+    algorithms: ['RS256']}, function (err, payload) {
+    if (err) {
+      console.log('err', err)
     }
-  }
+    if (payload) {
+      console.log('payload', payload)
+      // attach unique userid to request and pass it on to resolvers.
+      req.user = payload.sub
+    }
+  })
   next()
 }
 
-app.use('/graphql', verifyToken)
+app.use('/graphql', verifyAuth0Token)
 
+
+// PASS AUTH0 USERID INTO CONTEXT
 app.use('/graphql', graphqlExpress(req => ({
   schema: schema,
   context: {
