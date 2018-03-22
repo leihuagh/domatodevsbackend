@@ -21,6 +21,11 @@ const User = {
       console.log('data received', data)
       return db.User.findById(data.id)
     },
+    getUserProfile: (__, data, context) => {
+      // pull out user row for profile page
+      console.log('data', data, 'context', context)
+      return db.User.findById(context.user)
+    },
     authorization: (__, data, context) => {
       if (context.user) {
         return true
@@ -30,58 +35,58 @@ const User = {
     }
   },
   Mutation: {
-    createUser: (__, data) => {
-      var hash = bcrypt.hashSync(data.password, 10)
-      const newUser = {
-        name: data.name,
-        email: data.email,
-        CountryId: data.CountryId,
-        password: hash
-      }
-      return db.User.create(newUser)
-    },
-    updateUser: (__, data) => {
-      return db.User.findById(data.id)
-        .then((found) => {
-          return found.update({
-            name: data.name,
-            email: data.email,
-            password: data.password
-          })
-        })
-        .then(updated => {
-          return updated
-        })
-    },
-    deleteUser: (__, data) => {
-      return db.User.destroy({where: {id: data.id}})
-        .then(status => {
-          return status
-        })
-    },
-    createToken: (__, data) => {
-      console.log('data', data)
-      return db.User.findOne({
-        where: {email: data.email}
-      })
-        .then(found => {
-          return bcrypt.compare(data.password, found.password)
-            .then(compared => {
-              if (compared) {
-                var token = jwt.sign({id: found.id, email: found.email}, process.env.JWT)
-                console.log('jwt', process.env.JWT)
-                console.log('token')
-                return token
-              } else {
-                return 'unauthorized. password incorrect'
-              }
-            })
-        })
-        .catch(err => {
-          console.log('err', err)
-          return err
-        })
-    },
+    // createUser: (__, data) => {
+    //   var hash = bcrypt.hashSync(data.password, 10)
+    //   const newUser = {
+    //     name: data.name,
+    //     email: data.email,
+    //     CountryId: data.CountryId,
+    //     password: hash
+    //   }
+    //   return db.User.create(newUser)
+    // },
+    // updateUser: (__, data) => {
+    //   return db.User.findById(data.id)
+    //     .then((found) => {
+    //       return found.update({
+    //         name: data.name,
+    //         email: data.email,
+    //         password: data.password
+    //       })
+    //     })
+    //     .then(updated => {
+    //       return updated
+    //     })
+    // },
+    // deleteUser: (__, data) => {
+    //   return db.User.destroy({where: {id: data.id}})
+    //     .then(status => {
+    //       return status
+    //     })
+    // },
+    // createToken: (__, data) => {
+    //   console.log('data', data)
+    //   return db.User.findOne({
+    //     where: {email: data.email}
+    //   })
+    //     .then(found => {
+    //       return bcrypt.compare(data.password, found.password)
+    //         .then(compared => {
+    //           if (compared) {
+    //             var token = jwt.sign({id: found.id, email: found.email}, process.env.JWT)
+    //             console.log('jwt', process.env.JWT)
+    //             console.log('token')
+    //             return token
+    //           } else {
+    //             return 'unauthorized. password incorrect'
+    //           }
+    //         })
+    //     })
+    //     .catch(err => {
+    //       console.log('err', err)
+    //       return err
+    //     })
+    // },
     onAuth0UserAuthentication: (__, data) => {
       // console.log('onAuth0UserAuthentication', data)
       var idTokenClaims = jwt.decode(data.idToken)
@@ -91,7 +96,7 @@ const User = {
         fullName: idTokenClaims.name, // can be name stored in Auth0 or just the email address associated with it.
         username: idTokenClaims.nickname,
         profilePic: idTokenClaims.picture,
-        email: idTokenClaims.email // not avaible under Auth0 normalized profile. need to call user management api
+        email: idTokenClaims.email
       }
       // console.log('newUser', newUser)
       // find or create users

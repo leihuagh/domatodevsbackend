@@ -180,10 +180,10 @@ const Itinerary = {
     allItineraries: () => {
       return db.Itinerary.findAll()
     },
-    // NEED TO SWITCH TO AUTO0 USERID
     itinerariesByUser: (__, data, context) => {
       // this returns all itineraries for that user, regardless of owner or collab
       // console.log('context', context)
+      //user id is auth0 id for domatodevs@gmail.com
       return db.User.findById(context.user)
         .then(user => {
           if (user) {

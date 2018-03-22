@@ -21,9 +21,3 @@ const Itinerary = `
   }
 `
 module.exports = Itinerary
-
-// activities: [Activity]
-// food: [Food]
-// lodgings: [Lodging]
-// flightBookings: [FlightBooking]
-// transports: [Transport]

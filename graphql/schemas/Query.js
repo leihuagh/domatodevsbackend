@@ -6,6 +6,7 @@ const Query = `
     allBlogs: [Blog]
     itinerariesByUser: [Itinerary]
     findUser(id: ID!): User
+    getUserProfile: User
     findItinerary(id: ID!): Itinerary
     findLocation(id: ID!): Location
     findActivity(id: ID!): Activity
