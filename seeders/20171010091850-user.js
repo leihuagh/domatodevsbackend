@@ -25,11 +25,11 @@ module.exports = {
     // return queryInterface.bulkInsert('Users', seedArr, {})
     var user1 = {
       id: 'auth0|5ab1dce98bd5067ff5786507',
-      fullName: 'Domato Devs',
+      fullName: 'domatodevs@gmail.com',
       username: 'domatodevs',
-      email: 'domatodevs@gmail.com',
+      email: null,
       profilePic: 'https://s.gravatar.com/avatar/51e8e59034a4c4e3cc4ae0256c196739?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fdo.png',
-      CountryId: 120,
+      // CountryId: 120,
       createdAt: new Date(),
       updatedAt: new Date()
     }

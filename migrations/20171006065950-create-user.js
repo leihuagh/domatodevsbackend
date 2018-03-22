@@ -24,18 +24,17 @@ module.exports = {
         type: Sequelize.STRING
       },
       email: {
-        allowNull: false,
         type: Sequelize.STRING
       },
-      CountryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'Countries'
-          },
-          key: 'id'
-        }
-      },
+      // CountryId: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: 'Countries'
+      //     },
+      //     key: 'id'
+      //   }
+      // },
       profilePic: {
         type: Sequelize.STRING
       },

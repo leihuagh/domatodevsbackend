@@ -1,7 +1,5 @@
 require('dotenv').config()
 const express = require('express')
-// const os = require('os')
-
 const cors = require('cors')
 const bodyParser = require('body-parser')
 
@@ -22,17 +20,7 @@ const app = express()
 
 app.use(cors())
 
-// app.post('/graphql', function (req, res) {
-//   console.log('REQUEST', req)
-//   res.send('endpoint hit')
-// })
-app.use('/', bodyParser.json())
-// app.use('/graphql', bodyParser.json())
-
-// app.post('/', function (req, res) {
-//   console.log('BACKEND REQ', req.body)
-//   res.send('HELLO')
-// })
+app.use(bodyParser.json())
 
 function insertNewlines (certificate) {
   for (var i = 64; i < certificate.length; i += 65) {
@@ -52,7 +40,7 @@ function getPEM (certificate) {
 }
 
 function verifyAuth0Token (req, res, next) {
-  // console.log('headers', req.headers.authorization)
+  // console.log('headers', req.headers)
   const jwks = require('./auth0jwks.json')
   // console.log('jwks', jwks)
 
@@ -72,7 +60,7 @@ function verifyAuth0Token (req, res, next) {
       console.log('ACCESS TOKEN MISSING OR NOT VALID')
     }
     if (payload) {
-      console.log('payload', payload)
+      // console.log('payload', payload)
       // attach unique userid to request and pass it on to resolvers.
       req.user = payload.sub
     }
@@ -98,6 +86,3 @@ const port = process.env.PORT || 3001
 app.listen(port, function () {
   console.log(`Graphql is running on port ${port}`)
 })
-
-// var networkInterfaces = os.networkInterfaces()
-// console.log('ip address', networkInterfaces)

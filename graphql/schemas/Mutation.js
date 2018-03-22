@@ -4,6 +4,8 @@ const Mutation = `
 
     deleteMultipleEvents(input:[EventsToBeDeleted]): Boolean
 
+    onAuth0UserAuthentication(idToken: String!): User
+
     createUser(name:String!,email:String!,CountryId:Int!,password:String!): User
 
     updateUser(id:ID!,name:String, email:String, CountryId:Int,password:String, profilePic:String):User
