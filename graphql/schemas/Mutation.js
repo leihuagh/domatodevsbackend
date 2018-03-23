@@ -77,6 +77,8 @@ const Mutation = `
     createAttachment(eventModel: String!, id: ID!, fileName: String, fileAlias: String, fileType: String, fileSize: String, arrivalDeparture: String): Attachment
 
     deleteAttachment(id: ID!): Boolean
+
+    increaseBlogViews(id: ID!): Boolean
   }
 `
 module.exports = Mutation

@@ -47,6 +47,9 @@ module.exports = {
       views: {
         type: Sequelize.INTEGER
       },
+      shares: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE
