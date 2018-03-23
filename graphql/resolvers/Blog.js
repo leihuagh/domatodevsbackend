@@ -81,6 +81,15 @@ const Blog = {
           })
           return Promise.all(arr)
         })
+        .then(values => {
+          var media = values.reduce(function (a, b) {
+            return a.concat(b)
+          }, [])
+          var sorted = media.sort(function (a, b) {
+            return a.loadSequence - b.loadSequence
+          })
+          return sorted
+        })
     }
   },
   Query: {
@@ -89,6 +98,14 @@ const Blog = {
     },
     findBlog: (__, data) => {
       return db.Blog.findById(data.id)
+    }
+  },
+  Mutation: {
+    increaseBlogViews: (__, data) => {
+      return db.Blog.findById(data.id)
+        .then(found => {
+          return found.increment('views', {by: 1})
+        })
     }
   }
 }

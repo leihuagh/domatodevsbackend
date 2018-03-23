@@ -43,6 +43,15 @@ const Post = {
           })
           return Promise.all(arr)
         })
+        .then(values => {
+          var media = values.reduce(function (a, b) {
+            return a.concat(b)
+          }, [])
+          var sorted = media.sort(function (a, b) {
+            return a.loadSequence - b.loadSequence
+          })
+          return sorted
+        })
     }
   },
   Query: {
