@@ -39,6 +39,14 @@ module.exports = {
       loadSequence: 6,
       caption: 'Domai Lama\'s Birthplace'
     })
+    for (var i = 1; i < 37; i++) {
+      seedArr.push({
+        MediumId: i % 6 === 0 ? 6 : i % 6,
+        PostId: 1,
+        loadSequence: i + 6,
+        caption: 'Photo number ' + (i + 6)
+      })
+    }
     return queryInterface.bulkInsert('MediaPosts', seedArr, {})
   },
 

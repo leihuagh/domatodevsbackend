@@ -8,6 +8,7 @@ const Blog = `
     textContent: String
     user: User
     views: Int
+    shares: Int
     likes: [User]
     headings: [BlogHeading]
     posts: [Post]

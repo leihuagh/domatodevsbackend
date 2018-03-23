@@ -6,7 +6,8 @@ module.exports = function (sequelize, DataTypes) {
     textContent: DataTypes.TEXT,
     title: DataTypes.STRING,
     published: DataTypes.BOOLEAN,
-    views: DataTypes.INTEGER
+    views: DataTypes.INTEGER,
+    shares: DataTypes.INTEGER
   })
 
   Blog.associate = function (models) {
