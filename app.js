@@ -44,7 +44,7 @@ function verifyAuth0Token (req, res, next) {
   const jwks = require('./auth0jwks.json')
   // console.log('jwks', jwks)
 
-  // obtain x5c certificate chain from jwk obj
+  // obtain X509 certificate chain from jwk obj
   var key = jwks.keys[0]
   var certificate = key.x5c[0]
   var pem = getPEM(certificate)
