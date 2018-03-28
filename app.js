@@ -68,7 +68,7 @@ function verifyAuth0Token (req, res, next) {
   next()
 }
 
-app.use('/graphql', verifyAuth0Token)
+// app.use('/graphql', verifyAuth0Token)
 
 // PASS AUTH0 USERID INTO CONTEXT
 app.use('/graphql', graphqlExpress(req => ({
