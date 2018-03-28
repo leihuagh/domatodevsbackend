@@ -19,6 +19,12 @@ module.exports = function (sequelize, DataTypes) {
       as: 'Likes',
       through: 'BlogLikesUsers'
     })
+    Blog.belongsToMany(models.Medium, {
+      through: 'MediaBlogs'
+    })
+    Blog.belongsToMany(models.Hashtag, {
+      through: 'HashtagsBlogs'
+    })
   }
 
   return Blog

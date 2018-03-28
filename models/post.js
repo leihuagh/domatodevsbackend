@@ -30,6 +30,9 @@ module.exports = function (sequelize, DataTypes) {
     Post.belongsToMany(models.Medium, {
       through: 'MediaPosts'
     })
+    Post.belongsToMany(models.Hashtag, {
+      through: 'HashtagsPosts'
+    })
     // Post.hasMany(models.Attachment)
   }
 
