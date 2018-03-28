@@ -92,5 +92,52 @@ const Input = `
     addAttachments: [attachmentInput]
     removeAttachments: [ID]
   }
+
+  input createBlogContentInput {
+    isPost: Boolean,
+    Heading: createHeadingInput
+    ParentPost: createParentPostInput
+  }
+
+  input createHeadingInput {
+    loadSequence: Int
+    title: String
+  }
+
+  input createParentPostInput {
+    loadSequence: Int
+    contentOnly: Boolean
+    title: String
+    textContent: String
+    description: String
+    mediaContentArr: [mediaInput]
+    LocationId: ID
+    start: Boolean
+    startDay: Int
+    endDay: Int
+    eventType: String
+    ChildPostsArr: [createChildPostInput]
+  }
+
+  input createChildPostInput {
+    loadSequence: Int
+    title: String
+    textContent: String
+    description: String
+    mediaContentArr: [mediaInput]
+    LocationId: ID
+    start: Boolean
+    startDay: Int
+    endDay: Int
+    eventType: String
+  }
+
+  input mediaInput {
+    MediaId: ID
+    loadSequence: Int
+    caption: String
+  }
 `
 module.exports = Input
+
+// createBlog {params, then arr[createBlogContentInput]}

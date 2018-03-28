@@ -16,6 +16,7 @@ const Blog = `
     media: [MediaObject]
     createdAt: String
   }
+
   type BlogLikesUsers {
     BlogId: ID!
     UserId: ID!

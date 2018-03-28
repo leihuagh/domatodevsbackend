@@ -1,7 +1,6 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
   var Blog = sequelize.define('Blog', {
-    // UserId: DataTypes.INTEGER,
     UserId: DataTypes.STRING,
     ItineraryId: DataTypes.INTEGER,
     textContent: DataTypes.TEXT,
