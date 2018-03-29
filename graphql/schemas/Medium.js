@@ -5,8 +5,18 @@ const Medium = `
     type: String!
   }
   type MediaPosts {
-    MediaId: ID!
+    id: ID!
+    MediumId: ID!
     PostId: ID!
+    loadSequence: Int!
+    caption: String
+  }
+  type MediaBlogs {
+    id: ID!
+    MediumId: ID!
+    BlogId: ID!
+    loadSequence: Int!
+    caption: String
   }
 `
 

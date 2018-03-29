@@ -91,6 +91,10 @@
     updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, LocationId: Int, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
 
     deletePost(id: ID!): Boolean
+
+    addMediaToBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
+
+    removeMediaFromBlog(id: ID!): Boolean
   }
 `
 module.exports = Mutation
