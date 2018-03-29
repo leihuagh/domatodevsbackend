@@ -78,9 +78,12 @@ const Mutation = `
 
     deleteAttachment(id: ID!): Boolean
 
-    createBlog(UserId: Int!, title: String, textContent: String, mediaContentArr: [mediaInput], blogContentArr: [createBlogContentInput]): Blog
+    createBlog(UserId: String!, title: String, textContent: String, mediaContentArr: [mediumInput], blogContentArr: [createBlogContentInput]): Blog
+
 
     increaseBlogViews(id: ID!): Boolean
   }
 `
 module.exports = Mutation
+
+// deleteBlog(BlogId: ID!): Boolean

@@ -110,21 +110,22 @@ const Input = `
     title: String
     textContent: String
     description: String
-    mediaContentArr: [mediaInput]
+    mediaContentArr: [mediumInput]
     LocationId: ID
     start: Boolean
     startDay: Int
     endDay: Int
     eventType: String
-    ChildPostsArr: [createChildPostInput]
+    childPostsArr: [createChildPostInput]
   }
 
   input createChildPostInput {
     loadSequence: Int
+    contentOnly: Boolean
     title: String
     textContent: String
     description: String
-    mediaContentArr: [mediaInput]
+    mediaContentArr: [mediumInput]
     LocationId: ID
     start: Boolean
     startDay: Int
@@ -132,12 +133,10 @@ const Input = `
     eventType: String
   }
 
-  input mediaInput {
-    MediaId: ID
+  input mediumInput {
+    MediumId: ID
     loadSequence: Int
     caption: String
   }
 `
 module.exports = Input
-
-// createBlog {params, then arr[createBlogContentInput]}

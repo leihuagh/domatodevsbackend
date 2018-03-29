@@ -11,6 +11,8 @@ const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
 
 const app = express()
 
+const _ = require('lodash')
+
 // only allow front end server to access
 // const corsOptions = {
 //   origin: ['http://localhost:3000']
@@ -50,7 +52,8 @@ function verifyAuth0Token (req, res, next) {
   var pem = getPEM(certificate)
   // console.log('pem', pem)
 
-  var accessToken = req.headers.authorization.substring(7)
+  var accessToken = _.get(req, 'headers.authorization', '').substring(7)
+  // var accessToken = req.headers.authorization.substring(7)
   jwt.verify(accessToken, pem, {
     audience: 'http://localhost:3001',
     issuer: 'https://domatodevs.auth0.com/',
@@ -68,7 +71,7 @@ function verifyAuth0Token (req, res, next) {
   next()
 }
 
-// app.use('/graphql', verifyAuth0Token)
+app.use('/graphql', verifyAuth0Token)
 
 // PASS AUTH0 USERID INTO CONTEXT
 app.use('/graphql', graphqlExpress(req => ({
