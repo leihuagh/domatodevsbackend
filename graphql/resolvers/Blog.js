@@ -122,7 +122,7 @@ const Blog = {
         })
     },
     updateBlog: (__, data) => {
-      console.log('data', data)
+      // console.log('data', data)
       // updates only text, published boolean in the blog table
       var updatesObj = {}
       var fields = ['title', 'textContent', 'pubished', 'ItineraryId']
@@ -131,22 +131,79 @@ const Blog = {
           updatesObj[field] = data[field]
         }
       })
-      console.log('updatesObj', updatesObj)
+      // console.log('updatesObj', updatesObj)
       var foundBlog = db.Blog.findById(data.id)
 
       return foundBlog
         .then(found => {
-          console.log('found', found)
+          // console.log('found', found)
           return found.update(updatesObj)
         })
     },
     deleteBlog: (__, data) => {
       // DELETE EVERYTHING TO DO WITH BLOG
+      /*
+      (X) delete all MediaBlogs
+      (X) delete all BlogHeadings
+      (X) delete allMediaPosts
+      (X) delete all ChildPosts
+      (X) delete all ParentPosts
+      (X) delete all blogslikesusers
+      (X) then deleteBlog
+      perhaps write a beforeDestroy hook.
+      hashtag model
+      */
       var BlogId = data.id
+      return db.Blog.findById(BlogId)
+        .then(() => {
+          return db.MediaBlogs.destroy({where: {BlogId: BlogId}})
+        })
+        .then(() => {
+          return db.BlogHeading.destroy({where: {BlogId: BlogId}})
+        })
+        .then(() => {
+          return db.Post.findAll({where: {BlogId: BlogId}})
+            .then(foundPosts => {
+              // console.log('foundPosts. both parent/child', foundPosts)
+              // remove all mediaPosts join table rows
+              var deleteMediaPromiseArr = []
+              foundPosts.forEach(post => {
+                var PostId = post.id
+                var deleteMediaPromise = db.MediaPosts.destroy({where: {PostId: PostId}})
 
-      db.Blog.findById(BlogId)
-        .then(found => {
-          console.log('found', found)
+                deleteMediaPromiseArr.push(deleteMediaPromise)
+              })
+              return Promise.all(deleteMediaPromiseArr)
+                .then(() => {
+                  return foundPosts
+                })
+            })
+            .then(foundPosts => {
+              // delete childPosts first
+              var childPosts = foundPosts.filter(post => {
+                return post.ParentPostId
+              })
+              // console.log('childPosts', childPosts)
+
+              var deleteChildPostsPromiseArr = []
+
+              childPosts.forEach(post => {
+                var deletePromise = db.Post.destroy({where: {id: post.id}})
+                deleteChildPostsPromiseArr.push(deletePromise)
+              })
+
+              return Promise.all(deleteChildPostsPromiseArr)
+            })
+            .then(() => {
+              // delete all remaining parent posts
+              return db.Post.destroy({where: {BlogId: BlogId}})
+            })
+            .then(() => {
+              return db.BlogLikesUsers.destroy({where: {BlogId: BlogId}})
+            })
+            .then(() => {
+              return db.Blog.destroy({where: {id: BlogId}})
+            })
         })
     }
   }
