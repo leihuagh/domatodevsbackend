@@ -58,6 +58,82 @@ const Post = {
     findPost: (__, data) => {
       return db.Post.findById(data.id)
     }
+  },
+  Mutation: {
+    createPost: (__, data) => {
+      // console.log('data', data)
+      return db.Post.create({
+        BlogId: data.BlogId,
+        ParentPostId: data.ParentPostId,
+        loadSequence: data.loadSequence,
+        title: data.title || 'Default title',
+        contentOnly: true
+      })
+        .then(created => {
+          console.log('createdPost', created)
+          return created
+        })
+    },
+    updatePost: (__, data) => {
+      // console.log('data', data)
+      var updatesObj = {}
+      var fields = ['ParentPostId', 'LocationId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay']
+
+      fields.forEach(field => {
+        if (data[field]) {
+          updatesObj[field] = data[field]
+        }
+      })
+      // also check contentOnly, start boolean properties. falsy is also an update value
+      if (data.hasOwnProperty('start')) {
+        updatesObj.start = data.start
+      }
+      if (data.hasOwnProperty('contentOnly')) {
+        updatesObj.contentOnly = data.contentOnly
+      }
+
+      return db.Post.findById(data.id)
+        .then(foundPost => {
+          return foundPost.update(updatesObj)
+            .then(updatedPost => {
+              console.log('updatedPost', updatedPost)
+            })
+        })
+    },
+    deletePost: (__, data) => {
+      // should write beforeDestroy hook.
+      return db.Post.findById(data.id)
+        .then(foundPost => {
+          console.log('foundPost', foundPost)
+          // delete all parent mediaPosts
+          return db.MediaPosts.destroy({where: {PostId: foundPost.id}})
+            .then(() => {
+              return foundPost
+            })
+        })
+        .then(foundPost => {
+          // might not have children
+          return foundPost.getChildPosts()
+            .then(arr => {
+              console.log('arr', arr)
+
+              var deleteChildPostPromiseArr = []
+              arr.forEach(childPost => {
+                var deleteChildPostPromise = db.MediaPosts.destroy({where: {PostId: childPost.id}})
+                  .then(() => {
+                    db.Post.destroy({where: {id: childPost.id}})
+                  })
+                deleteChildPostPromiseArr.push(deleteChildPostPromise)
+              })
+
+              return Promise.all(deleteChildPostPromiseArr)
+            })
+        })
+        .then(() => {
+          // lastly actually delete the post
+          return db.Post.destroy({where: {id: data.id}})
+        })
+    }
   }
 }
 
