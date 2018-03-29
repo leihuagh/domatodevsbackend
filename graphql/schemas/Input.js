@@ -93,50 +93,55 @@ const Input = `
     removeAttachments: [ID]
   }
 
-  input createBlogContentInput {
-    isPost: Boolean,
-    Heading: createHeadingInput
-    ParentPost: createParentPostInput
-  }
-
-  input createHeadingInput {
-    loadSequence: Int
-    title: String
-  }
-
-  input createParentPostInput {
-    loadSequence: Int
-    contentOnly: Boolean
-    title: String
-    textContent: String
-    description: String
-    mediaContentArr: [mediumInput]
-    LocationId: ID
-    start: Boolean
-    startDay: Int
-    endDay: Int
-    eventType: String
-    childPostsArr: [createChildPostInput]
-  }
-
-  input createChildPostInput {
-    loadSequence: Int
-    contentOnly: Boolean
-    title: String
-    textContent: String
-    description: String
-    mediaContentArr: [mediumInput]
-    LocationId: ID
-    start: Boolean
-    startDay: Int
-    endDay: Int
-    eventType: String
-  }
-
-  input mediumInput {
-    MediumId: ID
-    loadSequence: Int
-    caption: String
-  }
 `
 module.exports = Input
+
+
+/*
+these are for creating blog with content all at one go. shelve for now.
+input createBlogContentInput {
+  isPost: Boolean,
+  Heading: createHeadingInput
+  ParentPost: createParentPostInput
+}
+
+input createHeadingInput {
+  loadSequence: Int
+  title: String
+}
+
+input createParentPostInput {
+  loadSequence: Int
+  contentOnly: Boolean
+  title: String
+  textContent: String
+  description: String
+  mediaContentArr: [mediumInput]
+  LocationId: ID
+  start: Boolean
+  startDay: Int
+  endDay: Int
+  eventType: String
+  childPostsArr: [createChildPostInput]
+}
+
+input createChildPostInput {
+  loadSequence: Int
+  contentOnly: Boolean
+  title: String
+  textContent: String
+  description: String
+  mediaContentArr: [mediumInput]
+  LocationId: ID
+  start: Boolean
+  startDay: Int
+  endDay: Int
+  eventType: String
+}
+
+input mediumInput {
+  MediumId: ID
+  loadSequence: Int
+  caption: String
+}
+*/

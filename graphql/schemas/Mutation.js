@@ -1,4 +1,4 @@
-const Mutation = `
+ const Mutation = `
   type Mutation {
     changingLoadSequence(input:[LoadSequence]): Boolean
 
@@ -78,12 +78,18 @@ const Mutation = `
 
     deleteAttachment(id: ID!): Boolean
 
-    createBlog(UserId: String!, title: String, textContent: String, mediaContentArr: [mediumInput], blogContentArr: [createBlogContentInput]): Blog
+    createBlog(UserId: ID!, title: String, textContent: String) : Blog
 
+    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, published: Boolean): Blog
+
+    deleteBlog(id: ID!): Boolean
 
     increaseBlogViews(id: ID!): Boolean
   }
 `
 module.exports = Mutation
 
+/* createBlog with all content in one go. shelve.
+createBlog(UserId: String!, title: String, textContent: String, mediaContentArr: [mediumInput], blogContentArr: [createBlogContentInput]): Blog
+*/
 // deleteBlog(BlogId: ID!): Boolean
