@@ -24,6 +24,8 @@ const Query = `
     findCountriesItineraries(CountryId: ID!, ItineraryId: ID!): CountriesItineraries
     permissions(UserId: ID!, ItineraryId: ID!): UsersItineraries
     findAttachment(id: ID!): Attachment
+    findMediaBlog(id: ID!): MediaBlogs
+    findMediaPost(id: ID!): MediaPosts
   }
 `
 module.exports = Query

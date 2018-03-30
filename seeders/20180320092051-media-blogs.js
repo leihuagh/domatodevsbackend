@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: function (queryInterface, Sequelize) {
     var seedArr = []
     seedArr.push({
       MediumId: 4,
@@ -24,7 +24,7 @@ module.exports = {
     return queryInterface.bulkInsert('MediaBlogs', seedArr, {})
   },
 
-  down: (queryInterface, Sequelize) => {
+  down: function (queryInterface, Sequelize) {
     return queryInterface.bulkDelete('MediaBlogs', null, {})
   }
 }

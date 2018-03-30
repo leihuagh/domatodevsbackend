@@ -24,9 +24,9 @@
     "lodash": "^4.17.4",
     "node-fetch": "^1.7.3",
     "nodemon": "^1.17.2",
-    "pg": "^7.3.0",
+    "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.13.5"
+    "sequelize": "^4.37.5"
   },
   "bin": {
     "dbbot": "./dbbot.js"

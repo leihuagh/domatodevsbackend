@@ -92,9 +92,17 @@
 
     deletePost(id: ID!): Boolean
 
-    addMediaToBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
+    createMediaBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
 
-    removeMediaFromBlog(id: ID!): Boolean
+    deleteMediaBlog(id: ID!): Boolean
+
+    updateMediaBlog(id:ID!, loadSequence: Int, caption: String): MediaBlogs
+
+    createMediaPost(PostId: ID!, MediumId: ID!, loadSequence: Int!, caption: String): MediaPosts
+
+    deleteMediaPost(id: ID!): Boolean
+
+    updateMediaPost(id: ID!, loadSequence: Int, caption: String): MediaPosts
   }
 `
 module.exports = Mutation
