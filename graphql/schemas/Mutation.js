@@ -92,6 +92,10 @@
 
     deletePost(id: ID!): Boolean
 
+    createMedium(url: String!, type: String!): Medium
+
+    deleteMedium(id: ID!): Boolean
+
     createMediaBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
 
     deleteMediaBlog(id: ID!): Boolean
@@ -103,6 +107,8 @@
     deleteMediaPost(id: ID!): Boolean
 
     updateMediaPost(id: ID!, loadSequence: Int, caption: String): MediaPosts
+
+    toggleBlogLikes(BlogId: ID!, UserId: ID!): Boolean
   }
 `
 module.exports = Mutation

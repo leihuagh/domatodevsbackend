@@ -108,6 +108,24 @@ const Blog = {
           return found.increment('views', {by: 1})
         })
     },
+    toggleBlogLikes: (__, data) => {
+      // if row doesnt exist, add join table row. else remove
+      return db.BlogLikesUsers.findOne({where: {BlogId: data.BlogId, UserId: data.UserId}})
+        .then(found => {
+          console.log('found', found)
+          if (found) {
+            return found.destroy() // will return true if success
+          } else {
+            return db.BlogLikesUsers.create({
+              BlogId: data.BlogId,
+              UserId: data.UserId
+            })
+              .then(created => {
+                return true
+              })
+          }
+        })
+    },
     createBlog: (__, data) => {
       return db.Blog.create({
         UserId: data.UserId,
@@ -151,7 +169,7 @@ const Blog = {
       (X) delete all blogslikesusers
       (X) then deleteBlog
       perhaps write a beforeDestroy hook.
-      hashtag model
+      add hashtag model
       */
       var BlogId = data.id
       return db.Blog.findById(BlogId)

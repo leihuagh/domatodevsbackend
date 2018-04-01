@@ -2,6 +2,13 @@ const db = require('../connectors')
 
 const Medium = {
   Query: {
+    findMedia: (__, data) => {
+      return db.Medium.findById(data.id)
+        .then(found => {
+          console.log('found', found)
+          return found
+        })
+    },
     findMediaBlog: (__, data) => {
       return db.MediaBlogs.findById(data.id)
         .then(found => {
@@ -18,6 +25,16 @@ const Medium = {
     }
   },
   Mutation: {
+    // these only create/delete medium row in our db. need to handle cloud upload/delete separately in frontend
+    createMedium: (__, data) => {
+      return db.Medium.create({
+        url: data.url,
+        type: data.type
+      })
+    },
+    deleteMedium: (__, data) => {
+      return db.Medium.destroy({where: {id: data.id}})
+    },
     createMediaBlog: (__, data) => {
       // console.log('data', data)
       return db.MediaBlogs.create({
