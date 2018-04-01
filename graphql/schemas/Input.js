@@ -93,6 +93,15 @@ const Input = `
     removeAttachments: [ID]
   }
 
+  input reorderMediaBlogInput {
+    id: ID!
+    loadSequence: Int!
+  }
+
+  input reorderMediaPostInput {
+    id: ID!
+    loadSequence: Int!
+  }
 `
 module.exports = Input
 

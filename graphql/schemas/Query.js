@@ -24,7 +24,7 @@ const Query = `
     findCountriesItineraries(CountryId: ID!, ItineraryId: ID!): CountriesItineraries
     permissions(UserId: ID!, ItineraryId: ID!): UsersItineraries
     findAttachment(id: ID!): Attachment
-    findMedia(id: ID!): Medium
+    findMedium(id: ID!): Medium
     findMediaBlog(id: ID!): MediaBlogs
     findMediaPost(id: ID!): MediaPosts
   }

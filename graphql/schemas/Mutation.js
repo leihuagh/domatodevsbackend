@@ -86,6 +86,12 @@
 
     increaseBlogViews(id: ID!): Boolean
 
+    createBlogHeading(BlogId: ID!, loadSequence: Int!, title: String!): BlogHeading
+
+    updateBlogHeading(id: ID!, loadSequence: Int, title: String): BlogHeading
+
+    deleteBlogHeading(id: ID!): Boolean
+
     createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
 
     updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, LocationId: Int, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
@@ -109,6 +115,10 @@
     updateMediaPost(id: ID!, loadSequence: Int, caption: String): MediaPosts
 
     toggleBlogLikes(BlogId: ID!, UserId: ID!): Boolean
+
+    reorderMediaBlog(input: [reorderMediaBlogInput]): Boolean
+
+    reorderMediaPost(input: [reorderMediaPostInput]): Boolean
   }
 `
 module.exports = Mutation

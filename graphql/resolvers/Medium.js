@@ -2,7 +2,7 @@ const db = require('../connectors')
 
 const Medium = {
   Query: {
-    findMedia: (__, data) => {
+    findMedium: (__, data) => {
       return db.Medium.findById(data.id)
         .then(found => {
           console.log('found', found)
@@ -35,6 +35,9 @@ const Medium = {
     deleteMedium: (__, data) => {
       return db.Medium.destroy({where: {id: data.id}})
     },
+
+    /* ----------------------------- */
+
     createMediaBlog: (__, data) => {
       // console.log('data', data)
       return db.MediaBlogs.create({
@@ -70,6 +73,27 @@ const Medium = {
           return found.update(updatesObj)
         })
     },
+    reorderMediaBlog: (__, data) => {
+      // console.log('data', data)
+      let arr = data.input
+      // console.log('arr', arr)
+      let promiseArr = []
+      arr.forEach(e => {
+        let updatePromise = db.MediaBlogs.findById(e.id)
+          .then(found => {
+            return found.update({loadSequence: e.loadSequence})
+          })
+        promiseArr.push(updatePromise)
+      })
+      return Promise.all(promiseArr)
+        .then(values => {
+          console.log('values', values)
+          return values
+        })
+    },
+
+    /* ----------------------------- */
+
     createMediaPost: (__, data) => {
       // console.log('data', data)
       return db.MediaPosts.create({
@@ -97,6 +121,22 @@ const Medium = {
       return db.MediaPosts.findById(data.id)
         .then(found => {
           return found.update(updatesObj)
+        })
+    },
+    reorderMediaPost: (__, data) => {
+      let arr = data.input
+      let promiseArr = []
+      arr.forEach(e => {
+        let updatePromise = db.MediaPosts.findById(e.id)
+          .then(found => {
+            return found.update({loadSequence: e.loadSequence})
+          })
+        promiseArr.push(updatePromise)
+      })
+      return Promise.all(promiseArr)
+        .then(values => {
+          console.log('values', values)
+          return values
         })
     }
   }
