@@ -94,7 +94,7 @@
 
     createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
 
-    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, LocationId: Int, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
+    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
 
     deletePost(id: ID!): Boolean
 

@@ -1,4 +1,5 @@
 const db = require('../connectors')
+const findOrCreateLocation = require('./helpers/findOrCreateLocation')
 
 const Post = {
   Post: {
@@ -76,27 +77,43 @@ const Post = {
     },
     updatePost: (__, data) => {
       // console.log('data', data)
-      var updatesObj = {}
-      var fields = ['ParentPostId', 'LocationId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay']
+      var temp = {}
+      var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay']
 
       fields.forEach(field => {
         if (data[field]) {
-          updatesObj[field] = data[field]
+          temp[field] = data[field]
         }
       })
       // also check contentOnly, start boolean properties. falsy is also an update value
       if (data.hasOwnProperty('start')) {
-        updatesObj.start = data.start
+        temp.start = data.start
       }
       if (data.hasOwnProperty('contentOnly')) {
-        updatesObj.contentOnly = data.contentOnly
+        temp.contentOnly = data.contentOnly
       }
 
-      return db.Post.findById(data.id)
-        .then(foundPost => {
-          return foundPost.update(updatesObj)
-            .then(updatedPost => {
-              console.log('updatedPost', updatedPost)
+      // find or create LocationId if data.googlePlaceData exists
+      let updatesObj
+      if (data.googlePlaceData) {
+        updatesObj = findOrCreateLocation(data.googlePlaceData)
+          .then(LocationId => {
+            temp.LocationId = LocationId
+            return temp
+          })
+      } else {
+        updatesObj = Promise.resolve(temp)
+      }
+
+      return updatesObj
+        .then(updatesObj => {
+          return db.Post.findById(data.id)
+            .then(foundPost => {
+              return foundPost.update(updatesObj)
+                .then(updated => {
+                  console.log('updated', updated)
+                  return updated
+                })
             })
         })
     },
