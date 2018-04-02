@@ -119,6 +119,8 @@
     reorderMediaBlog(input: [reorderMediaBlogInput]): Boolean
 
     reorderMediaPost(input: [reorderMediaPostInput]): Boolean
+
+    reorderBlogContent(input: [reorderBlogContentInput]): Boolean
   }
 `
 module.exports = Mutation

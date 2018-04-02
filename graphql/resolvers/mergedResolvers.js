@@ -20,6 +20,7 @@ const Blog = require('./Blog')
 const BlogHeading = require('./BlogHeading')
 const Post = require('./Post')
 const Medium = require('./Medium')
+const ReorderBlogContent = require('./ReorderBlogContent')
 
 // const resolverFiles = {}
 // fs.readdirSync('./graphql/resolvers').forEach(file => {
@@ -33,7 +34,7 @@ const Medium = require('./Medium')
 // })
 // console.log(resolverFiles)
 
-const resolvers = _.merge(User, Country, Location, Itinerary, Activity, FlightBooking, FlightInstance, Food, Lodging, LandTransport, SeaTransport, Train, LoadSequence, Attachment, DeleteMultipleEvents, Blog, BlogHeading, Post, Medium)
+const resolvers = _.merge(User, Country, Location, Itinerary, Activity, FlightBooking, FlightInstance, Food, Lodging, LandTransport, SeaTransport, Train, LoadSequence, Attachment, DeleteMultipleEvents, Blog, BlogHeading, Post, Medium, ReorderBlogContent)
 
 // const resolvers = _.merge(Object.keys(resolverFiles))
 module.exports = resolvers

@@ -102,6 +102,12 @@ const Input = `
     id: ID!
     loadSequence: Int!
   }
+
+  input reorderBlogContentInput {
+    type: String!
+    modelId: ID!
+    loadSequence: Int!
+  }
 `
 module.exports = Input
 
