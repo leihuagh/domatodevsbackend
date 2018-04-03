@@ -6,11 +6,7 @@
 
     onAuth0UserAuthentication(idToken: String!): User
 
-    createUser(name:String!,email:String!,CountryId:Int!,password:String!): User
-
-    updateUser(id:ID!,name:String, email:String, CountryId:Int,password:String, profilePic:String):User
-
-    deleteUser(id:ID!): Boolean
+    updateUserProfile(CountryId: ID, fullName: String, bio: String, profilePic: String): User
 
     createToken(email:String!, password:String!): String
 
