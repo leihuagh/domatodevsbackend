@@ -5,7 +5,9 @@ const User = `
     email: String
     username: String
     profilePic: String
-    country: Country!
+    bio: String
+    CountryId: ID
+    country: Country
     itineraries: [Itinerary]
   }
 `
