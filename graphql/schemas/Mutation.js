@@ -86,7 +86,7 @@
 
     increaseBlogViews(id: ID!): Boolean
 
-    createBlogHeading(BlogId: ID!, loadSequence: Int!, title: String!): BlogHeading
+    createBlogHeading(BlogId: ID!, loadSequence: Int!, title: String): BlogHeading
 
     updateBlogHeading(id: ID!, loadSequence: Int, title: String): BlogHeading
 
