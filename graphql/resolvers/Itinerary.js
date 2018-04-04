@@ -217,14 +217,6 @@ const Itinerary = {
     }
   },
   Mutation: {
-    testItineraryEndpoint: (__, data) => {
-      console.log('data', data)
-      var itinerary = db.Itinerary.findById(data.id)
-      return itinerary
-        .then(found => {
-          console.log(found)
-        })
-    },
     createItinerary: (__, data) => {
       var newItinerary = {}
       var UserId = data.UserId

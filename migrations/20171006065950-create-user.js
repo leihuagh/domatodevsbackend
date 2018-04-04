@@ -20,22 +20,21 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      // CountryId: {
-      //   type: Sequelize.INTEGER,
-      //   references: {
-      //     model: {
-      //       tableName: 'Countries'
-      //     },
-      //     key: 'id'
-      //   }
-      // },
       profilePic: {
         type: Sequelize.STRING
       },
-      // password: {
-      //   allowNull: false,
-      //   type: Sequelize.STRING
-      // },
+      CountryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Countries'
+          },
+          key: 'id'
+        }
+      },
+      bio: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

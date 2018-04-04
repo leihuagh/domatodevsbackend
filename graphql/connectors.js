@@ -44,7 +44,7 @@ Object.keys(db).forEach(function (modelName) {
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
-console.log('sequelize models', db.sequelize.models)
+// console.log('sequelize models', db.sequelize.models)
 sequelize
   .authenticate()
   .then(() => {

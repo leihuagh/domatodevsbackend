@@ -4,12 +4,13 @@ module.exports = function (sequelize, DataTypes) {
     fullName: DataTypes.STRING,
     username: DataTypes.STRING,
     email: DataTypes.STRING,
-    profilePic: DataTypes.STRING
-    // CountryId: DataTypes.INTEGER
+    profilePic: DataTypes.STRING,
+    CountryId: DataTypes.INTEGER,
+    bio: DataTypes.STRING
   })
 
   User.associate = function (models) {
-    // User.belongsTo(models.Country)
+    User.belongsTo(models.Country)
     User.belongsToMany(models.Itinerary, {through: 'UsersItineraries'})
     User.belongsToMany(models.Blog, {
       as: 'Likes',

@@ -117,6 +117,46 @@ const Post = {
             })
         })
     },
+    updateMultiplePosts: (__, data) => {
+      // console.log('arr of input objs', data.input)
+      // for each input obj, modify the post
+      let promiseArr = []
+      let inputArr = data.input
+      inputArr.forEach(obj => {
+        console.log('input obj', obj)
+        let updatesObj = {}
+        // check fields
+        let fields = ['ParentPostId', 'LocationId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType']
+
+        // for some reason Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
+        fields.forEach(field => {
+          if (field in obj) {
+            updatesObj[field] = obj[field]
+          }
+        })
+        if ('contentOnly' in obj) {
+          updatesObj.contentOnly = obj.contentOnly
+        }
+        if ('start' in obj) {
+          updatesObj.start = obj.start
+        }
+        // find Post, then update
+        let updatePromise = db.Post.findById(obj.id)
+          .then(foundPost => {
+            return foundPost.update(updatesObj)
+          })
+        promiseArr.push(updatePromise)
+      })
+      return Promise.all(promiseArr)
+        .then(values => {
+          console.log('values', values)
+          return true
+        })
+        .catch(err => {
+          console.log('err', err)
+          return false
+        })
+    },
     deletePost: (__, data) => {
       // should write beforeDestroy hook.
       return db.Post.findById(data.id)
