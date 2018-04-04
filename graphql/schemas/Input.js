@@ -93,6 +93,21 @@ const Input = `
     removeAttachments: [ID]
   }
 
+  input updateMultiplePostsInput {
+    id: ID!
+    ParentPostId: ID
+    LocationId: ID
+    loadSequence: Int
+    title: String
+    textContent: String
+    description: String
+    contentOnly: Boolean
+    start: Boolean
+    startDay: Int
+    endDay: Int
+    eventType: String
+  }
+
   input reorderMediaBlogInput {
     id: ID!
     loadSequence: Int!

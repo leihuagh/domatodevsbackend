@@ -1,4 +1,4 @@
- const Mutation = `
+const Mutation = `
   type Mutation {
     changingLoadSequence(input:[LoadSequence]): Boolean
 
@@ -7,10 +7,6 @@
     onAuth0UserAuthentication(idToken: String!): User
 
     updateUserProfile(CountryId: ID, fullName: String, bio: String, profilePic: String): User
-
-    createToken(email:String!, password:String!): String
-
-    testItineraryEndpoint(id: ID!): Itinerary
 
     createItinerary(UserId: Int!, CountryId: Int, name:String!, days: Int!, startDate:Int, description: String): Itinerary
 
@@ -91,6 +87,8 @@
     createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
 
     updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
+
+    updateMultiplePosts(input: [updateMultiplePostsInput]): Boolean
 
     deletePost(id: ID!): Boolean
 
