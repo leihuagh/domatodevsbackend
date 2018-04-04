@@ -16,6 +16,7 @@ module.exports = function (sequelize, DataTypes) {
       as: 'Likes',
       through: 'BlogLikesUsers'
     })
+    User.hasMany(models.Album)
   }
 
   return User
