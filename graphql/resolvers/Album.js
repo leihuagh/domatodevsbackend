@@ -43,11 +43,44 @@ const Album = {
         .then(found => {
           return found.update(updatesObj)
         })
+    },
+    deleteAlbum: (__, data) => {
+      let AlbumId = data.id
+      /*
+      (X) find all media rows in album to be deleted
+      (X) delete all join table rows for each media. MediaBlogs, MediaPosts
+      (X) delete media themselves
+      (X) finally delete album
+      ( ) KIV deleting join table rows will require a front-end reorder load sequence
+      */
+      return db.Medium.findAll({where: {AlbumId: AlbumId}})
+        .then(mediaArr => {
+          console.log('mediaArr', mediaArr)
+
+          let promiseArr = []
+          mediaArr.forEach(obj => {
+            // delete from MediaBlog, MediaPost
+            let MediaBlogPromise = db.MediaBlogs.destroy({where: {MediumId: obj.id}})
+            let MediaPostPromise = db.MediaPosts.destroy({where: {MediumId: obj.id}})
+
+            let deletePromise = Promise.all([MediaBlogPromise, MediaPostPromise])
+              .then(values => {
+                return true
+              })
+            promiseArr.push(deletePromise)
+          })
+
+          return Promise.all(promiseArr)
+        })
+        .then(() => {
+          // delete all media rows
+          return db.Medium.destroy({where: {AlbumId: AlbumId}})
+        })
+        .then(() => {
+          // delete the album
+          return db.Album.destroy({where: {id: AlbumId}})
+        })
     }
-    // deleteAlbum: (__, data) => {
-    //   // cascade and delete all media. if mediablog, or mediapost exist, delete those rows
-    //   // if join table rows r deleted, reorder remaining media load seq.
-    // }
   }
 }
 

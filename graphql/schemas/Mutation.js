@@ -96,6 +96,8 @@ const Mutation = `
 
     updateAlbum(id: ID!, title: String, description: String): Album
 
+    deleteAlbum(id: ID!): Boolean
+
     createMedium(url: String!, type: String!): Medium
 
     deleteMedium(id: ID!): Boolean
