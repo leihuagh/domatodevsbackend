@@ -20,12 +20,18 @@ const BlogHeading = {
     },
     updateBlogHeading: (__, data) => {
       var updatesObj = {}
-      if (data.loadSequence) {
-        updatesObj.loadSequence = data.loadSequence
-      }
-      if (data.title) {
-        updatesObj.title = data.title
-      }
+      let fields = ['loadSequence', 'title']
+      fields.forEach(field => {
+        if (field in data) {
+          updatesObj[field] = data[field]
+        }
+      })
+      // if (data.loadSequence) {
+      //   updatesObj.loadSequence = data.loadSequence
+      // }
+      // if (data.title) {
+      //   updatesObj.title = data.title
+      // }
       return db.BlogHeading.findById(data.id)
         .then(found => {
           return found.update(updatesObj)

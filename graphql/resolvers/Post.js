@@ -31,16 +31,16 @@ const Post = {
           let arr = []
           results.forEach(e => {
             const innerPromise = db.Medium.findById(e.id)
-             .then(medium => {
-               const obj = {...e,
-                 ...{
-                   type: medium.type,
-                   imageUrl: medium.imageUrl,
-                   youtubeUrl: medium.youtubeUrl,
-                 }
-               }
-               return obj
-             })
+              .then(medium => {
+                const obj = {...e,
+                  ...{
+                    type: medium.type,
+                    imageUrl: medium.imageUrl,
+                    youtubeUrl: medium.youtubeUrl
+                  }
+                }
+                return obj
+              })
             arr.push(innerPromise)
           })
           return Promise.all(arr)
@@ -132,7 +132,7 @@ const Post = {
         console.log('input obj', obj)
         let updatesObj = {}
         // check fields
-        let fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType']
+        let fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType', 'contentOnly', 'start']
 
         // Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
         fields.forEach(field => {
@@ -140,12 +140,12 @@ const Post = {
             updatesObj[field] = obj[field]
           }
         })
-        if ('contentOnly' in obj) {
-          updatesObj.contentOnly = obj.contentOnly
-        }
-        if ('start' in obj) {
-          updatesObj.start = obj.start
-        }
+        // if ('contentOnly' in obj) {
+        //   updatesObj.contentOnly = obj.contentOnly
+        // }
+        // if ('start' in obj) {
+        //   updatesObj.start = obj.start
+        // }
         // find Post, then update
         let updatePromise = db.Post.findById(obj.id)
           .then(foundPost => {

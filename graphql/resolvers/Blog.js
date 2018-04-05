@@ -145,9 +145,9 @@ const Blog = {
       // console.log('data', data)
       // updates only text, published boolean in the blog table
       var updatesObj = {}
-      var fields = ['title', 'textContent', 'pubished', 'ItineraryId']
+      var fields = ['title', 'textContent', 'published', 'ItineraryId']
       fields.forEach(field => {
-        if (data[field]) {
+        if (field in data) {
           updatesObj[field] = data[field]
         }
       })
