@@ -8,7 +8,7 @@ module.exports = {
     }
     var album2 = {
       UserId: 'auth0|5ab1dce98bd5067ff5786507',
-      title: 'Seeded album 2',
+      title: 'Seeded album 2 very very long name',
       description: 'mash potato hash potato'
     }
     let seedArr = [album1, album2]

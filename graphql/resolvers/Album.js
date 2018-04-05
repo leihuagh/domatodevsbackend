@@ -14,6 +14,7 @@ const Album = {
       return db.Album.findById(data.id)
     },
     getUserAlbums: (__, data, context) => {
+      console.log('context', context)
       return db.Album.findAll({where: {UserId: context.user}})
         .then(albumsArr => {
           console.log('all user albums', albumsArr)
@@ -24,10 +25,15 @@ const Album = {
   Mutation: {
     createAlbum: (__, data, context) => {
       // console.log('userId', context.user)
+      let dateNow = new Date()
+      // console.log('date', dateNow)
+      let dateString = dateNow.toUTCString().substring(5, 16)
+      // console.log('dateString', dateString)
+      // let dateString = (new Date()).toUTCString().substring(5, 17)
       return db.Album.create({
         // UserId: context.user,
         UserId: data.UserId,
-        title: data.title,
+        title: data.title || `New Album (${dateString})`,
         description: data.description
       })
     },
