@@ -1,8 +1,9 @@
 const MediaObject = `
   type MediaObject {
     id: ID
-    url: String
     type: String
+    imageUrl: String
+    youtubeUrl: String
     loadSequence: Int
     caption: String
   }

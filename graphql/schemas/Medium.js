@@ -1,8 +1,9 @@
 const Medium = `
   type Medium {
     id: ID!
-    url: String!
     type: String!
+    imageUrl: String
+    youtubeUrl: String
   }
   type MediaPosts {
     id: ID!

@@ -21,7 +21,10 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
-      url: {
+      imageUrl: {
+        type: Sequelize.TEXT
+      },
+      youtubeUrl: {
         type: Sequelize.TEXT
       },
       createdAt: {

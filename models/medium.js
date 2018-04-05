@@ -2,8 +2,9 @@
 module.exports = function (sequelize, DataTypes) {
   var Medium = sequelize.define('Medium', {
     AlbumId: DataTypes.INTEGER,
-    url: DataTypes.TEXT,
-    type: DataTypes.STRING
+    type: DataTypes.STRING, // 'Photo' or 'Youtube',
+    imageUrl: DataTypes.TEXT, // either photo url in storage, or youtube thumbnail
+    youtubeUrl: DataTypes.TEXT // full embed url
   })
 
   Medium.associate = function (models) {

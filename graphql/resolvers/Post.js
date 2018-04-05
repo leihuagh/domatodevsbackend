@@ -34,8 +34,9 @@ const Post = {
              .then(medium => {
                const obj = {...e,
                  ...{
-                   url: medium.url,
-                   type: medium.type
+                   type: medium.type,
+                   imageUrl: medium.imageUrl,
+                   youtubeUrl: medium.youtubeUrl,
                  }
                }
                return obj
@@ -128,7 +129,7 @@ const Post = {
         // check fields
         let fields = ['ParentPostId', 'LocationId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType']
 
-        // for some reason Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
+        // Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
         fields.forEach(field => {
           if (field in obj) {
             updatesObj[field] = obj[field]

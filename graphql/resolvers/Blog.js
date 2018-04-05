@@ -69,11 +69,13 @@ const Blog = {
           results.forEach(e => {
             const innerPromise = db.Medium.findById(e.id)
               .then(medium => {
+                // console.log('medium', medium)
                 const obj = {
                   ...e,
                   ...{
-                    url: medium.url,
-                    type: medium.type
+                    type: medium.type,
+                    imageUrl: medium.imageUrl,
+                    youtubeUrl: medium.youtubeUrl
                   }
                 }
                 return obj

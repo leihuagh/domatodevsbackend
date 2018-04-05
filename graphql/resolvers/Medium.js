@@ -28,8 +28,9 @@ const Medium = {
     // these only create/delete medium row in our db. need to handle cloud upload/delete separately in frontend
     createMedium: (__, data) => {
       return db.Medium.create({
-        url: data.url,
-        type: data.type
+        type: data.type,
+        imageUrl: data.imageUrl,
+        youtubeUrl: data.youtubeUrl
       })
     },
     deleteMedium: (__, data) => {
