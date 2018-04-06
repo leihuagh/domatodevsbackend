@@ -13,6 +13,8 @@ const Post = `
     start: Boolean
     startDay: Int
     endDay: Int
+    startTime: Int
+    endTime: Int
     blog: Blog
     location: Location
     childPosts: [Post]

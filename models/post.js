@@ -14,6 +14,8 @@ module.exports = function (sequelize, DataTypes) {
     start: DataTypes.BOOLEAN,
     startDay: DataTypes.INTEGER,
     endDay: DataTypes.INTEGER,
+    startTime: DataTypes.INTEGER,
+    endTime: DataTypes.INTEGER,
     eventType: DataTypes.STRING
   })
 

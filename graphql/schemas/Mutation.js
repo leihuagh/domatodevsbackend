@@ -72,7 +72,7 @@ const Mutation = `
 
     createBlog(UserId: ID!, title: String, textContent: String) : Blog
 
-    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, published: Boolean): Blog
+    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean): Blog
 
     deleteBlog(id: ID!): Boolean
 
@@ -86,7 +86,7 @@ const Mutation = `
 
     createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
 
-    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
+    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int, startTime: Int, endTime: Int): Post
 
     updateMultiplePosts(input: [updateMultiplePostsInput]): Boolean
 

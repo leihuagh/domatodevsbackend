@@ -41,6 +41,9 @@ module.exports = {
       shares: {
         type: Sequelize.INTEGER
       },
+      days: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE
