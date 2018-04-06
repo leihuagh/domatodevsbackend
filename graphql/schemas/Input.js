@@ -96,7 +96,6 @@ const Input = `
   input updateMultiplePostsInput {
     id: ID!
     ParentPostId: ID
-    LocationId: ID
     loadSequence: Int
     title: String
     textContent: String

@@ -9,10 +9,22 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      AlbumId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Albums'
+          },
+          key: 'id'
+        }
+      },
       type: {
         type: Sequelize.STRING
       },
-      url: {
+      imageUrl: {
+        type: Sequelize.TEXT
+      },
+      youtubeUrl: {
         type: Sequelize.TEXT
       },
       createdAt: {

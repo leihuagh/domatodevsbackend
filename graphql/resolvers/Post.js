@@ -31,15 +31,16 @@ const Post = {
           let arr = []
           results.forEach(e => {
             const innerPromise = db.Medium.findById(e.id)
-             .then(medium => {
-               const obj = {...e,
-                 ...{
-                   url: medium.url,
-                   type: medium.type
-                 }
-               }
-               return obj
-             })
+              .then(medium => {
+                const obj = {...e,
+                  ...{
+                    type: medium.type,
+                    imageUrl: medium.imageUrl,
+                    youtubeUrl: medium.youtubeUrl
+                  }
+                }
+                return obj
+              })
             arr.push(innerPromise)
           })
           return Promise.all(arr)
@@ -78,20 +79,21 @@ const Post = {
     updatePost: (__, data) => {
       // console.log('data', data)
       var temp = {}
-      var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay']
+      var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay', 'start', 'contentOnly']
 
+      // if key is passed, update value. might be empty string (delete field)
       fields.forEach(field => {
-        if (data[field]) {
+        if (field in data) {
           temp[field] = data[field]
         }
       })
       // also check contentOnly, start boolean properties. falsy is also an update value
-      if (data.hasOwnProperty('start')) {
-        temp.start = data.start
-      }
-      if (data.hasOwnProperty('contentOnly')) {
-        temp.contentOnly = data.contentOnly
-      }
+      // if (data.hasOwnProperty('start')) {
+      //   temp.start = data.start
+      // }
+      // if (data.hasOwnProperty('contentOnly')) {
+      //   temp.contentOnly = data.contentOnly
+      // }
 
       // find or create LocationId if data.googlePlaceData exists
       let updatesObj
@@ -101,6 +103,10 @@ const Post = {
             temp.LocationId = LocationId
             return temp
           })
+      } else if (('LocationId' in data) && !data.LocationId) {
+        // IF LOCATIONID PROPERTY IS PASSED WITH NULL VALUE DELETE LOCATIONID
+        temp.LocationId = null
+        updatesObj = Promise.resolve(temp)
       } else {
         updatesObj = Promise.resolve(temp)
       }
@@ -126,20 +132,20 @@ const Post = {
         console.log('input obj', obj)
         let updatesObj = {}
         // check fields
-        let fields = ['ParentPostId', 'LocationId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType']
+        let fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType', 'contentOnly', 'start']
 
-        // for some reason Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
+        // Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
         fields.forEach(field => {
           if (field in obj) {
             updatesObj[field] = obj[field]
           }
         })
-        if ('contentOnly' in obj) {
-          updatesObj.contentOnly = obj.contentOnly
-        }
-        if ('start' in obj) {
-          updatesObj.start = obj.start
-        }
+        // if ('contentOnly' in obj) {
+        //   updatesObj.contentOnly = obj.contentOnly
+        // }
+        // if ('start' in obj) {
+        //   updatesObj.start = obj.start
+        // }
         // find Post, then update
         let updatePromise = db.Post.findById(obj.id)
           .then(foundPost => {

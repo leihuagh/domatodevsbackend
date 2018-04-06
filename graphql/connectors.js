@@ -29,6 +29,7 @@ var db = {
   BlogHeading: sequelize.import('../models/blogheading'),
   Post: sequelize.import('../models/post'),
   BlogLikesUsers: sequelize.import('../models/bloglikesusers'),
+  Album: sequelize.import('../models/album'),
   Medium: sequelize.import('../models/medium'),
   MediaPosts: sequelize.import('../models/mediaposts'),
   MediaBlogs: sequelize.import('../models/mediablogs'),

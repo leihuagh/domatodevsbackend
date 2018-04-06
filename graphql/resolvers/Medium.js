@@ -28,8 +28,9 @@ const Medium = {
     // these only create/delete medium row in our db. need to handle cloud upload/delete separately in frontend
     createMedium: (__, data) => {
       return db.Medium.create({
-        url: data.url,
-        type: data.type
+        type: data.type,
+        imageUrl: data.imageUrl,
+        youtubeUrl: data.youtubeUrl
       })
     },
     deleteMedium: (__, data) => {
@@ -62,12 +63,18 @@ const Medium = {
       // console.log('data received', data)
       // join table row id
       var updatesObj = {}
-      if (data.loadSequence) {
-        updatesObj.loadSequence = data.loadSequence
-      }
-      if (data.caption) {
-        updatesObj.caption = data.caption
-      }
+      let fields = ['loadSequence', 'caption']
+      fields.forEach(field => {
+        if (field in data) {
+          updatesObj[field] = data[field]
+        }
+      })
+      // if (data.loadSequence) {
+      //   updatesObj.loadSequence = data.loadSequence
+      // }
+      // if (data.caption) {
+      //   updatesObj.caption = data.caption
+      // }
       return db.MediaBlogs.findById(data.id)
         .then(found => {
           return found.update(updatesObj)
@@ -112,12 +119,18 @@ const Medium = {
     },
     updateMediaPost: (__, data) => {
       var updatesObj = {}
-      if (data.loadSequence) {
-        updatesObj.loadSequence = data.loadSequence
-      }
-      if (data.caption) {
-        updatesObj.caption = data.caption
-      }
+      let fields = ['loadSequence', 'caption']
+      fields.forEach(field => {
+        if (field in data) {
+          updatesObj[field] = data[field]
+        }
+      })
+      // if (data.loadSequence) {
+      //   updatesObj.loadSequence = data.loadSequence
+      // }
+      // if (data.caption) {
+      //   updatesObj.caption = data.caption
+      // }
       return db.MediaPosts.findById(data.id)
         .then(found => {
           return found.update(updatesObj)

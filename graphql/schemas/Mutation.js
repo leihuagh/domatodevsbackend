@@ -86,13 +86,19 @@ const Mutation = `
 
     createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
 
-    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
+    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int): Post
 
     updateMultiplePosts(input: [updateMultiplePostsInput]): Boolean
 
     deletePost(id: ID!): Boolean
 
-    createMedium(url: String!, type: String!): Medium
+    createAlbum(UserId: ID!, title: String, description: String): Album
+
+    updateAlbum(id: ID!, title: String, description: String): Album
+
+    deleteAlbum(id: ID!): Boolean
+
+    createMedium(type: String!, imageUrl: String, youtubeUrl: String): Medium
 
     deleteMedium(id: ID!): Boolean
 
