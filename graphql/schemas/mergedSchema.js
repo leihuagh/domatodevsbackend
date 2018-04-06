@@ -36,8 +36,9 @@ const BlogPage = require('./BlogPage')
 const Album = require('./Album')
 const Medium = require('./Medium')
 const MediaObject = require('./MediaObject')
+const Hashtag = require('./Hashtag')
 
 module.exports = makeExecutableSchema({
-  typeDefs: [SchemaDefinition, Query, Mutation, Country, User, Itinerary, Location, Activity, Lodging, FlightBooking, FlightInstance, FlightEvent, Food, LandTransport, SeaTransport, Train, Input, Attachment, Event, Blog, BlogHeading, Post, BlogPage, Album, Medium, MediaObject],
+  typeDefs: [SchemaDefinition, Query, Mutation, Country, User, Itinerary, Location, Activity, Lodging, FlightBooking, FlightInstance, FlightEvent, Food, LandTransport, SeaTransport, Train, Input, Attachment, Event, Blog, BlogHeading, Post, BlogPage, Album, Medium, MediaObject, Hashtag],
   resolvers: mergedResolvers
 })

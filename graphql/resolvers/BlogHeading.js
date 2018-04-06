@@ -11,7 +11,7 @@ const BlogHeading = {
       return db.BlogHeading.create({
         BlogId: data.BlogId,
         loadSequence: data.loadSequence,
-        title: data.title
+        title: data.title || 'Default title'
       })
         .then(created => {
           console.log('created', created)

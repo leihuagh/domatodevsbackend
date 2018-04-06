@@ -9,11 +9,13 @@ const Blog = `
     user: User
     views: Int
     shares: Int
+    days: Int
     likes: [User]
     headings: [BlogHeading]
     posts: [Post]
     pages: [BlogPage]
     media: [MediaObject]
+    hashtag: [Hashtag]
     createdAt: String
   }
 

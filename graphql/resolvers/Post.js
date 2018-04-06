@@ -79,7 +79,7 @@ const Post = {
     updatePost: (__, data) => {
       // console.log('data', data)
       var temp = {}
-      var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay', 'start', 'contentOnly']
+      var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay', 'startTime', 'endTime', 'start', 'contentOnly']
 
       // if key is passed, update value. might be empty string (delete field)
       fields.forEach(field => {
