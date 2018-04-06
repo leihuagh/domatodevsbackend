@@ -33,8 +33,14 @@ module.exports = {
       type: 'Photo',
       imageUrl: 'https://images.pexels.com/photos/210243/pexels-photo-210243.jpeg?w=940&h=650&auto=compress&cs=tinysrgb'
     }
-
+    let video1 = {
+      AlbumId: 1,
+      type: 'Youtube',
+      imageUrl: 'http://img.youtube.com/vi/VPLK-juhDSM/0.jpg',
+      youtubeUrl: 'https://www.youtube.com/embed/VPLK-juhDSM'
+    }
     seedArr = [
+      video1,
       medium1, medium2, medium3, medium4, medium5, medium6,
       medium1, medium2, medium3, medium4, medium5, medium6,
       medium1, medium2, medium3, medium4, medium5, medium6,
