@@ -19,6 +19,7 @@ const Post = `
     location: Location
     childPosts: [Post]
     media: [MediaObject]
+    hashtags: [Hashtag]
   }
 `
 module.exports = Post

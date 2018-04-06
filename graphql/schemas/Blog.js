@@ -15,6 +15,7 @@ const Blog = `
     posts: [Post]
     pages: [BlogPage]
     media: [MediaObject]
+    hashtag: [Hashtag]
     createdAt: String
   }
 
