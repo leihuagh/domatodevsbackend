@@ -6,6 +6,9 @@ const Post = {
     blog (post) {
       return post.getBlog()
     },
+    hashtags (post) {
+      return post.getHashtags()
+    },
     childPosts (post) {
       return post.getChildPosts()
     },
