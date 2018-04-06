@@ -9,6 +9,7 @@ const Blog = `
     user: User
     views: Int
     shares: Int
+    days: Int
     likes: [User]
     headings: [BlogHeading]
     posts: [Post]
