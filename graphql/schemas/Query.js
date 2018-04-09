@@ -30,6 +30,7 @@ const Query = `
     findMediaBlog(id: ID!): MediaBlogs
     findMediaPost(id: ID!): MediaPosts
     findHashtag(id: ID!): Hashtag
+    getAllHashtags: [Hashtag]
   }
 `
 module.exports = Query

@@ -22,6 +22,9 @@ const Hashtag = {
     }
   },
   Query: {
+    getAllHashtags: () => {
+      return db.Hashtag.findAll()
+    },
     findHashtag: (__, data) => {
       return db.Hashtag.findById(data.id)
     }

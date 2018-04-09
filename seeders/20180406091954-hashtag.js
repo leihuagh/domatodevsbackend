@@ -1,4 +1,5 @@
 'use strict'
+const faker = require('faker')
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -12,6 +13,13 @@ module.exports = {
     seedArr.push({
       name: '2018'
     })
+    // faker.seed(123)
+    // let counter = 0
+    // while (counter < 10000) {
+    //   // let faked = faker.fake('{{address.cityPrefix}}{{address.citySuffix}}{{address.streetSuffix}}{{commerce.department}}{{commerce.productAdjective}}{{commerce.productAdjective}}{{commerce.productAdjective}}{{commerce.productMaterial}}{{commerce.productMaterial}}{{address.county}}')
+    //   seedArr.push({name: faker.random.uuid()})
+    //   counter++
+    // }
     return queryInterface.bulkInsert('Hashtags', seedArr, {})
   },
 
