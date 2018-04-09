@@ -121,6 +121,14 @@ const Mutation = `
     reorderMediaPost(input: [reorderMediaPostInput]): Boolean
 
     reorderBlogContent(input: [reorderBlogContentInput]): Boolean
+
+    createHashtagBlog(BlogId: ID!, name: String!): HashtagsBlogs
+
+    deleteHashtagBlog(id: ID!): Boolean
+
+    createHashtagPost(PostId: ID!, name: String!): HashtagsPosts
+
+    deleteHashtagPost(id: ID!): Boolean
   }
 `
 module.exports = Mutation

@@ -33,7 +33,9 @@ var db = {
   Medium: sequelize.import('../models/medium'),
   MediaPosts: sequelize.import('../models/mediaposts'),
   MediaBlogs: sequelize.import('../models/mediablogs'),
-  Hashtag: sequelize.import('../models/hashtag')
+  Hashtag: sequelize.import('../models/hashtag'),
+  HashtagsBlogs: sequelize.import('../models/hashtagsblogs'),
+  HashtagsPosts: sequelize.import('../models/hashtagsposts')
 }
 
 Object.keys(db).forEach(function (modelName) {
