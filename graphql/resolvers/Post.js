@@ -146,6 +146,7 @@ const Post = {
           hashtagsToAddToPost.forEach(string => {
             let createPromise = findOrCreateHashtag(string)
               .then(id => {
+                console.log('returning id from helper', id)
                 return db.HashtagsPosts.create({
                   PostId: data.id,
                   HashtagId: id

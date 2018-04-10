@@ -37,7 +37,16 @@ module.exports = {
       updatedAt: new Date()
     }
 
-    return queryInterface.bulkInsert('Users', [user1, user2, user3], {})
+    var user4 = {
+      id: 'auth0|5ab4723ded63ab65463ddb7f',
+      fullName: 'rebeccatay92@gmail.com',
+      username: 'rebeccatay92',
+      email: 'rebeccatay92@gmail.com',
+      profilePic: 'https://s.gravatar.com/avatar/ad0ef8b709db70ebecb19fbb39588616?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fre.png',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    return queryInterface.bulkInsert('Users', [user1, user2, user3, user4], {})
   },
 
   down: function (queryInterface, Sequelize) {
