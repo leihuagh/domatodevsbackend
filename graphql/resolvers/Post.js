@@ -1,5 +1,7 @@
 const db = require('../connectors')
+const _ = require('lodash')
 const findOrCreateLocation = require('./helpers/findOrCreateLocation')
+const findOrCreateHashtag = require('./helpers/findOrCreateHashtag')
 
 const Post = {
   Post: {
@@ -90,13 +92,6 @@ const Post = {
           temp[field] = data[field]
         }
       })
-      // also check contentOnly, start boolean properties. falsy is also an update value
-      // if (data.hasOwnProperty('start')) {
-      //   temp.start = data.start
-      // }
-      // if (data.hasOwnProperty('contentOnly')) {
-      //   temp.contentOnly = data.contentOnly
-      // }
 
       // find or create LocationId if data.googlePlaceData exists
       let updatesObj
@@ -114,14 +109,63 @@ const Post = {
         updatesObj = Promise.resolve(temp)
       }
 
-      return updatesObj
-        .then(updatesObj => {
-          return db.Post.findById(data.id)
-            .then(foundPost => {
-              return foundPost.update(updatesObj)
-                .then(updated => {
-                  console.log('updated', updated)
-                  return updated
+      // compare incoming hashtags arr with preexisting hashtags
+      let incomingHashtags = data.hashtags
+      let currentHashtags = db.HashtagsPosts.findAll({where: {PostId: data.id}})
+        .then(joinTableArr => {
+          let hashtagArr = []
+          joinTableArr.forEach(row => {
+            let string = db.Hashtag.findById(row.HashtagId)
+              .then(foundHashtag => {
+                return foundHashtag.name
+              })
+            hashtagArr.push(string)
+          })
+          return Promise.all(hashtagArr)
+        })
+
+      return currentHashtags
+        .then(currentHashtags => {
+          let hashtagPromiseArr = []
+
+          let hashtagsToRemoveFromPost = _.difference(currentHashtags, incomingHashtags)
+
+          hashtagsToRemoveFromPost.forEach(string => {
+            let deletePromise = db.Hashtag.find({where: {name: string}})
+              .then(found => {
+                return db.HashtagsPosts.destroy({where: {
+                  PostId: data.id,
+                  HashtagId: found.id
+                }})
+              })
+            hashtagPromiseArr.push(deletePromise)
+          })
+
+          let hashtagsToAddToPost = _.difference(incomingHashtags, currentHashtags)
+
+          hashtagsToAddToPost.forEach(string => {
+            let createPromise = findOrCreateHashtag(string)
+              .then(id => {
+                return db.HashtagsPosts.create({
+                  PostId: data.id,
+                  HashtagId: id
+                })
+              })
+            hashtagPromiseArr.push(createPromise)
+          })
+
+          return Promise.all(hashtagPromiseArr)
+            .then(() => {
+              return updatesObj
+            })
+            .then(updatesObj => {
+              return db.Post.findById(data.id)
+                .then(foundPost => {
+                  return foundPost.update(updatesObj)
+                    .then(updated => {
+                      console.log('updated', updated)
+                      return updated
+                    })
                 })
             })
         })
@@ -168,11 +212,25 @@ const Post = {
     },
     deletePost: (__, data) => {
       // should write beforeDestroy hook.
+      /*
+      (X) delete parentPost-Media join table rows
+      (X) delete parentPost-Hashtag join table rows
+      (X) delete childPost-Media join table rows
+      (X) delete childPost-Hashtag join table rows
+      (X) delete childPosts
+      (X) delete parent post
+      */
       return db.Post.findById(data.id)
         .then(foundPost => {
           console.log('foundPost', foundPost)
           // delete all parent mediaPosts
           return db.MediaPosts.destroy({where: {PostId: foundPost.id}})
+            .then(() => {
+              return foundPost
+            })
+        })
+        .then(foundPost => {
+          return db.HashtagsPosts.destroy({where: {PostId: foundPost.id}})
             .then(() => {
               return foundPost
             })
@@ -185,10 +243,20 @@ const Post = {
 
               var deleteChildPostPromiseArr = []
               arr.forEach(childPost => {
-                var deleteChildPostPromise = db.MediaPosts.destroy({where: {PostId: childPost.id}})
+
+                // delete both childPostMedia and childPostHashtag first
+                let deleteMediaPost = db.MediaPosts.destroy({where: {PostId: childPost.id}})
+                let deleteHashtagPost = db.HashtagsPosts.destroy({where: {PostId: childPost.id}})
+
+                let deleteChildPostPromise = Promise.all([deleteMediaPost, deleteHashtagPost])
                   .then(() => {
-                    db.Post.destroy({where: {id: childPost.id}})
+                    return db.Post.destroy({where: {id: childPost.id}})
                   })
+
+                // var deleteChildPostPromise = db.MediaPosts.destroy({where: {PostId: childPost.id}})
+                //   .then(() => {
+                //     db.Post.destroy({where: {id: childPost.id}})
+                //   })
                 deleteChildPostPromiseArr.push(deleteChildPostPromise)
               })
 
