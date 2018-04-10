@@ -1,4 +1,6 @@
 const db = require('../connectors')
+const _ = require('lodash')
+const findOrCreateHashtag = require('./helpers/findOrCreateHashtag')
 
 const Blog = {
   Blog: {
@@ -146,7 +148,6 @@ const Blog = {
     },
     updateBlog: (__, data) => {
       // console.log('data', data)
-      // updates only text, published boolean in the blog table
       var updatesObj = {}
       var fields = ['title', 'textContent', 'published', 'ItineraryId', 'days']
       fields.forEach(field => {
@@ -157,29 +158,87 @@ const Blog = {
       // console.log('updatesObj', updatesObj)
       var foundBlog = db.Blog.findById(data.id)
 
-      return foundBlog
-        .then(found => {
-          // console.log('found', found)
-          return found.update(updatesObj)
+      // check hashtags arr against HashtagsBlogs. remove if not in arr, add if new
+      let incomingHashtags = data.hashtags
+      // console.log('incomingHashtags', incomingHashtags)
+
+      let currentHashtags = db.HashtagsBlogs.findAll({where: {BlogId: data.id}})
+        .then(joinTableArr => {
+          let hashtagArr = []
+          joinTableArr.forEach(row => {
+            let string = db.Hashtag.findById(row.HashtagId)
+              .then(foundHashtag => {
+                return foundHashtag.name
+              })
+            hashtagArr.push(string)
+          })
+          return Promise.all(hashtagArr)
+        })
+
+      return currentHashtags
+        .then(currentHashtags => {
+          // if hashtag is in current but not in incoming, delete jointable row
+          // console.log('currentHashtags', currentHashtags, 'incoming tags', incomingHashtags)
+
+          let hashtagPromiseArr = []
+
+          let hashtagsToRemoveFromBlog = _.difference(currentHashtags, incomingHashtags)
+          // console.log('to remove', hashtagsToRemoveFromBlog)
+          hashtagsToRemoveFromBlog.forEach(string => {
+            let deletePromise = db.Hashtag.find({where: {name: string}})
+              .then(found => {
+                return db.HashtagsBlogs.destroy({where: {
+                  BlogId: data.id,
+                  HashtagId: found.id
+                }})
+              })
+            hashtagPromiseArr.push(deletePromise)
+          })
+          // if hashtag is in incoming but not in current, create new hashtag / jointable row
+          let hashtagsToAddToBlog = _.difference(incomingHashtags, currentHashtags)
+          // console.log('hashtags to add', hashtagsToAddToBlog)
+          hashtagsToAddToBlog.forEach(string => {
+            let createPromise = findOrCreateHashtag(string)
+              .then(id => {
+                return db.HashtagsBlogs.create({
+                  BlogId: data.id,
+                  HashtagId: id
+                })
+              })
+            hashtagPromiseArr.push(createPromise)
+          })
+
+          return Promise.all(hashtagPromiseArr)
+            .then(() => {
+              return foundBlog
+                .then(found => {
+                  // console.log('found', found)
+                  return found.update(updatesObj)
+                })
+            })
         })
     },
     deleteBlog: (__, data) => {
       // DELETE EVERYTHING TO DO WITH BLOG
       /*
+      perhaps write a beforeDestroy hook.
       (X) delete all MediaBlogs
+      (X) delete all HashtagsBlogs
       (X) delete all BlogHeadings
-      (X) delete allMediaPosts
+      (X) delete all MediaPosts
+      (X) delete all HashtagsPosts
       (X) delete all ChildPosts
       (X) delete all ParentPosts
       (X) delete all blogslikesusers
       (X) then deleteBlog
-      perhaps write a beforeDestroy hook.
-      add hashtag model
       */
       var BlogId = data.id
       return db.Blog.findById(BlogId)
         .then(() => {
           return db.MediaBlogs.destroy({where: {BlogId: BlogId}})
+        })
+        .then(() => {
+          return db.HashtagsBlogs.destroy({where: {BlogId: BlogId}})
         })
         .then(() => {
           return db.BlogHeading.destroy({where: {BlogId: BlogId}})
@@ -197,6 +256,18 @@ const Blog = {
                 deleteMediaPromiseArr.push(deleteMediaPromise)
               })
               return Promise.all(deleteMediaPromiseArr)
+                .then(() => {
+                  return foundPosts
+                })
+            })
+            .then(foundPosts => {
+              let deleteHashtagsPromiseArr = []
+              foundPosts.forEach(post => {
+                let PostId = post.id
+                let deleteHashtagPostPromise = db.HashtagsPosts.destroy({where: {PostId: PostId}})
+                deleteHashtagsPromiseArr.push(deleteHashtagPostPromise)
+              })
+              return Promise.all(deleteHashtagsPromiseArr)
                 .then(() => {
                   return foundPosts
                 })

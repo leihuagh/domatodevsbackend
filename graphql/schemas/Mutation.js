@@ -72,7 +72,7 @@ const Mutation = `
 
     createBlog(UserId: ID!, title: String, textContent: String) : Blog
 
-    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean): Blog
+    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean, hashtags:[String]): Blog
 
     deleteBlog(id: ID!): Boolean
 
