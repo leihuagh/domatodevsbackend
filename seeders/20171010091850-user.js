@@ -12,7 +12,7 @@ module.exports = {
       email: 'domatodevs@gmail.com',
       profilePic: 'https://s.gravatar.com/avatar/51e8e59034a4c4e3cc4ae0256c196739?s=480&r=pg&d=https%3A%2F%2Fcdn.auth0.com%2Favatars%2Fdo.png',
       CountryId: 200,
-      bio: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget lorem non odio ornare elementum. Proin ac odio quis massa molestie hendrerit. Curabitur nisi nulla, congue et tempor et, fermentum quis dui.`,
+      bio: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget lorem non odio ornar.`,
       createdAt: new Date(),
       updatedAt: new Date()
     }
