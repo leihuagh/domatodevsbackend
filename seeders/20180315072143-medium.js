@@ -40,14 +40,14 @@ module.exports = {
       youtubeUrl: 'https://www.youtube.com/embed/VPLK-juhDSM'
     }
     seedArr = [
-      video1,
       medium1, medium2, medium3, medium4, medium5, medium6,
-      medium1, medium2, medium3, medium4, medium5, medium6,
-      medium1, medium2, medium3, medium4, medium5, medium6,
-      medium1, medium2, medium3, medium4, medium5, medium6,
-      medium1, medium2, medium3, medium4, medium5, medium6,
-      medium1, medium2, medium3, medium4, medium5, medium6,
-      medium1, medium2, medium3, medium4, medium5, medium6
+      video1
+      // medium1, medium2, medium3, medium4, medium5, medium6,
+      // medium1, medium2, medium3, medium4, medium5, medium6,
+      // medium1, medium2, medium3, medium4, medium5, medium6,
+      // medium1, medium2, medium3, medium4, medium5, medium6,
+      // medium1, medium2, medium3, medium4, medium5, medium6,
+      // medium1, medium2, medium3, medium4, medium5, medium6
     ]
     return queryInterface.bulkInsert('Media', seedArr, {})
   },

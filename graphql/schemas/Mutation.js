@@ -86,7 +86,7 @@ const Mutation = `
 
     createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
 
-    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int, startTime: Int, endTime: Int, hashtags: [String]!): Post
+    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int, startTime: Int, endTime: Int, hashtags: [String]!, media: [updatePostMediaInput]!): Post
 
     updateMultiplePosts(input: [updateMultiplePostsInput]): Boolean
 

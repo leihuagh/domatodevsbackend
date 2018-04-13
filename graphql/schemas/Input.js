@@ -122,9 +122,15 @@ const Input = `
     modelId: ID!
     loadSequence: Int!
   }
-`
-module.exports = Input
 
+  input updatePostMediaInput {
+    MediumId: ID!
+    loadSequence: Int
+    caption: String
+  }
+`
+
+module.exports = Input
 
 /*
 these are for creating blog with content all at one go. shelve for now.
