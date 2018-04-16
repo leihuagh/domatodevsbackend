@@ -15,6 +15,10 @@ module.exports = {
       PostId: 1,
       HashtagId: 3
     })
+    seedArr.push({
+      PostId: 1,
+      HashtagId: 4
+    })
     return queryInterface.bulkInsert('HashtagsPosts', seedArr, {})
   },
 

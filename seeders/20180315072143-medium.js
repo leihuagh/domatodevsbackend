@@ -36,8 +36,8 @@ module.exports = {
     let video1 = {
       AlbumId: 1,
       type: 'Youtube',
-      imageUrl: 'http://img.youtube.com/vi/VPLK-juhDSM/0.jpg',
-      youtubeUrl: 'https://www.youtube.com/embed/VPLK-juhDSM'
+      imageUrl: 'http://img.youtube.com/vi/65ks-4I7BBQ/0.jpg',
+      youtubeUrl: 'https://www.youtube.com/embed/65ks-4I7BBQ'
     }
     seedArr = [
       video1,

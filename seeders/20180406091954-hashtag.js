@@ -13,6 +13,9 @@ module.exports = {
     seedArr.push({
       name: '2018'
     })
+    seedArr.push({
+      name: 'Foodie'
+    })
     // faker.seed(123)
     // let counter = 0
     // while (counter < 10000) {
