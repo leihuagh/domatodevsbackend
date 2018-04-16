@@ -9,6 +9,7 @@ const User = `
     CountryId: ID
     country: Country
     itineraries: [Itinerary]
+    albums: [Album]
   }
 `
 module.exports = User

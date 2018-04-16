@@ -8,6 +8,9 @@ const User = {
     },
     itineraries (user) {
       return user.getItineraries()
+    },
+    albums (user) {
+      return user.getAlbums()
     }
   },
   Query: {

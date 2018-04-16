@@ -1,6 +1,11 @@
 const db = require('../connectors')
 
 const Medium = {
+  Medium: {
+    album (medium) {
+      return medium.getAlbum()
+    }
+  },
   Query: {
     findMedium: (__, data) => {
       return db.Medium.findById(data.id)

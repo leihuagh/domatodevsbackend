@@ -21,9 +21,9 @@ module.exports = {
       type: {
         type: Sequelize.STRING
       },
-      // objectName: {
-      //   type: Sequelize.STRING
-      // },
+      objectName: {
+        type: Sequelize.STRING
+      },
       imageUrl: {
         type: Sequelize.TEXT
       },
