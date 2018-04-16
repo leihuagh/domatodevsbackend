@@ -128,6 +128,13 @@ const Input = `
     loadSequence: Int
     caption: String
   }
+
+  input createMediaInput {
+    type: String!
+    objectName: String
+    imageUrl: String
+    youtubeUrl: String
+  }
 `
 
 module.exports = Input

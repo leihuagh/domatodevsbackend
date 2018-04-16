@@ -30,13 +30,33 @@ const Medium = {
     }
   },
   Mutation: {
-    // these only create/delete medium row in our db. need to handle cloud upload/delete separately in frontend
-    createMedium: (__, data) => {
-      return db.Medium.create({
-        type: data.type,
-        imageUrl: data.imageUrl,
-        youtubeUrl: data.youtubeUrl
+    // frontend will pass an arr of medium to create. might be photo or video
+    // createMedium: (__, data) => {
+    //   return db.Medium.create({
+    //     type: data.type,
+    //     imageUrl: data.imageUrl,
+    //     youtubeUrl: data.youtubeUrl
+    //   })
+    // },
+    // type is either Photo or Youtube
+    createMedia: (__, data) => {
+      let mediaInputArr = data.media
+      let promiseArr = []
+      mediaInputArr.forEach(input => {
+        let createPromise = db.Medium.create({
+          AlbumId: data.AlbumId,
+          type: input.type,
+          objectName: input.objectName,
+          imageUrl: input.imageUrl,
+          youtubeUrl: input.youtubeUrl
+        })
+        promiseArr.push(createPromise)
       })
+      return Promise.all(promiseArr)
+        .then(values => {
+          console.log('values', values)
+          return true
+        })
     },
     deleteMedium: (__, data) => {
       return db.Medium.destroy({where: {id: data.id}})
