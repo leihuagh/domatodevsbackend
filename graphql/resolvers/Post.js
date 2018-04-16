@@ -109,8 +109,8 @@ const Post = {
         updatesObj = Promise.resolve(temp)
       }
 
-      // compare incoming hashtags arr with preexisting hashtags
       let incomingHashtags = data.hashtags
+      // currentHashtags is [name: String]
       let currentHashtags = db.HashtagsPosts.findAll({where: {PostId: data.id}})
         .then(joinTableArr => {
           let hashtagArr = []
@@ -124,8 +124,20 @@ const Post = {
           return Promise.all(hashtagArr)
         })
 
+      let incomingMediaArr = data.media
+      console.log('incomingMediaArr', incomingMediaArr)
+      let currentMediaArr = db.MediaPosts.findAll({where: {PostId: data.id}})
+        .then(joinTableRows => {
+          // need to extract out the arr of objects from sequelize obj arr
+          let scrubbedArr = joinTableRows.map(e => {
+            return e.dataValues
+          })
+          return scrubbedArr
+        })
+
       return currentHashtags
         .then(currentHashtags => {
+          // compare incoming hashtags arr with preexisting hashtags
           let hashtagPromiseArr = []
 
           let hashtagsToRemoveFromPost = _.difference(currentHashtags, incomingHashtags)
@@ -146,6 +158,7 @@ const Post = {
           hashtagsToAddToPost.forEach(string => {
             let createPromise = findOrCreateHashtag(string)
               .then(id => {
+                console.log('returning id from helper', id)
                 return db.HashtagsPosts.create({
                   PostId: data.id,
                   HashtagId: id
@@ -155,17 +168,78 @@ const Post = {
           })
 
           return Promise.all(hashtagPromiseArr)
-            .then(() => {
-              return updatesObj
-            })
-            .then(updatesObj => {
-              return db.Post.findById(data.id)
-                .then(foundPost => {
-                  return foundPost.update(updatesObj)
-                    .then(updated => {
-                      console.log('updated', updated)
-                      return updated
+        })
+        .then(() => {
+          currentMediaArr
+            .then(currentMediaArr => {
+              // console.log('currentMediaArr', currentMediaArr)
+              let mediaPostPromiseArr = []
+              /*
+              ( ) find mediaposts to delete. MediumId in current, but not in incoming
+              ( ) find mediaposts to add. MediumId in incoming, but not in present
+              ( ) update mediaPosts for those present in both arrays. find intersect by MediumId
+              */
+              // use loose equals. sequelize MediumId is int, but apollo may pass type ID as int, or numeric string
+              let mediaToRemoveFromPost = _.differenceWith(currentMediaArr, incomingMediaArr, function (arrVal, otherVal) {
+                return arrVal.MediumId == otherVal.MediumId
+              })
+              console.log('mediaToRemoveFromPost', mediaToRemoveFromPost)
+
+              let mediaToAddToPost = _.differenceWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+                return arrVal.MediumId == otherVal.MediumId
+              })
+              console.log('mediaToAddToPost', mediaToAddToPost)
+
+              // media to update are the objs in the incoming arr which match the MediumId of currentArr.
+              let mediaToUpdate = _.intersectionWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+                return arrVal.MediumId == otherVal.MediumId
+              })
+              console.log('mediaToUpdate', mediaToUpdate)
+
+              mediaToRemoveFromPost.forEach(row => {
+                let removePromise = db.MediaPosts.destroy({where: {
+                  PostId: data.id,
+                  MediumId: row.MediumId
+                }})
+                mediaPostPromiseArr.push(removePromise)
+              })
+              mediaToAddToPost.forEach(row => {
+                let addPromise = db.MediaPosts.create({
+                  PostId: data.id,
+                  MediumId: row.MediumId,
+                  loadSequence: row.loadSequence,
+                  caption: row.caption
+                })
+                mediaPostPromiseArr.push(addPromise)
+              })
+              mediaToUpdate.forEach(row => {
+                let updatePromise = db.MediaPosts.find({where: {MediumId: row.MediumId}})
+                  .then(found => {
+                    return found.update({
+                      loadSequence: row.loadSequence,
+                      caption: row.caption
                     })
+                  })
+                mediaPostPromiseArr.push(updatePromise)
+              })
+
+              return Promise.all(mediaPostPromiseArr)
+                .then(values => {
+                  // console.log('values', values)
+                  return true
+                })
+            })
+        })
+        .then(() => {
+          return updatesObj
+        })
+        .then(updatesObj => {
+          return db.Post.findById(data.id)
+            .then(foundPost => {
+              return foundPost.update(updatesObj)
+                .then(updated => {
+                  console.log('updated', updated)
+                  return updated
                 })
             })
         })

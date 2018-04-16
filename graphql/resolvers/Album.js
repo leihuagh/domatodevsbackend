@@ -15,7 +15,10 @@ const Album = {
     },
     getUserAlbums: (__, data, context) => {
       console.log('context', context)
-      return db.Album.findAll({where: {UserId: context.user}})
+      return db.Album.findAll({
+        where: {UserId: context.user},
+        order: db.sequelize.col('id')
+      })
         .then(albumsArr => {
           console.log('all user albums', albumsArr)
           return albumsArr
@@ -41,9 +44,15 @@ const Album = {
       let updatesObj = {}
       if (data.hasOwnProperty('title')) {
         updatesObj.title = data.title
+        if (data.title === '') {
+          updatesObj.title = 'Untitled Album'
+        }
       }
       if (data.hasOwnProperty('description')) {
         updatesObj.description = data.description
+        // if (data.description === '') {
+        //   updatesObj.description = 'No description available'
+        // }
       }
       return db.Album.findById(data.id)
         .then(found => {
