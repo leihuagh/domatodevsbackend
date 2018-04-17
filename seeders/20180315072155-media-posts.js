@@ -39,6 +39,18 @@ module.exports = {
       loadSequence: 6,
       caption: 'Domai Lama\'s Birthplace'
     })
+    seedArr.push({
+      MediumId: 1,
+      PostId: 2,
+      loadSequence: 1,
+      caption: 'Seed photo 1'
+    })
+    seedArr.push({
+      MediumId: 1,
+      PostId: 3,
+      loadSequence: 1,
+      caption: 'Seed photo 1'
+    })
     // for (var i = 1; i < 37; i++) {
     //   seedArr.push({
     //     MediumId: i % 6 === 0 ? 6 : i % 6,

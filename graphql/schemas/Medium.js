@@ -1,7 +1,10 @@
 const Medium = `
   type Medium {
     id: ID!
+    AlbumId: ID!
+    album: Album
     type: String!
+    objectName: String
     imageUrl: String
     youtubeUrl: String
   }

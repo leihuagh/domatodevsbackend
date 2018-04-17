@@ -98,7 +98,7 @@ const Mutation = `
 
     deleteAlbum(id: ID!): Boolean
 
-    createMedium(type: String!, imageUrl: String, youtubeUrl: String): Medium
+    createMedia(AlbumId: ID!, media: [createMediaInput]!): Boolean
 
     deleteMedium(id: ID!): Boolean
 
