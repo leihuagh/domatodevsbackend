@@ -40,10 +40,58 @@ module.exports = {
       caption: 'Domai Lama\'s Birthplace'
     })
     seedArr.push({
+      MediumId: 7,
+      PostId: 1,
+      loadSequence: 7,
+      caption: 'seeded caption'
+    })
+    seedArr.push({
+      MediumId: 8,
+      PostId: 1,
+      loadSequence: 8,
+      caption: 'seeded caption'
+    })
+    seedArr.push({
+      MediumId: 9,
+      PostId: 1,
+      loadSequence: 9,
+      caption: 'seeded caption'
+    })
+    seedArr.push({
+      MediumId: 10,
+      PostId: 1,
+      loadSequence: 10,
+      caption: 'seeded caption'
+    })
+    seedArr.push({
+      MediumId: 11,
+      PostId: 1,
+      loadSequence: 11,
+      caption: 'seeded caption'
+    })
+    seedArr.push({
+      MediumId: 12,
+      PostId: 1,
+      loadSequence: 12,
+      caption: 'seeded caption'
+    })
+    seedArr.push({
+      MediumId: 13,
+      PostId: 1,
+      loadSequence: 13,
+      caption: 'seeded caption'
+    })
+    seedArr.push({
       MediumId: 1,
       PostId: 2,
       loadSequence: 1,
       caption: 'Seed photo 1'
+    })
+    seedArr.push({
+      MediumId: 13,
+      PostId: 2,
+      loadSequence: 2,
+      caption: 'Seed video 1'
     })
     seedArr.push({
       MediumId: 1,

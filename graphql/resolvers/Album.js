@@ -87,6 +87,7 @@ const Album = {
 
           return Promise.all(promiseArr)
         })
+        // NEED TO DELETE MEDIA FROM CLOUD
         .then(() => {
           // delete all media rows
           return db.Medium.destroy({where: {AlbumId: AlbumId}})

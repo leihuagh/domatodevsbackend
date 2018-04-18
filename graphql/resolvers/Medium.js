@@ -87,13 +87,10 @@ const Medium = {
               .then(() => {
                 return db.Medium.findById(id)
                   .then(foundMedium => {
-                    if (foundMedium.type === 'Photo') {
-                      // console.log('photo, fetch GCP')
+                    if (foundMedium.type === 'Photo' && foundMedium.objectName) {
                       let objectName = foundMedium.objectName
-                      // console.log('objectName', objectName)
                       // replace all | and / with unicode for http req
                       let replaceSlash = objectName.replace(/\//g, '%2F')
-                      // console.log('replaceSlash',replaceSlash)
                       let finalReplace = replaceSlash.replace(/\|/g, '%7C')
                       // console.log('finalReplace', finalReplace)
                       return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
