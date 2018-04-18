@@ -100,7 +100,7 @@ const Mutation = `
 
     createMedia(AlbumId: ID!, media: [createMediaInput]!): Boolean
 
-    deleteMedium(id: ID!): Boolean
+    deleteMedia(input: [ID]!): Boolean
 
     createMediaBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
 

@@ -1,6 +1,5 @@
 const db = require('../../connectors')
-const generateCloudStorageToken = require('./generateCloudStorageToken'
-)
+const generateCloudStorageToken = require('./generateCloudStorageToken')
 const fetch = require('node-fetch')
 
 // GIVEN A MODEL NAME AND ID, REMOVE ALL ATTACHMENTS FOR THAT EVENT FROM CLOUD STORAGE
