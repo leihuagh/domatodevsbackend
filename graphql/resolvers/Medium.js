@@ -1,4 +1,6 @@
 const db = require('../connectors')
+const generateCloudStorageToken = require('./helpers/generateCloudStorageToken')
+const fetch = require('node-fetch')
 
 const Medium = {
   Medium: {
@@ -58,8 +60,67 @@ const Medium = {
           return true
         })
     },
-    deleteMedium: (__, data) => {
-      return db.Medium.destroy({where: {id: data.id}})
+    /*
+    ( ) exchange credentials for cloud token
+    ( ) for each MediumId, find MediaBlog, MediaPost and delete
+    ( ) if type is 'Photo', delete from cloud
+    ( ) finally, delete Medium row
+    ( ) wait for all medium row promises. then return boolean
+    */
+    deleteMedia: (__, data) => {
+      // console.log('arr', data.input)
+      let cloudStorageToken = generateCloudStorageToken()
+        .then(tokenObj => {
+          return tokenObj.token
+        })
+
+      return cloudStorageToken
+        .then(cloudStorageToken => {
+          let mediaPromiseArr = []
+
+          data.input.forEach(id => {
+            let deleteMediaBlogsPromise = db.MediaBlogs.destroy({where: {MediumId: id}})
+            let deleteMediaPostsPromise = db.MediaPosts.destroy({where: {MediumId: id}})
+            // let foundMedium = db.Medium.findById(id)
+
+            let deleteMediumCombinedPromise = Promise.all([deleteMediaBlogsPromise, deleteMediaPostsPromise])
+              .then(() => {
+                return db.Medium.findById(id)
+                  .then(foundMedium => {
+                    if (foundMedium.type === 'Photo' && foundMedium.objectName) {
+                      let objectName = foundMedium.objectName
+                      // replace all | and / with unicode for http req
+                      let replaceSlash = objectName.replace(/\//g, '%2F')
+                      let finalReplace = replaceSlash.replace(/\|/g, '%7C')
+                      // console.log('finalReplace', finalReplace)
+                      return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
+                        method: 'DELETE',
+                        headers: {
+                          'Authorization': `Bearer ${cloudStorageToken}`
+                        }
+                      })
+                        .then(response => {
+                          if (response.status !== 204) {
+                            console.log('err?', response)
+                          }
+                          return foundMedium
+                        })
+                    } else {
+                      return foundMedium
+                    }
+                  })
+                  .then(foundMedium => {
+                    return foundMedium.destroy()
+                  })
+              })
+            mediaPromiseArr.push(deleteMediumCombinedPromise)
+          }) // close input.foreach
+          return Promise.all(mediaPromiseArr)
+            .then(values => {
+              // console.log('values', values)
+              return true
+            })
+        })
     },
 
     /* ----------------------------- */

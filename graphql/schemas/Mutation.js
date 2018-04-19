@@ -72,7 +72,7 @@ const Mutation = `
 
     createBlog(UserId: ID!, title: String, textContent: String) : Blog
 
-    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean, hashtags:[String]!): Blog
+    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean, hashtags:[String]!, media:[updateBlogMediaInput]!): Blog
 
     deleteBlog(id: ID!): Boolean
 
@@ -100,7 +100,7 @@ const Mutation = `
 
     createMedia(AlbumId: ID!, media: [createMediaInput]!): Boolean
 
-    deleteMedium(id: ID!): Boolean
+    deleteMedia(input: [ID]!): Boolean
 
     createMediaBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
 

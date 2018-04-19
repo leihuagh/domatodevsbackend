@@ -129,6 +129,12 @@ const Input = `
     caption: String
   }
 
+  input updateBlogMediaInput {
+    MediumId: ID!
+    loadSequence: Int
+    caption: String
+  }
+
   input createMediaInput {
     type: String!
     objectName: String

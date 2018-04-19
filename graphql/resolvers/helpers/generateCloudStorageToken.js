@@ -20,19 +20,19 @@ function generateCloudStorageToken () {
       },
       body: dataString
     })
-    .then(response => {
-      return response.json()
-    })
-    .then(json => {
-      var apiToken = json.access_token
-      return resolve({
-        expiry: payload.exp,
-        token: apiToken
+      .then(response => {
+        return response.json()
       })
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      .then(json => {
+        var apiToken = json.access_token
+        return resolve({
+          expiry: payload.exp,
+          token: apiToken
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
   })
 }
 

@@ -1,4 +1,6 @@
 const db = require('../connectors')
+const generateCloudStorageToken = require('./helpers/generateCloudStorageToken')
+const fetch = require('node-fetch')
 
 const Album = {
   Album: {
@@ -68,9 +70,14 @@ const Album = {
       (X) finally delete album
       ( ) KIV deleting join table rows will require a front-end reorder load sequence
       */
+      let cloudStorageToken = generateCloudStorageToken()
+        .then(tokenObj => {
+          return tokenObj.token
+        })
+
       return db.Medium.findAll({where: {AlbumId: AlbumId}})
         .then(mediaArr => {
-          console.log('mediaArr', mediaArr)
+          // console.log('mediaArr', mediaArr)
 
           let promiseArr = []
           mediaArr.forEach(obj => {
@@ -86,6 +93,43 @@ const Album = {
           })
 
           return Promise.all(promiseArr)
+            .then(values => {
+              return mediaArr
+            })
+        })
+        .then(mediaArr => {
+          // delete media from cloud
+          return cloudStorageToken
+            .then(cloudStorageToken => {
+              let cloudDeletePromiseArr = []
+              // console.log('mediaArr', mediaArr)
+              mediaArr.forEach(medium => {
+                // console.log('medium', medium)
+                if (medium.type === 'Photo' && medium.objectName) {
+                  let objectName = medium.objectName
+                  let replaceSlash = objectName.replace(/\//g, '%2F')
+                  let finalReplace = replaceSlash.replace(/\|/g, '%7C')
+                  return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
+                    method: 'DELETE',
+                    headers: {
+                      'Authorization': `Bearer ${cloudStorageToken}`
+                    }
+                  })
+                    .then(response => {
+                      if (response.status !== 204) {
+                        console.log('err?', response)
+                      }
+                      cloudDeletePromiseArr.push(true)
+                    })
+                } else {
+                  cloudDeletePromiseArr.push(true)
+                }
+              }) // close for each
+              return Promise.all(cloudDeletePromiseArr)
+                .then(values => {
+                  return true
+                })
+            })
         })
         .then(() => {
           // delete all media rows
