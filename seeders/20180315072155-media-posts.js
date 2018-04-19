@@ -85,28 +85,20 @@ module.exports = {
       MediumId: 1,
       PostId: 2,
       loadSequence: 1,
-      caption: 'Seed photo 1'
+      caption: 'POST 2 SEED PHOTO MEDIUM 1'
     })
-    seedArr.push({
-      MediumId: 13,
-      PostId: 2,
-      loadSequence: 2,
-      caption: 'Seed video 1'
-    })
-    seedArr.push({
-      MediumId: 1,
-      PostId: 3,
-      loadSequence: 1,
-      caption: 'Seed photo 1'
-    })
-    // for (var i = 1; i < 37; i++) {
-    //   seedArr.push({
-    //     MediumId: i % 6 === 0 ? 6 : i % 6,
-    //     PostId: 1,
-    //     loadSequence: i + 6,
-    //     caption: 'Photo number ' + (i + 6)
-    //   })
-    // }
+    // seedArr.push({
+    //   MediumId: 13,
+    //   PostId: 2,
+    //   loadSequence: 2,
+    //   caption: 'Seed video 1'
+    // })
+    // seedArr.push({
+    //   MediumId: 1,
+    //   PostId: 3,
+    //   loadSequence: 1,
+    //   caption: 'Seed photo 1'
+    // })
     return queryInterface.bulkInsert('MediaPosts', seedArr, {})
   },
 

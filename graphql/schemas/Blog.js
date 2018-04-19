@@ -14,7 +14,7 @@ const Blog = `
     headings: [BlogHeading]
     posts: [Post]
     pages: [BlogPage]
-    media: [MediaObject]
+    media: [MediaBlogObject]
     hashtags: [Hashtag]
     createdAt: String
   }
