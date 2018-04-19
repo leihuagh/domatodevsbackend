@@ -40,6 +40,7 @@ const Post = {
                 const obj = {...e,
                   ...{
                     type: medium.type,
+                    AlbumId: medium.AlbumId,
                     objectName: medium.objectName,
                     imageUrl: medium.imageUrl,
                     youtubeUrl: medium.youtubeUrl
