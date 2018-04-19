@@ -36,6 +36,7 @@ const Blog = {
                 loadSequence: e.loadSequence,
                 [model]: e
               }
+              console.log('BlogHeading or Post obj', obj)
               arrModel.push(obj)
             })
             return Promise.all(arrModel)
@@ -84,7 +85,7 @@ const Blog = {
 
           return Promise.all(constructedObjPromiseArr)
             .then(values => {
-              console.log('returning promise.all', values)
+              // console.log('returning promise.all', values)
               return values.sort(function (a, b) {
                 return a.loadSequence - b.loadSequence
               })
@@ -253,7 +254,7 @@ const Blog = {
                 mediaBlogPromiseArr.push(addPromise)
               })
               mediaToUpdate.forEach(row => {
-                let updatePromise = db.MediaBlogs.find({where: {MediumId: row.MediumId}})
+                let updatePromise = db.MediaBlogs.find({where: {MediumId: row.MediumId, BlogId: data.id}})
                   .then(found => {
                     return found.update({
                       loadSequence: row.loadSequence,

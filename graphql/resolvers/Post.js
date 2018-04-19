@@ -75,7 +75,7 @@ const Post = {
         })
     },
     updatePost: (__, data) => {
-      // console.log('data', data)
+      console.log('RECEIVED IN UPDATEPOST RESOLVER', data)
       var temp = {}
       var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay', 'startTime', 'endTime', 'start', 'contentOnly']
 
@@ -206,7 +206,7 @@ const Post = {
                 mediaPostPromiseArr.push(addPromise)
               })
               mediaToUpdate.forEach(row => {
-                let updatePromise = db.MediaPosts.find({where: {MediumId: row.MediumId}})
+                let updatePromise = db.MediaPosts.find({where: {MediumId: row.MediumId, PostId: data.id}})
                   .then(found => {
                     return found.update({
                       loadSequence: row.loadSequence,
