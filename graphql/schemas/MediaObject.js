@@ -1,6 +1,7 @@
 const MediaObject = `
   type MediaObject {
     id: ID
+    AlbumId: ID
     type: String
     objectName: String
     imageUrl: String
