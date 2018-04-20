@@ -18,50 +18,39 @@ const Post = {
       return post.getLocation()
     },
     media (post) {
-      const postId = post.id
-      return db.MediaPosts.findAll({where: {PostId: postId}})
-        .then(foundRows => {
-          let arr = []
-          foundRows.forEach(e => {
-            let obj = {
-              loadSequence: e.loadSequence,
-              caption: e.caption,
-              id: e.id,
-              MediumId: e.MediumId
-            }
-            arr.push(obj)
-          })
-          return Promise.all(arr)
-        })
-        .then(results => {
-          let arr = []
-          results.forEach(e => {
-            const innerPromise = db.Medium.findById(e.MediumId)
-              .then(medium => {
-                const obj = {...e,
-                  ...{
-                    MediumId: medium.id,
-                    type: medium.type,
-                    AlbumId: medium.AlbumId,
-                    objectName: medium.objectName,
-                    imageUrl: medium.imageUrl,
-                    youtubeUrl: medium.youtubeUrl
-                  }
+      // REWRITE WITHOUT THE FOR EACH LOOP. MAKE MEDIAPOSTOBJECT
+      let PostId = post.id
+      let mediaPostsJoinTableRows = db.MediaPosts.findAll({where: {PostId: PostId}})
+
+      return mediaPostsJoinTableRows
+        .then(mediaPostsJoinTableRows => {
+          let constructedObjPromiseArr = []
+
+          mediaPostsJoinTableRows.forEach(join => {
+            let MediumId = join.MediumId
+
+            let constructedObjPromise = db.Medium.findById(MediumId)
+              .then(foundMedium => {
+                // console.log('join table row', join.dataValues)
+                let mergedObj = {
+                  ...join.dataValues, // id, MediumId, PostId, loadSeq,caption
+                  type: foundMedium.type,
+                  AlbumId: foundMedium.AlbumId,
+                  objectName: foundMedium.objectName,
+                  imageUrl: foundMedium.imageUrl,
+                  youtubeUrl: foundMedium.youtubeUrl
                 }
-                return obj
+                return mergedObj
               })
-            arr.push(innerPromise)
-          })
-          return Promise.all(arr)
-        })
-        .then(values => {
-          var media = values.reduce(function (a, b) {
-            return a.concat(b)
-          }, [])
-          var sorted = media.sort(function (a, b) {
-            return a.loadSequence - b.loadSequence
-          })
-          return sorted
+            constructedObjPromiseArr.push(constructedObjPromise)
+          }) // close for each
+
+          return Promise.all(constructedObjPromiseArr)
+            .then(values => {
+              return values.sort(function (a, b) {
+                return a.loadSequence - b.loadSequence
+              })
+            })
         })
     }
   },
@@ -86,7 +75,7 @@ const Post = {
         })
     },
     updatePost: (__, data) => {
-      // console.log('data', data)
+      console.log('RECEIVED IN UPDATEPOST RESOLVER', data)
       var temp = {}
       var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay', 'startTime', 'endTime', 'start', 'contentOnly']
 
@@ -217,7 +206,7 @@ const Post = {
                 mediaPostPromiseArr.push(addPromise)
               })
               mediaToUpdate.forEach(row => {
-                let updatePromise = db.MediaPosts.find({where: {MediumId: row.MediumId}})
+                let updatePromise = db.MediaPosts.find({where: {MediumId: row.MediumId, PostId: data.id}})
                   .then(found => {
                     return found.update({
                       loadSequence: row.loadSequence,

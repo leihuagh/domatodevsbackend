@@ -12,11 +12,11 @@ module.exports = {
     seedArr.push({
       BlogId: 1,
       loadSequence: 4,
-      textContent: 'Seeded Child Post 1',
+      textContent: 'Seeded Child Post 2',
       contentOnly: false,
       eventType: 'Activity',
       start: true,
-      description: 'Seeded Description 1',
+      description: 'Seeded Description 2',
       startDay: 1,
       endDay: 1,
       LocationId: 1
@@ -25,11 +25,11 @@ module.exports = {
       BlogId: 1,
       ParentPostId: 2,
       loadSequence: 5,
-      textContent: 'Seeded Child Post 2',
+      textContent: 'Seeded Child Post 3',
       contentOnly: false,
       eventType: 'Activity',
       start: true,
-      description: 'Seeded Description 2',
+      description: 'Seeded Description 3',
       startDay: 1,
       endDay: 1,
       LocationId: 1

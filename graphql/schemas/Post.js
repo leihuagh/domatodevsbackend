@@ -18,7 +18,7 @@ const Post = `
     blog: Blog
     location: Location
     childPosts: [Post]
-    media: [MediaObject]
+    media: [MediaPostObject]
     hashtags: [Hashtag]
   }
 `
