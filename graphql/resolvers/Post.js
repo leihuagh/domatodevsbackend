@@ -26,7 +26,8 @@ const Post = {
             let obj = {
               loadSequence: e.loadSequence,
               caption: e.caption,
-              id: e.MediumId
+              id: e.id,
+              MediumId: e.MediumId
             }
             arr.push(obj)
           })
@@ -35,10 +36,11 @@ const Post = {
         .then(results => {
           let arr = []
           results.forEach(e => {
-            const innerPromise = db.Medium.findById(e.id)
+            const innerPromise = db.Medium.findById(e.MediumId)
               .then(medium => {
                 const obj = {...e,
                   ...{
+                    MediumId: medium.id,
                     type: medium.type,
                     AlbumId: medium.AlbumId,
                     objectName: medium.objectName,

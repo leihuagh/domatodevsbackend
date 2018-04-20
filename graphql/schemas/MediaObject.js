@@ -1,6 +1,7 @@
 const MediaObject = `
   type MediaObject {
     id: ID
+    MediumId: ID
     AlbumId: ID
     type: String
     objectName: String
