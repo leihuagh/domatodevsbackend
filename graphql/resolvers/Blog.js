@@ -177,98 +177,104 @@ const Blog = {
 
       return currentHashtags
         .then(currentHashtags => {
-          // compare incoming hashtags arr with preexisting hashtags
+          if (incomingHashtags) {
+            // compare incoming hashtags arr with preexisting hashtags
+            let hashtagPromiseArr = []
 
-          let hashtagPromiseArr = []
-
-          let hashtagsToRemoveFromBlog = _.difference(currentHashtags, incomingHashtags)
-          // console.log('to remove', hashtagsToRemoveFromBlog)
-          hashtagsToRemoveFromBlog.forEach(string => {
-            let deletePromise = db.Hashtag.find({where: {name: string}})
-              .then(found => {
-                return db.HashtagsBlogs.destroy({where: {
-                  BlogId: data.id,
-                  HashtagId: found.id
-                }})
-              })
-            hashtagPromiseArr.push(deletePromise)
-          })
-          // if hashtag is in incoming but not in current, create new hashtag / jointable row
-          let hashtagsToAddToBlog = _.difference(incomingHashtags, currentHashtags)
-          // console.log('hashtags to add', hashtagsToAddToBlog)
-          hashtagsToAddToBlog.forEach(string => {
-            let createPromise = findOrCreateHashtag(string)
-              .then(id => {
-                return db.HashtagsBlogs.create({
-                  BlogId: data.id,
-                  HashtagId: id
+            let hashtagsToRemoveFromBlog = _.difference(currentHashtags, incomingHashtags)
+            // console.log('to remove', hashtagsToRemoveFromBlog)
+            hashtagsToRemoveFromBlog.forEach(string => {
+              let deletePromise = db.Hashtag.find({where: {name: string}})
+                .then(found => {
+                  return db.HashtagsBlogs.destroy({where: {
+                    BlogId: data.id,
+                    HashtagId: found.id
+                  }})
                 })
-              })
-            hashtagPromiseArr.push(createPromise)
-          })
-
-          return Promise.all(hashtagPromiseArr)
+              hashtagPromiseArr.push(deletePromise)
+            })
+            // if hashtag is in incoming but not in current, create new hashtag / jointable row
+            let hashtagsToAddToBlog = _.difference(incomingHashtags, currentHashtags)
+            // console.log('hashtags to add', hashtagsToAddToBlog)
+            hashtagsToAddToBlog.forEach(string => {
+              let createPromise = findOrCreateHashtag(string)
+                .then(id => {
+                  return db.HashtagsBlogs.create({
+                    BlogId: data.id,
+                    HashtagId: id
+                  })
+                })
+              hashtagPromiseArr.push(createPromise)
+            })
+            return Promise.all(hashtagPromiseArr)
+          } else {
+            return Promise.resolve(true)
+          }
         })
         .then(() => {
           // compare MediaBlogs to see what is deleted, added, updated
           currentMediaArr
             .then(currentMediaArr => {
-              // console.log('incomingMediaArr', incomingMediaArr, 'currentMediaArr', currentMediaArr)
-              let mediaBlogPromiseArr = []
-              /*
-              ( ) find MediaBlogs to delete. MediumId in current, but not in incoming
-              ( ) find MediaBlogs to add. MediumId in incoming, but not in present
-              ( ) update MediaBlogs for those present in both arrays. find intersect by MediumId
-              use loose equals. id might be int or numeric string
-              */
-              let mediaToRemoveFromBlog = _.differenceWith(currentMediaArr, incomingMediaArr, function (arrVal, otherVal) {
-                return arrVal.MediumId == otherVal.MediumId
-              })
-              // console.log('mediaToRemoveFromBlog', mediaToRemoveFromBlog)
-
-              let mediaToAddToBlog = _.differenceWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
-                return arrVal.MediumId == otherVal.MediumId
-              })
-              // console.log('mediaToAddToBlog', mediaToAddToBlog)
-
-              // media to update are the objs in the incoming arr which match the MediumId of currentArr.
-              let mediaToUpdate = _.intersectionWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
-                return arrVal.MediumId == otherVal.MediumId
-              })
-              // console.log('mediaToUpdate', mediaToUpdate)
-
-              mediaToRemoveFromBlog.forEach(row => {
-                let removePromise = db.MediaBlogs.destroy({where: {
-                  BlogId: data.id,
-                  MediumId: row.MediumId
-                }})
-                mediaBlogPromiseArr.push(removePromise)
-              })
-              mediaToAddToBlog.forEach(row => {
-                let addPromise = db.MediaBlogs.create({
-                  BlogId: data.id,
-                  MediumId: row.MediumId,
-                  loadSequence: row.loadSequence,
-                  caption: row.caption
+              if (incomingMediaArr) {
+                let mediaBlogPromiseArr = []
+                /*
+                ( ) find MediaBlogs to delete. MediumId in current, but not in incoming
+                ( ) find MediaBlogs to add. MediumId in incoming, but not in present
+                ( ) update MediaBlogs for those present in both arrays. find intersect by MediumId
+                use loose equals. id might be int or numeric string
+                */
+                let mediaToRemoveFromBlog = _.differenceWith(currentMediaArr, incomingMediaArr, function (arrVal, otherVal) {
+                  return arrVal.MediumId == otherVal.MediumId
                 })
-                mediaBlogPromiseArr.push(addPromise)
-              })
-              mediaToUpdate.forEach(row => {
-                let updatePromise = db.MediaBlogs.find({where: {MediumId: row.MediumId, BlogId: data.id}})
-                  .then(found => {
-                    return found.update({
-                      loadSequence: row.loadSequence,
-                      caption: row.caption
-                    })
+                // console.log('mediaToRemoveFromBlog', mediaToRemoveFromBlog)
+
+                let mediaToAddToBlog = _.differenceWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+                  return arrVal.MediumId == otherVal.MediumId
+                })
+                // console.log('mediaToAddToBlog', mediaToAddToBlog)
+
+                // media to update are the objs in the incoming arr which match the MediumId of currentArr.
+                let mediaToUpdate = _.intersectionWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+                  return arrVal.MediumId == otherVal.MediumId
+                })
+                // console.log('mediaToUpdate', mediaToUpdate)
+
+                mediaToRemoveFromBlog.forEach(row => {
+                  let removePromise = db.MediaBlogs.destroy({where: {
+                    BlogId: data.id,
+                    MediumId: row.MediumId
+                  }})
+                  mediaBlogPromiseArr.push(removePromise)
+                })
+                mediaToAddToBlog.forEach(row => {
+                  let addPromise = db.MediaBlogs.create({
+                    BlogId: data.id,
+                    MediumId: row.MediumId,
+                    loadSequence: row.loadSequence,
+                    caption: row.caption
                   })
-                mediaBlogPromiseArr.push(updatePromise)
-              })
-
-              return Promise.all(mediaBlogPromiseArr)
-                .then(values => {
-                  console.log('values', values)
-                  return true
+                  mediaBlogPromiseArr.push(addPromise)
                 })
+                mediaToUpdate.forEach(row => {
+                  let updatePromise = db.MediaBlogs.find({where: {MediumId: row.MediumId, BlogId: data.id}})
+                    .then(found => {
+                      return found.update({
+                        loadSequence: row.loadSequence,
+                        caption: row.caption
+                      })
+                    })
+                  mediaBlogPromiseArr.push(updatePromise)
+                })
+
+                return Promise.all(mediaBlogPromiseArr)
+                  .then(values => {
+                    console.log('values', values)
+                    return true
+                  })
+              } else {
+                // if media arr not passed
+                return Promise.resolve(true)
+              }
             })
         })
         .then(() => {
