@@ -43,7 +43,7 @@ module.exports = {
       type: 'Photo',
       imageUrl: 'https://www.seejapan.co.uk/images/default-source/Navigation-images/regions9e6a95af34276b59b272ff0000f5e96d.tmb-c640-390.jpg?sfvrsn=1'
     }
-    let photo9= {
+    let photo9 = {
       AlbumId: 2,
       type: 'Photo',
       imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-mTB3vywriHL15kxi94TXuj1EZ_JBpnOVw0eJPlYljdd0CBqU'
