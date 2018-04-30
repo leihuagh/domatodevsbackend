@@ -5,22 +5,22 @@ module.exports = {
     var seedArr = []
     for (var i = 1; i <= 10; i++) {
       seedArr.push({
-        MediumId: 1,
+        MediumId: Math.floor(Math.random() * 10) + 1,
         BlogId: i,
         loadSequence: 1,
-        caption: 'The Residence of the Domai Lama'
+        caption: 'MediaBlog caption1'
       })
       seedArr.push({
-        MediumId: 2,
+        MediumId: Math.floor(Math.random() * 10) + 1,
         BlogId: i,
         loadSequence: 2,
-        caption: 'Domai Lama and his Cow'
+        caption: 'MediaBlog caption2'
       })
       seedArr.push({
-        MediumId: 3,
+        MediumId: Math.floor(Math.random() * 10) + 1,
         BlogId: i,
         loadSequence: 3,
-        caption: 'Domai Lama and his Dog'
+        caption: 'MediaBlog caption3'
       })
     }
     return queryInterface.bulkInsert('MediaBlogs', seedArr, {})

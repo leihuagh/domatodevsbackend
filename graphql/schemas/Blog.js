@@ -17,6 +17,8 @@ const Blog = `
     media: [MediaBlogObject]
     hashtags: [Hashtag]
     createdAt: String
+    updatedAt: String
+    publishDate: String
   }
 
   type BlogLikesUsers {

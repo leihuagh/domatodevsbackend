@@ -1,5 +1,6 @@
 const db = require('../connectors')
 const _ = require('lodash')
+const moment = require('moment')
 const findOrCreateHashtag = require('./helpers/findOrCreateHashtag')
 
 const Blog = {
@@ -91,11 +92,28 @@ const Blog = {
               })
             })
         })
+    },
+    publishDate (blog) {
+      // calculate date string based on updatedAt date
+      // console.log('updatedAt', blog.updatedAt)
+      let momentDate = moment(blog.updatedAt)
+      // console.log('momentDate', momentDate)
+      let formatted = momentDate.format('Do MMM YYYY')
+      // console.log('formatted', formatted)
+      return formatted
     }
   },
   Query: {
-    allBlogs: () => {
-      return db.Blog.findAll()
+    // allBlogs: () => {
+    //   return db.Blog.findAll()
+    // },
+    getAllPublishedBlogs: () => {
+      return db.Blog.findAll({where: {published: true}})
+        .then(foundBlogs => {
+          // console.log('foundBlogs', foundBlogs)
+          // need to sort by most recent?
+          return foundBlogs
+        })
     },
     findBlog: (__, data) => {
       return db.Blog.findById(data.id)

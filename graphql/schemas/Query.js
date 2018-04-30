@@ -3,7 +3,7 @@ const Query = `
     allCountries: [Country!]!
     allUsers: [User!]!
     allItineraries: [Itinerary]
-    allBlogs: [Blog]
+    getAllPublishedBlogs: [Blog]
     itinerariesByUser: [Itinerary]
     findUser(id: ID!): User
     getUserProfile: User
@@ -34,3 +34,5 @@ const Query = `
   }
 `
 module.exports = Query
+
+//     allBlogs: [Blog]
