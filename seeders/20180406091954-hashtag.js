@@ -13,6 +13,15 @@ module.exports = {
     seedArr.push({
       name: '2018'
     })
+    seedArr.push({
+      name: 'Adventure'
+    })
+    seedArr.push({
+      name: 'Korea'
+    })
+    seedArr.push({
+      name: 'Japan'
+    })
     // faker.seed(123)
     // let counter = 0
     // while (counter < 10000) {
