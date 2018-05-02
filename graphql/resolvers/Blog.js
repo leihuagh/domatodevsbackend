@@ -93,7 +93,7 @@ const Blog = {
             })
         })
     },
-    // PUBLISHDATE RETURNED BY GRAPHQL SCHEMA IS A MOMENT MODIFIED STRING. PUBLISHDATE SAVED IN DB IS STILL JS DATE
+    // PUBLISHDATE RETURNED BY GRAPHQL SCHEMA IS A MOMENT MODIFIED STRING EG(11TH APRIL 2018). PUBLISHDATE SAVED IN DB IS STILL JS DATE
     publishDate (blog) {
       // calculate date string based on updatedAt date
       // console.log('updatedAt', blog.updatedAt)
@@ -106,6 +106,13 @@ const Blog = {
       // let formatted = momentDate.format('Do MMM YYYY')
       // console.log('formatted', formatted)
       return formatted
+    },
+    timeFromPublishDate (blog) {
+      // calculate (eg. 2 hrs ago) using moment
+      let momentPublishDate = moment(blog.publishDate)
+      let timeElapsed = momentPublishDate.fromNow()
+      // console.log('timeElapsed', timeElapsed)
+      return timeElapsed
     }
   },
   Query: {

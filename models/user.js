@@ -12,11 +12,13 @@ module.exports = function (sequelize, DataTypes) {
   User.associate = function (models) {
     User.belongsTo(models.Country)
     User.belongsToMany(models.Itinerary, {through: 'UsersItineraries'})
+    User.hasMany(models.Album)
+    User.hasMany(models.Blog)
+    // join table
     User.belongsToMany(models.Blog, {
       as: 'Likes',
       through: 'BlogLikesUsers'
     })
-    User.hasMany(models.Album)
   }
 
   return User
