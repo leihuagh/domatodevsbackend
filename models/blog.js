@@ -6,6 +6,7 @@ module.exports = function (sequelize, DataTypes) {
     textContent: DataTypes.TEXT,
     title: DataTypes.STRING,
     published: DataTypes.BOOLEAN,
+    publishDate: DataTypes.DATE,
     views: DataTypes.INTEGER,
     shares: DataTypes.INTEGER,
     days: DataTypes.INTEGER

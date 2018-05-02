@@ -93,13 +93,17 @@ const Blog = {
             })
         })
     },
+    // PUBLISHDATE RETURNED BY GRAPHQL SCHEMA IS A MOMENT MODIFIED STRING. PUBLISHDATE SAVED IN DB IS STILL JS DATE
     publishDate (blog) {
       // calculate date string based on updatedAt date
       // console.log('updatedAt', blog.updatedAt)
+      // console.log('publishDate', blog.publishDate)
+      // console.log('moment', moment(blog.publishDate))
+      let formatted = moment(blog.publishDate).format('Do MMM YYYY')
       // let momentDate = moment(blog.updatedAt)
       // temp use createdAt for publishDate. using updatedAt will change everytime view changes
-      let momentDate = moment(blog.createdAt)
-      let formatted = momentDate.format('Do MMM YYYY')
+      // let momentDate = moment(blog.createdAt)
+      // let formatted = momentDate.format('Do MMM YYYY')
       // console.log('formatted', formatted)
       return formatted
     }
@@ -112,8 +116,13 @@ const Blog = {
       return db.Blog.findAll({where: {published: true}})
         .then(foundBlogs => {
           // console.log('foundBlogs', foundBlogs)
-          // need to sort by most recent?
-          return foundBlogs
+          // sort by publishDate. most recent is first, older post is last.
+          let sortedArray = foundBlogs.sort((a, b) => {
+            return moment(a.publishDate).isBefore(moment(b.publishDate))
+          })
+          // console.log('sorted', sortedArray)
+          // return foundBlogs
+          return sortedArray
         })
     },
     findBlog: (__, data) => {
