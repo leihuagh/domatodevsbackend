@@ -3,22 +3,20 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     var seedArr = []
-    seedArr.push({
-      PostId: 1,
-      HashtagId: 1
-    })
-    seedArr.push({
-      PostId: 1,
-      HashtagId: 2
-    })
-    seedArr.push({
-      PostId: 1,
-      HashtagId: 3
-    })
-    seedArr.push({
-      PostId: 1,
-      HashtagId: 4
-    })
+    for (var i = 1; i <= 10; i++) {
+      seedArr.push({
+        PostId: 3 * i,
+        HashtagId: 1
+      })
+      seedArr.push({
+        PostId: 3 * i,
+        HashtagId: 2
+      })
+      seedArr.push({
+        PostId: 3 * i,
+        HashtagId: 3
+      })
+    }
     return queryInterface.bulkInsert('HashtagsPosts', seedArr, {})
   },
 

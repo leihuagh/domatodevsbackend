@@ -1,5 +1,5 @@
 'use strict'
-const faker = require('faker')
+// const faker = require('faker')
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -14,7 +14,13 @@ module.exports = {
       name: '2018'
     })
     seedArr.push({
-      name: 'Foodie'
+      name: 'Adventure'
+    })
+    seedArr.push({
+      name: 'Korea'
+    })
+    seedArr.push({
+      name: 'Japan'
     })
     // faker.seed(123)
     // let counter = 0

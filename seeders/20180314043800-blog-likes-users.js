@@ -12,12 +12,15 @@ module.exports = {
     //   })
     // }
     // only 1 seeded user.
-    seedArr.push({
-      BlogId: 1,
-      UserId: 'auth0|5ab1dce98bd5067ff5786507',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    })
+    // seed likes for 10 blogs
+    for (var i = 1; i <= 10; i++) {
+      seedArr.push({
+        BlogId: i, // owner is domatodev
+        UserId: 'auth0|5ab4723ded63ab65463ddb7f', // rebecca
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
+    }
     return queryInterface.bulkInsert('BlogLikesUsers', seedArr, {})
   },
 

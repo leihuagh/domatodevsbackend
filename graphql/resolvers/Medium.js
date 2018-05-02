@@ -123,6 +123,24 @@ const Medium = {
         })
     },
 
+    moveMediaToAlbum: (__, data) => {
+      let newAlbumId = data.AlbumId
+      let mediumIdArr = data.media
+      let promiseArr = []
+      mediumIdArr.forEach(id => {
+        let updatePromise = db.Medium.findById(id)
+          .then(foundMedium => {
+            return foundMedium.update({AlbumId: newAlbumId})
+          })
+        promiseArr.push(updatePromise)
+      })
+      return Promise.all(promiseArr)
+        .then(values => {
+          console.log('values', values)
+          return true
+        })
+    },
+
     /* ----------------------------- */
 
     createMediaBlog: (__, data) => {

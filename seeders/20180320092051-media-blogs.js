@@ -3,24 +3,26 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     var seedArr = []
-    seedArr.push({
-      MediumId: 1,
-      BlogId: 1,
-      loadSequence: 1,
-      caption: 'The Residence of the Domai Lama'
-    })
-    seedArr.push({
-      MediumId: 2,
-      BlogId: 1,
-      loadSequence: 2,
-      caption: 'Domai Lama and his Cow'
-    })
-    seedArr.push({
-      MediumId: 3,
-      BlogId: 1,
-      loadSequence: 3,
-      caption: 'Domai Lama and his Dog'
-    })
+    for (var i = 1; i <= 10; i++) {
+      seedArr.push({
+        MediumId: Math.floor(Math.random() * 10) + 1,
+        BlogId: i,
+        loadSequence: 1,
+        caption: 'MediaBlog caption1'
+      })
+      seedArr.push({
+        MediumId: Math.floor(Math.random() * 10) + 1,
+        BlogId: i,
+        loadSequence: 2,
+        caption: 'MediaBlog caption2'
+      })
+      seedArr.push({
+        MediumId: Math.floor(Math.random() * 10) + 1,
+        BlogId: i,
+        loadSequence: 3,
+        caption: 'MediaBlog caption3'
+      })
+    }
     return queryInterface.bulkInsert('MediaBlogs', seedArr, {})
   },
 
