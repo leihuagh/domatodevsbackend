@@ -132,6 +132,20 @@ const Blog = {
           return sortedArray
         })
     },
+    getUserBlogs: (__, data, context) => {
+      // use context to find all blogs belonging to logged in user
+      return db.Blog.findAll({
+        where: {UserId: context.user}
+      })
+        .then(foundBlogs => {
+          // console.log('GET USER BLOGS', foundBlogs)
+          // sort by most recent?
+          let sortedArray = foundBlogs.sort((a, b) => {
+            return moment(a.publishDate).isBefore(moment(b.publishDate))
+          })
+          return sortedArray
+        })
+    },
     findBlog: (__, data) => {
       return db.Blog.findById(data.id)
     }
