@@ -96,8 +96,9 @@ const Blog = {
     publishDate (blog) {
       // calculate date string based on updatedAt date
       // console.log('updatedAt', blog.updatedAt)
-      let momentDate = moment(blog.updatedAt)
-      // console.log('momentDate', momentDate)
+      // let momentDate = moment(blog.updatedAt)
+      // temp use createdAt for publishDate. using updatedAt will change everytime view changes
+      let momentDate = moment(blog.createdAt)
       let formatted = momentDate.format('Do MMM YYYY')
       // console.log('formatted', formatted)
       return formatted
