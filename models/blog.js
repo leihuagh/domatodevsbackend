@@ -3,7 +3,7 @@ module.exports = function (sequelize, DataTypes) {
   var Blog = sequelize.define('Blog', {
     UserId: DataTypes.STRING,
     ItineraryId: DataTypes.INTEGER,
-    textContent: DataTypes.TEXT,
+    textContent: DataTypes.TEXT, // draft js json string
     title: DataTypes.STRING,
     published: DataTypes.BOOLEAN,
     publishDate: DataTypes.DATE, // js date obj
