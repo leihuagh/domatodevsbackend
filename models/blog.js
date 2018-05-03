@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
     textContent: DataTypes.TEXT,
     title: DataTypes.STRING,
     published: DataTypes.BOOLEAN,
-    publishDate: DataTypes.DATE,
+    publishDate: DataTypes.DATE, // js date obj
     views: DataTypes.INTEGER,
     shares: DataTypes.INTEGER,
     days: DataTypes.INTEGER
@@ -16,6 +16,7 @@ module.exports = function (sequelize, DataTypes) {
     Blog.belongsTo(models.User)
     Blog.hasMany(models.BlogHeading)
     Blog.hasMany(models.Post)
+    // belongsToMany (join tables)
     Blog.belongsToMany(models.User, {
       as: 'Likes',
       through: 'BlogLikesUsers'

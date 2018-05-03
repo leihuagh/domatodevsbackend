@@ -11,6 +11,9 @@ const User = {
     },
     albums (user) {
       return user.getAlbums()
+    },
+    blogs (user) {
+      return user.getBlogs()
     }
   },
   Query: {

@@ -93,7 +93,7 @@ const Blog = {
             })
         })
     },
-    // PUBLISHDATE RETURNED BY GRAPHQL SCHEMA IS A MOMENT MODIFIED STRING. PUBLISHDATE SAVED IN DB IS STILL JS DATE
+    // PUBLISHDATE RETURNED BY GRAPHQL SCHEMA IS A MOMENT MODIFIED STRING EG(11TH APRIL 2018). PUBLISHDATE SAVED IN DB IS STILL JS DATE
     publishDate (blog) {
       // calculate date string based on updatedAt date
       // console.log('updatedAt', blog.updatedAt)
@@ -106,6 +106,13 @@ const Blog = {
       // let formatted = momentDate.format('Do MMM YYYY')
       // console.log('formatted', formatted)
       return formatted
+    },
+    timeFromPublishDate (blog) {
+      // calculate (eg. 2 hrs ago) using moment
+      let momentPublishDate = moment(blog.publishDate)
+      let timeElapsed = momentPublishDate.fromNow()
+      // console.log('timeElapsed', timeElapsed)
+      return timeElapsed
     }
   },
   Query: {
@@ -122,6 +129,20 @@ const Blog = {
           })
           // console.log('sorted', sortedArray)
           // return foundBlogs
+          return sortedArray
+        })
+    },
+    getUserBlogs: (__, data, context) => {
+      // use context to find all blogs belonging to logged in user
+      return db.Blog.findAll({
+        where: {UserId: context.user}
+      })
+        .then(foundBlogs => {
+          // console.log('GET USER BLOGS', foundBlogs)
+          // sort by most recent?
+          let sortedArray = foundBlogs.sort((a, b) => {
+            return moment(a.publishDate).isBefore(moment(b.publishDate))
+          })
           return sortedArray
         })
     },

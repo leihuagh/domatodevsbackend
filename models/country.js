@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
   })
 
   Country.associate = function (models) {
-    // Country.hasMany(models.User)
+    // Country.hasMany(models.User) no backwards reference in schema
     Country.hasMany(models.Location)
     Country.belongsToMany(models.Itinerary, {through: 'CountriesItineraries'})
   }

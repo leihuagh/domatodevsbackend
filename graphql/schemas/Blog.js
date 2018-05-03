@@ -19,6 +19,7 @@ const Blog = `
     createdAt: String
     updatedAt: String
     publishDate: String
+    timeFromPublishDate: String
   }
 
   type BlogLikesUsers {
