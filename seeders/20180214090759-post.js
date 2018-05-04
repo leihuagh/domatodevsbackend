@@ -14,7 +14,7 @@ module.exports = {
       seedArr.push({
         BlogId: i,
         loadSequence: 4,
-        textContent: 'Seeded Child Post 2',
+        textContent: '',
         contentOnly: false,
         eventType: 'Activity',
         start: true,
@@ -27,7 +27,7 @@ module.exports = {
         BlogId: i,
         ParentPostId: (3 * i) - 1,
         loadSequence: 5,
-        textContent: 'Seeded Child Post 3',
+        textContent: '',
         contentOnly: false,
         eventType: 'Activity',
         start: true,
