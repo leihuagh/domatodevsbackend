@@ -1,5 +1,4 @@
 // importing and merging separate schema files
-
 const { makeExecutableSchema } = require('graphql-tools')
 
 const mergedResolvers = require('../resolvers/mergedResolvers')
@@ -13,22 +12,13 @@ const SchemaDefinition = `
     mutation: Mutation
   }
 `
+const Input = require('./Input')
 const Country = require('./Country')
 const User = require('./User')
 const Itinerary = require('./Itinerary')
 const Location = require('./Location')
-const Activity = require('./Activity')
-const FlightBooking = require('./FlightBooking')
-const FlightInstance = require('./FlightInstance')
-const FlightEvent = require('./FlightEvent')
-const Food = require('./Food')
-const Lodging = require('./Lodging')
-const LandTransport = require('./LandTransport')
-const SeaTransport = require('./SeaTransport')
-const Train = require('./Train')
-const Input = require('./Input')
-const Attachment = require('./Attachment')
 const Event = require('./Event')
+const Attachment = require('./Attachment')
 const Blog = require('./Blog')
 const BlogHeading = require('./BlogHeading')
 const Post = require('./Post')
@@ -39,6 +29,6 @@ const MediaObject = require('./MediaObject')
 const Hashtag = require('./Hashtag')
 
 module.exports = makeExecutableSchema({
-  typeDefs: [SchemaDefinition, Query, Mutation, Country, User, Itinerary, Location, Activity, Lodging, FlightBooking, FlightInstance, FlightEvent, Food, LandTransport, SeaTransport, Train, Input, Attachment, Event, Blog, BlogHeading, Post, BlogPage, Album, Medium, MediaObject, Hashtag],
+  typeDefs: [SchemaDefinition, Query, Mutation, Input, Country, User, Itinerary, Location, Event, Attachment, Event, Blog, BlogHeading, Post, BlogPage, Album, Medium, MediaObject, Hashtag],
   resolvers: mergedResolvers
 })

@@ -2,22 +2,25 @@ const db = require('../../connectors')
 const generateCloudStorageToken = require('./generateCloudStorageToken')
 const fetch = require('node-fetch')
 
-// GIVEN A MODEL NAME AND ID, REMOVE ALL ATTACHMENTS FOR THAT EVENT FROM CLOUD STORAGE
-function deleteAttachmentsFromCloud (model, modelId) {
+// CHECK AGAINST NEW EVENT MODEL, NEW ATTACHMENT MODEL SCHEMAS
+
+// GIVEN EVENTID, REMOVE ALL ATTACHMENTS FOR THAT EVENT FROM CLOUD STORAGE
+
+function deleteAttachmentsFromCloud (EventId) {
   var cloudStorageTokenPromise = generateCloudStorageToken()
-  .then(e => {
-    return e.token
-  })
-  var allAttachmentsPromise = db.Attachment.findAll({where: {
-    [`${model}Id`]: modelId
-  }})
-  .then(allAttachments => {
-    var fileNamesArr = []
-    allAttachments.forEach(e => {
-      fileNamesArr.push(e.fileName)
+    .then(e => {
+      return e.token
     })
-    return fileNamesArr
-  })
+  var allAttachmentsPromise = db.Attachment.findAll({where: {
+    EventId: EventId
+  }})
+    .then(allAttachments => {
+      var fileNamesArr = []
+      allAttachments.forEach(e => {
+        fileNamesArr.push(e.fileName)
+      })
+      return fileNamesArr
+    })
 
   var uriBase = process.env.CLOUD_DELETE_URI
 
@@ -37,11 +40,11 @@ function deleteAttachmentsFromCloud (model, modelId) {
             'Authorization': `Bearer ${cloudStorageToken}`
           }
         })
-        .then(response => {
-          console.log(response)
-          return (response.status === 204)
-        })
-        .catch(err => console.log(err))
+          .then(response => {
+            console.log(response)
+            return (response.status === 204)
+          })
+          .catch(err => console.log(err))
         deletedStatusPromises.push(deletedStatus)
       })
 

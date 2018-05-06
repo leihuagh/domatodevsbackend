@@ -7,15 +7,14 @@ const Attachment = {
     }
   },
   Mutation: {
+    // EVENTID
     createAttachment: (__, data) => {
-      var foreignKey = data.eventModel + 'Id'
       return db.Attachment.create({
-        [foreignKey]: data.id,
+        EventId: data.EventId,
         fileName: data.fileName,
         fileAlias: data.fileAlias,
         fileType: data.fileType,
-        fileSize: data.fileSize,
-        arrivalDeparture: data.arrivalDeparture
+        fileSize: data.fileSize
       })
     },
     deleteAttachment: (__, data) => {

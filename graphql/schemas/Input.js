@@ -1,16 +1,10 @@
 const Input = `
-  input LoadSequence {
-    type: String!
-    id: Int!
+  input changingLoadSequenceInput {
+    EventId: ID!
     loadSequence: Int!
-    day: Int!
-    start: Boolean
-    diff: Int
+    startDay: Int!
   }
-  input EventsToBeDeleted {
-    type: String!
-    id: Int!
-  }
+
   input googlePlaceData {
     placeId: String!
     countryCode: String
@@ -21,7 +15,7 @@ const Input = `
     longitude: Float
     utcOffset: Int
     openingHours: [openingHoursPeriodsInput]
-    openingHoursText: [String],
+    openingHoursText: [String]
     imageUrl: String
   }
   input openingHoursPeriodsInput {
@@ -31,66 +25,6 @@ const Input = `
   input periodObjInput {
     day: Int
     time: String
-  }
-  input attachmentInput {
-    arrivalDeparture: String
-    fileName: String
-    fileAlias: String
-    fileType: String
-    fileSize: String
-  }
-  input createFlightInstanceInput {
-    flightNumber: String
-    airlineCode: String
-    airlineName: String
-    departureIATA: String
-    arrivalIATA: String
-    departureAirport: String
-    arrivalAirport: String
-    departureCityCountry: String
-    arrivalCityCountry: String
-    departureTerminal: String
-    arrivalTerminal: String
-    startDay: Int
-    endDay: Int
-    startTime: Int
-    endTime: Int
-    durationMins: Int
-    startLoadSequence: Int
-    endLoadSequence: Int
-    departureNotes: String
-    arrivalNotes: String
-    firstFlight: Boolean
-    attachments: [attachmentInput]
-  }
-
-  input updateFlightInstanceInput {
-    id: ID
-    FlightBookingId: ID
-    flightNumber: String,
-    airlineCode: String,
-    airlineName: String,
-    departureIATA: String
-    arrivalIATA: String
-    departureAirport: String
-    arrivalAirport: String
-    departureCityCountry: String
-    arrivalCityCountry: String
-    departureTerminal: String
-    arrivalTerminal: String
-    startDay: Int
-    endDay: Int
-    startTime: Int
-    endTime: Int
-    durationMins: Int
-    startLoadSequence: Int
-    endLoadSequence: Int
-    departureNotes: String
-    arrivalNotes: String
-    firstFlight: Boolean
-    attachments: [attachmentInput]
-    addAttachments: [attachmentInput]
-    removeAttachments: [ID]
   }
 
   input updateMultiplePostsInput {
@@ -191,5 +125,68 @@ input mediumInput {
   MediumId: ID
   loadSequence: Int
   caption: String
+}
+*/
+/*
+input createFlightInstanceInput {
+  flightNumber: String
+  airlineCode: String
+  airlineName: String
+  departureIATA: String
+  arrivalIATA: String
+  departureAirport: String
+  arrivalAirport: String
+  departureCityCountry: String
+  arrivalCityCountry: String
+  departureTerminal: String
+  arrivalTerminal: String
+  startDay: Int
+  endDay: Int
+  startTime: Int
+  endTime: Int
+  durationMins: Int
+  startLoadSequence: Int
+  endLoadSequence: Int
+  departureNotes: String
+  arrivalNotes: String
+  firstFlight: Boolean
+  attachments: [attachmentInput]
+}
+input updateFlightInstanceInput {
+  id: ID
+  FlightBookingId: ID
+  flightNumber: String,
+  airlineCode: String,
+  airlineName: String,
+  departureIATA: String
+  arrivalIATA: String
+  departureAirport: String
+  arrivalAirport: String
+  departureCityCountry: String
+  arrivalCityCountry: String
+  departureTerminal: String
+  arrivalTerminal: String
+  startDay: Int
+  endDay: Int
+  startTime: Int
+  endTime: Int
+  durationMins: Int
+  startLoadSequence: Int
+  endLoadSequence: Int
+  departureNotes: String
+  arrivalNotes: String
+  firstFlight: Boolean
+  attachments: [attachmentInput]
+  addAttachments: [attachmentInput]
+  removeAttachments: [ID]
+}
+*/
+
+/*
+input attachmentInput {
+  fileName: String
+  fileAlias: String
+  fileType: String
+  fileSize: String
 }
 */

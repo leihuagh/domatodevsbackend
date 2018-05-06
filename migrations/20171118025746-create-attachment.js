@@ -8,92 +8,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ActivityId: {
+      EventId: {
         allowNull: true,
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
         hooks: true,
         references: {
           model: {
-            tableName: 'Activities'
+            tableName: 'Events'
           },
           key: 'id'
         }
-      },
-      FoodId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        hooks: true,
-        references: {
-          model: {
-            tableName: 'Food'
-          },
-          key: 'id'
-        }
-      },
-      FlightInstanceId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        hooks: true,
-        references: {
-          model: {
-            tableName: 'FlightInstances'
-          },
-          key: 'id'
-        }
-      },
-      LodgingId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        hooks: true,
-        references: {
-          model: {
-            tableName: 'Lodgings'
-          },
-          key: 'id'
-        }
-      },
-      LandTransportId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        hooks: true,
-        references: {
-          model: {
-            tableName: 'LandTransports'
-          },
-          key: 'id'
-        }
-      },
-      SeaTransportId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        hooks: true,
-        references: {
-          model: {
-            tableName: 'SeaTransports'
-          },
-          key: 'id'
-        }
-      },
-      TrainId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        hooks: true,
-        references: {
-          model: {
-            tableName: 'Trains'
-          },
-          key: 'id'
-        }
-      },
-      arrivalDeparture: {
-        type: Sequelize.STRING
       },
       fileName: {
         type: Sequelize.STRING

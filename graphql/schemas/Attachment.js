@@ -1,14 +1,7 @@
 const Attachment = `
   type Attachment {
     id: ID!
-    ActivityId: ID
-    FoodId: ID
-    FlightInstanceId: ID
-    LodgingId: ID
-    LandTransportId: ID
-    SeaTransportId: ID
-    TrainId: ID
-    arrivalDeparture: String
+    EventId: ID!
     fileName: String
     fileAlias: String
     fileType: String

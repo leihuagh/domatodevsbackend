@@ -56,11 +56,11 @@ function findOrCreateAirportLocation (iata) {
             // fetch google place photos api and shorten url
             var photoApiUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoReference}&key=${apiKey}`
             var googlePlaceData = fetch(photoApiUrl)
-            .then(response => {
-              console.log('imageUrl', response.url)
-              temp.imageUrl = response.imageUrl
-              return Promise.resolve(temp)
-            })
+              .then(response => {
+                console.log('imageUrl', response.url)
+                temp.imageUrl = response.imageUrl
+                return Promise.resolve(temp)
+              })
           } else {
             googlePlaceData = Promise.resolve(temp)
           }

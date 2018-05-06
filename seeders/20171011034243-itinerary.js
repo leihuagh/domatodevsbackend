@@ -1,16 +1,13 @@
 'use strict'
-// const casual = require('casual')
-// const faker = require('faker')
-
 module.exports = {
   up: function (queryInterface, Sequelize) {
     var seedArr = []
-    for (var i = 1; i <= 50; i++) {
+    for (var i = 1; i <= 10; i++) {
       seedArr.push({
         name: `Itinerary ${i}`,
-        startDate: 1529020800, // 15th june 2018 friday
-        days: 6,
         description: 'SEEDED ITINERARY DESCRIPTION',
+        days: 6,
+        startDate: 1529020800, // 15th june 2018 friday
         createdAt: new Date(),
         updatedAt: new Date()
       })

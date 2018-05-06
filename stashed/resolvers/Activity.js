@@ -48,7 +48,7 @@ const Activity = {
           .then(created => {
             if (data.attachments) {
               createAllAttachments(data.attachments, 'Activity', created.id)
-                // check if helper returns true/false
+              // check if helper returns true/false
             }
             return created.id
           })
