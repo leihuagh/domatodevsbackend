@@ -7,7 +7,7 @@ const Itinerary = `
     description: String
     countries: [Country]
     owner: User
-    users: [User!]
+    users: [User]
     events: [Event]
   }
   type CountriesItineraries {

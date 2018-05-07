@@ -28,12 +28,3 @@ const Query = `
   }
 `
 module.exports = Query
-
-// findActivity(id: ID!): Activity
-// findFood(id:ID!): Food
-// findLodging(id:ID!): Lodging
-// findFlightBooking(id:ID!): FlightBooking
-// findFlightInstance(id: ID!): FlightInstance
-// findLandTransport(id:ID!): LandTransport
-// findSeaTransport(id: ID!): SeaTransport
-// findTrain(id: ID!): Train

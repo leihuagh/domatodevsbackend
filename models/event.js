@@ -15,10 +15,7 @@ module.exports = function (sequelize, DataTypes) {
     currency: DataTypes.STRING,
     bookingService: DataTypes.STRING,
     bookingConfirmation: DataTypes.STRING,
-    // if verified -> means use dropdown -> select. uses google data strictly (name + address + openingHours + latlng etc). modifying name, changing address, opening hours etc makes it not verified, retrieve info from other table (clone the row into other table)
-    locationVerified: DataTypes.BOOLEAN,
-    LocationId: DataTypes.INTEGER, // data as returned from google
-    // CustomLocationId: DataTypes.INTEGER // user editable
+    LocationId: DataTypes.INTEGER, // Location data is either verified or custom
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   })

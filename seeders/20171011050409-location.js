@@ -3,6 +3,7 @@ const casual = require('casual')
 
 var location1 = {
   CountryId: 200,
+  verified: true,
   placeId: 'ChIJ483Qk9YX2jERA0VOQV7d1tY',
   name: 'Singapore Changi Airport',
   address: 'Airport Boulevard, Singapore',
@@ -24,6 +25,7 @@ var location1 = {
 }
 var location2 = {
   CountryId: 135,
+  verified: true,
   placeId: 'ChIJERKi1IC_zTERC_q1Z7t4J5g',
   name: 'Kuala Lumpur International Airport',
   address: '64000 Sepang, Selangor, Malaysia',
@@ -45,6 +47,7 @@ var location2 = {
 }
 var location3 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJWfpeOoOaezUR1L5cy5agS40',
   name: 'Incheon International Airport',
   address: '272 Gonghang-ro, Jung-gu, Incheon, South Korea',
@@ -58,6 +61,7 @@ var location3 = {
 }
 var location4 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJK_gSweWifDURQr02_87Rayw',
   name: 'Lotte City Hotel Myeongdong',
   address: '362 Samil-daero, Myeong-dong, Jung-gu, Seoul, South Korea',
@@ -71,6 +75,7 @@ var location4 = {
 }
 var location5 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJ1w5MZ-WifDUR4eOq20PjdpM',
   name: 'MyeongDong Croquette 32G',
   address: '83 Myeongdong-gil, Jeodong 1(il)-ga, Jung-gu, Seoul, South Korea',
@@ -99,6 +104,7 @@ var location5 = {
 }
 var location6 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJqxQ_G_GifDURDI7jheBrQzs',
   name: 'Myeong-dong',
   address: 'Myeong-dong, Jung-gu, Seoul, South Korea',
@@ -112,6 +118,7 @@ var location6 = {
 }
 var location7 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJ61qvjvCifDURsgRneJ9Fsg0',
   name: 'Myeongdong Underground Shopping Area',
   address: 'South Korea, Seoul, Jung-gu, Chungmuro 2(i)-ga, 65-9 -ga',
@@ -141,6 +148,7 @@ var location7 = {
 }
 var location8 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJ1Y4f-PGifDURo2AFC7eDnCY',
   name: 'Lotteria',
   address: '81 Namdaemun-ro, Euljiro 1(il)-ga, Jung-gu, Seoul, South Korea',
@@ -170,6 +178,7 @@ var location8 = {
 }
 var location9 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJp67IMGeifDURYdGoC7xacH0',
   name: 'Seoul Station',
   address: '378 Cheongpa-ro, Dongja-dong, Yongsan-gu, 서울특별시 South Korea',
@@ -183,6 +192,7 @@ var location9 = {
 }
 var location10 = {
   CountryId: 119,
+  verified: true,
   placeId: 'ChIJVZuLL33paDUR9rDfjolmUXI',
   name: 'Busan Station',
   address: 'Jungang-daero, Choryang 3(sam)-dong, Dong-gu, 부산광역시 South Korea',

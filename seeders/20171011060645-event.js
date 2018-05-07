@@ -106,7 +106,6 @@ module.exports = {
           currency: 'SGD',
           bookingService: faker.internet.url(),
           bookingConfirmation: '12345567abcdef',
-          locationVerified: true,
           LocationId: j,
           createdAt: new Date(),
           updatedAt: new Date()

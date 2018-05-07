@@ -1,6 +1,9 @@
 const db = require('../../connectors')
 const fetch = require('node-fetch')
 
+// NEEDS TO UPDATE FOR CREATEEVENT -> LOCATIONDATA CAN BE VERIFIED OR NOT.
+
+
 // this fxn takes in googlePlaceData obj return LocationId
 function findOrCreateLocation (google) {
   return db.Location.find({where: { placeId: google.placeId }})

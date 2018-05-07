@@ -12,8 +12,7 @@ const Event = `
     currency: String
     bookingService: String
     bookingConfirmation: String
-    locationVerified: Boolean
-    location: [Location]
+    location: Location
     attachments: [Attachment]
   }
 `

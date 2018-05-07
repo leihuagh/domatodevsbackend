@@ -3,6 +3,8 @@ const airports = require('../../../data/airports.json')
 const fetch = require('node-fetch')
 const findOrCreateLocation = require('./findOrCreateLocation')
 
+// UPDATED TO EVENT -> NO MORE AIRPORT SEARCH. THIS HELPER WILL NOT BE USED.
+
 // this fxn takes in IATA code and returns found/created LocationId
 
 function findOrCreateAirportLocation (iata) {

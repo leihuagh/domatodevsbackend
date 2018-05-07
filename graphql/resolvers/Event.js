@@ -19,13 +19,14 @@ const Event = {
     createEvent: (__, data) => {
       let temp = {}
       Object.keys(data).forEach(key => {
-        if (key !== 'googlePlaceData' && key !== 'LocationId') {
+        if (key !== 'locationData' && key !== 'LocationId') {
           temp[key] = data[key]
         }
       })
 
-      if (data.googlePlaceData) {
-        var newEvent = findOrCreateLocation(data.googlePlaceData)
+      // LOCATIONDATA LOGIC NEEDS REWRITE! DONT PASS KEY FIRST.
+      if (data.locationData) {
+        var newEvent = findOrCreateLocation(data.locationData)
           .then(LocationId => {
             temp.LocationId = LocationId
             return temp
@@ -33,7 +34,7 @@ const Event = {
       } else if (data.LocationId) {
         temp.LocationId = data.LocationId
         newEvent = Promise.resolve(temp)
-      } else if (!data.LocationId && !data.googlePlaceData) {
+      } else if (!data.LocationId && !data.locationData) {
         newEvent = Promise.resolve(temp)
       }
 
@@ -42,12 +43,13 @@ const Event = {
     updateEvent: (__, data) => {
       let temp = {}
       Object.keys(data).forEach(key => {
-        if (key !== 'id' && key !== 'googlePlaceData' && key !== 'LocationId') {
+        if (key !== 'id' && key !== 'locationData' && key !== 'LocationId') {
           temp[key] = data[key]
         }
       })
-      if (data.googlePlaceData) {
-        var updatesObj = findOrCreateLocation(data.googlePlaceData)
+      // LOCATIONDATA NEEDS REWRITE! DONT PASS KEY FIRST.
+      if (data.locationData) {
+        var updatesObj = findOrCreateLocation(data.locationData)
           .then(LocationId => {
             temp.LocationId = LocationId
             return temp

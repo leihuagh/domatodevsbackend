@@ -47,9 +47,6 @@ module.exports = {
       bookingConfirmation: {
         type: Sequelize.STRING
       },
-      locationVerified: {
-        type: Sequelize.BOOLEAN
-      },
       LocationId: {
         type: Sequelize.INTEGER,
         references: {
@@ -59,7 +56,6 @@ module.exports = {
           key: 'id'
         }
       },
-      // CustomLocationId
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

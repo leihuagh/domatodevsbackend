@@ -17,6 +17,9 @@ module.exports = {
           key: 'id'
         }
       },
+      verified: {
+        type: Sequelize.BOOLEAN
+      },
       placeId: {
         allowNull: false,
         type: Sequelize.STRING

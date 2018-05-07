@@ -14,9 +14,7 @@
     currency: DataTypes.STRING,
     bookingService: DataTypes.STRING,
     bookingConfirmation: DataTypes.STRING,
-    locationVerified: DataTypes.BOOLEAN,
-    LocationId: DataTypes.INTEGER, // data as returned from google
-    CustomLocationId: DataTypes.INTEGER // user editable Location table
+    LocationId: DataTypes.INTEGER,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   }
@@ -47,4 +45,20 @@
 
 5. __deleteAttachmentsFromCloud__ helper. Given EventId, will delete all attachments for that Event from GCP.
 
-6. __createEvent__. Create a new row in event table with ItineraryId, loadSequence, and whichever field user filled in first (name, time, googlePlaceData, LocationId). Does not allow for creating attachments. (Add attachments 'live' with createAttachment)
+6. __createEvent__. Create a new row in event table with ItineraryId, loadSequence, and whichever field user filled in first (name, time, locationData, LocationId). Does not allow for creating attachments. (Add attachments 'live' with createAttachment).
+
+  No location -> verified location. findOrCreateLocation row with verified:true.
+
+  No location -> custom location. create a Location row with verified: false.
+
+  Verified location -> custom location. new Location row is duplicated with verified false. Replace the LocationId.
+
+  Custom -> custom location. Just update the Location row.
+
+  Custom -> verified location. Remove the custom Location row. replace with LocationId for findOrCreate's verified row.
+
+  Custom location -> No location (explicitly pass key but no obj). custom Location row will be deleted. Remove LocationId from event.
+
+  Verified location -> No location. Will not delete Location row. Only remove the LocationId from event.
+
+7. __Location__ model has column __verified:Boolean__. If true, all columns will follow the google places API response. If false, some columns have been edited by user (eg, location name, opening hours).
