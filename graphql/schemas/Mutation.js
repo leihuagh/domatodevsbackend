@@ -20,9 +20,9 @@ const Mutation = `
 
     createLocation(placeId: String!, verified: Boolean, CountryId: ID, name:String, telephone: String, latitude:String, longitude:String, address:String, utcOffset: Int, openingHours: String, openingHoursText: String, imageUrl: String): Location
 
-    createEvent(ItineraryId: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationVerified: Boolean, locationData: locationDataInput, LocationId: ID): Event
+    createEvent(ItineraryId: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationData: locationDataInput, LocationId: ID): Event
 
-    updateEvent(id: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationVerified: Boolean, locationData: locationDataInput, LocationId: ID): Event
+    updateEvent(id: ID!, eventType: String, startDay: Int, startTime: Int, endTime: Int, loadSequence: Int, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationData: locationDataInput, LocationId: ID): Event
 
     deleteEvent(id: ID!): Boolean
 

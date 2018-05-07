@@ -17,6 +17,7 @@ const Event = {
   },
   Mutation: {
     createEvent: (__, data) => {
+      console.log('DATA', data)
       let temp = {}
       Object.keys(data).forEach(key => {
         if (key !== 'locationData' && key !== 'LocationId') {
@@ -26,19 +27,22 @@ const Event = {
 
       // LOCATIONDATA LOGIC NEEDS REWRITE! DONT PASS KEY FIRST.
       if (data.locationData) {
-        var newEvent = findOrCreateLocation(data.locationData)
+        var eventObj = findOrCreateLocation(data.locationData)
           .then(LocationId => {
             temp.LocationId = LocationId
             return temp
           })
       } else if (data.LocationId) {
         temp.LocationId = data.LocationId
-        newEvent = Promise.resolve(temp)
+        eventObj = Promise.resolve(temp)
       } else if (!data.LocationId && !data.locationData) {
-        newEvent = Promise.resolve(temp)
+        eventObj = Promise.resolve(temp)
       }
 
-      return db.Event.create(newEvent)
+      return eventObj
+        .then(eventObj => {
+          return db.Event.create(eventObj)
+        })
     },
     updateEvent: (__, data) => {
       let temp = {}
@@ -57,12 +61,16 @@ const Event = {
       } else {
         updatesObj = Promise.resolve(temp)
       }
-      return db.Event.findById(data.id)
-        .then(found => {
-          return found.update(updatesObj)
+      return updatesObj
+        .then(updatesObj => {
+          return db.Event.findById(data.id)
+            .then(foundEvent => {
+              return foundEvent.update(updatesObj)
+            })
         })
     },
     deleteEvent: (__, data) => {
+      // NEEDS LOGIC TO CHECK IF CUSTOM LOCATION ROW SHOULD BE REMOVED.
       return db.Event.destroy({
         where: {id: data.id},
         individualHooks: true
