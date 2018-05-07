@@ -20,9 +20,9 @@ const Mutation = `
 
     createLocation(placeId: String!, verified: Boolean, CountryId: ID, name:String, telephone: String, latitude:String, longitude:String, address:String, utcOffset: Int, openingHours: String, openingHoursText: String, imageUrl: String): Location
 
-    createEvent(ItineraryId: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationVerified: Boolean, locationData: locationDataInput, LocationId: ID)
+    createEvent(ItineraryId: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationVerified: Boolean, locationData: locationDataInput, LocationId: ID): Event
 
-    updateEvent(id: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationVerified: Boolean, locationData: locationDataInput, LocationId: ID)
+    updateEvent(id: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: Int, currency: String, bookingService: String, bookingConfirmation: String, locationVerified: Boolean, locationData: locationDataInput, LocationId: ID): Event
 
     deleteEvent(id: ID!): Boolean
 
@@ -46,7 +46,7 @@ const Mutation = `
 
     createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
 
-    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, googlePlaceData: googlePlaceData, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int, startTime: Int, endTime: Int, hashtags: [String], media: [updatePostMediaInput]): Post
+    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, locationData: locationDataInput, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int, startTime: Int, endTime: Int, hashtags: [String], media: [updatePostMediaInput]): Post
 
     updateMultiplePosts(input: [updateMultiplePostsInput]): Boolean
 
