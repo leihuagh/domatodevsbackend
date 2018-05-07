@@ -17,7 +17,6 @@ const Event = {
   },
   Mutation: {
     createEvent: (__, data) => {
-      console.log('DATA', data)
       let temp = {}
       Object.keys(data).forEach(key => {
         if (key !== 'locationData' && key !== 'LocationId') {
