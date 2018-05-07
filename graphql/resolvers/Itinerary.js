@@ -66,53 +66,44 @@ const Itinerary = {
       var UserId = data.UserId
       // console.log('owner', UserId)
       Object.keys(data).forEach(key => {
-        if (key !== 'UserId') {
+        if (key !== 'UserId' && key !== 'CountryId') {
           newItinerary[key] = data[key]
         }
       })
-      return db.Itinerary.create(newItinerary)
-        .then(createdItinerary => {
+
+      let createdItineraryId = db.Itinerary.create(newItinerary)
+        .then(created => {
+          return created.id
+        })
+
+      return createdItineraryId
+        .then(createdItineraryId => {
           return db.UsersItineraries.create({
             UserId: UserId,
-            ItineraryId: createdItinerary.id,
+            ItineraryId: createdItineraryId,
             permissions: 'owner'
           })
             .then(() => {
-              return db.Itinerary.findById(createdItinerary.id)
+              return createdItineraryId
             })
         })
-      // if (data.CountryId) {
-      //   newItinerary.CountryId = data.CountryId
-      //
-      //   return db.Itinerary.create(newItinerary)
-      //     .then(createdItinerary => {
-      //       db.CountriesItineraries.create({
-      //         ItineraryId: createdItinerary.id,
-      //         CountryId: data.CountryId
-      //       })
-      //       db.UsersItineraries.create({
-      //         ItineraryId: createdItinerary.id,
-      //         UserId: data.UserId,
-      //         permissions: 'owner'
-      //       })
-      //       return createdItinerary
-      //     })
-      //     .then(createdItinerary => {
-      //       return db.Itinerary.findById(createdItinerary.id)
-      //     })
-      // } else {
-      //   return db.Itinerary.create(newItinerary)
-      //     .then(createdItinerary => {
-      //       return db.UsersItineraries.create({
-      //         UserId: data.UserId,
-      //         ItineraryId: createdItinerary.id,
-      //         permissions: 'owner'
-      //       })
-      //         .then(() => {
-      //           return db.Itinerary.findById(createdItinerary.id)
-      //         })
-      //     })
-      // }
+        .then(createdItineraryId => {
+          // if CountryId is passed, create join table row as well
+          if (data.CountryId) {
+            return db.CountriesItineraries.create({
+              CountryId: data.CountryId,
+              ItineraryId: createdItineraryId
+            })
+              .then(() => {
+                return createdItineraryId
+              })
+          } else {
+            return createdItineraryId
+          }
+        })
+        .then(createdItineraryId => {
+          return db.Itinerary.findById(createdItineraryId)
+        })
     },
     updateItineraryDetails: (__, data) => {
       var updates = {}
@@ -127,15 +118,14 @@ const Itinerary = {
         })
     },
     createCountriesItineraries: (__, data) => {
-      return db.Country.find({where: {code: data.countryCode}})
-        .then(found => {
-          return db.CountriesItineraries.findCreateFind({where: {
-            CountryId: found.id,
-            ItineraryId: data.ItineraryId
-          }})
-            .then(results => {
-              return results[0]
-            })
+      return db.CountriesItineraries.findOrCreate({
+        where: {
+          CountryId: data.CountryId,
+          ItineraryId: data.ItineraryId
+        }
+      })
+        .spread((foundOrCreated, newRow) => {
+          return foundOrCreated
         })
     },
     deleteCountriesItineraries: (__, data) => {
@@ -145,9 +135,6 @@ const Itinerary = {
           ItineraryId: data.ItineraryId
         }
       })
-        .then(status => {
-          return status
-        })
     },
     deleteItinerary: (__, data) => {
       // need to gate by user permissions in context

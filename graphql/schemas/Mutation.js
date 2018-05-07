@@ -8,13 +8,13 @@ const Mutation = `
 
     updateUserProfile(CountryId: ID, fullName: String, bio: String, profilePic: String): User
 
-    createItinerary(UserId: Int!, CountryId: Int, name:String!, days: Int!, startDate:Int, description: String): Itinerary
+    createItinerary(UserId: String!, CountryId: Int, name:String!, days: Int!, startDate:Int, description: String): Itinerary
 
     updateItineraryDetails(id: ID!, name:String, days: Int, startDate:Int, description: String): Itinerary
 
-    createCountriesItineraries(ItineraryId: Int!, countryCode: String!): CountriesItineraries
+    createCountriesItineraries(ItineraryId: ID!, CountryId: ID!): CountriesItineraries
 
-    deleteCountriesItineraries(ItineraryId: Int!, CountryId:Int!): Boolean
+    deleteCountriesItineraries(ItineraryId: ID!, CountryId:ID!): Boolean
 
     deleteItinerary(id: ID!): Boolean
 
