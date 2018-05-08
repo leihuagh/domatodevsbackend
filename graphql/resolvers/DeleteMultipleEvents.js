@@ -1,39 +1,33 @@
 const db = require('../connectors')
 const deleteAttachmentsFromCloud = require('./helpers/deleteAttachmentsFromCloud')
 
+// NEEDS LOGIC TO CHECK IF LOCATION ROW NEEDS TO CLEAR
+
 const DeleteMultipleEvents = {
   Mutation: {
     deleteMultipleEvents: (__, data) => {
-      var input = data.input
-      let eventPromisesArr = []
-      input.forEach(e => {
-        let attachmentPromisesArr = []
-        if (e.type !== 'FlightBooking') {
-          attachmentPromisesArr.push(deleteAttachmentsFromCloud(e.type, e.id))
-        } else if (e.type === 'FlightBooking') {
-          db.FlightBooking.findById(e.id)
-          .then(booking => {
-            booking.getFlightInstances()
-            .then(instanceArr => {
-              instanceArr.forEach(instance => {
-                attachmentPromisesArr.push(deleteAttachmentsFromCloud('FlightInstance', instance.id))
+      let inputArr = data.input // arr of Event ids
+
+      let promiseArr = []
+      inputArr.forEach(id => {
+        // delete all attachments for the event id from GCP,
+        let awaitDeletesFromCloud = deleteAttachmentsFromCloud(id)
+
+        // then delete event row(trigger hook to delete attachment rows)
+        awaitDeletesFromCloud
+          .then(done => {
+            return db.Event.findById(id)
+              .then(found => {
+                return found.destroy({individualHooks: true})
               })
-            })
           })
-        }
-        return Promise.all(attachmentPromisesArr)
-        .then(isFinished => {
-          var model = db[e.type].findById(e.id)
-          const promise = model.then(found => {
-            found.destroy({individualHooks: true})
-            eventPromisesArr.push(promise)
-          })
+        promiseArr.push(awaitDeletesFromCloud)
+      })
+      return Promise.all(promiseArr)
+        .then(values => {
+          console.log('values', values)
+          return true
         })
-      })
-      return Promise.all(eventPromisesArr)
-      .then(() => {
-        return true
-      })
     }
   }
 }

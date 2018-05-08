@@ -1,5 +1,7 @@
 const db = require('../../connectors')
 
+// OUTDATED! WITH EVENT, PENDING ATTACHMENTS ARRAY NO LONGER NEEDED. THIS FUNCTION IS NO LONGER NEEDED.
+
 // this function takes array of data.attachments, model and modelId, and returns true or false depending on success
 function createAllAttachments (array, model, modelId) {
   var attachmentPromises = []

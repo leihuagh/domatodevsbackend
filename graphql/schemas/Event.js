@@ -1,22 +1,19 @@
 const Event = `
   type Event {
-    type: String
-    modelId: ID
-    day: Int
+    id: ID!
+    ItineraryId: ID!
+    eventType: String
+    startDay: Int
+    startTime: Int
+    endTime: Int
     loadSequence: Int
-    start: Boolean
-    time: Int
-    utcOffset: Int
-    timeUtcZero: Int
-    Activity: Activity
-    Food: Food
-    Lodging: Lodging
-    Flight: FlightEvent
-    LandTransport: LandTransport
-    SeaTransport: SeaTransport
-    Train: Train
+    notes: String
+    cost: Int
+    currency: String
+    bookingService: String
+    bookingConfirmation: String
+    location: Location
+    attachments: [Attachment]
   }
 `
 module.exports = Event
-
-// flight event is a row containing flight instance + booking. modelId refers to FlightBookingId

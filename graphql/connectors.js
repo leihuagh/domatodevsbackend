@@ -6,7 +6,7 @@ const config = require('../config/config.json')[env]
 if (config.use_env_variable) {
   var sequelize = new Sequelize(process.env[config.use_env_variable])
 } else {
-  var sequelize = new Sequelize(config.database, config.username, config.password, config)
+  sequelize = new Sequelize(config.database, config.username, config.password, config)
 }
 
 var db = {
@@ -16,14 +16,7 @@ var db = {
   UsersItineraries: sequelize.import('../models/usersitineraries'),
   CountriesItineraries: sequelize.import('../models/countriesitineraries'),
   Location: sequelize.import('../models/location'),
-  Activity: sequelize.import('../models/activity'),
-  Food: sequelize.import('../models/food'),
-  Lodging: sequelize.import('../models/lodging'),
-  FlightBooking: sequelize.import('../models/flightbooking'),
-  FlightInstance: sequelize.import('../models/flightinstance'),
-  LandTransport: sequelize.import('../models/landtransport'),
-  SeaTransport: sequelize.import('../models/seatransport'),
-  Train: sequelize.import('../models/train'),
+  Event: sequelize.import('../models/event'),
   Attachment: sequelize.import('../models/attachment'),
   Blog: sequelize.import('../models/blog'),
   BlogHeading: sequelize.import('../models/blogheading'),

@@ -10,14 +10,7 @@ const Query = `
     getUserBlogs: [Blog]
     findItinerary(id: ID!): Itinerary
     findLocation(id: ID!): Location
-    findActivity(id: ID!): Activity
-    findFood(id:ID!): Food
-    findLodging(id:ID!): Lodging
-    findFlightBooking(id:ID!): FlightBooking
-    findFlightInstance(id: ID!): FlightInstance
-    findLandTransport(id:ID!): LandTransport
-    findSeaTransport(id: ID!): SeaTransport
-    findTrain(id: ID!): Train
+    findEvent(id: ID!): Event
     findBlogHeading(id: ID!): BlogHeading
     findPost(id: ID!): Post
     findBlog(id: ID!): Blog
@@ -35,5 +28,3 @@ const Query = `
   }
 `
 module.exports = Query
-
-//     allBlogs: [Blog]

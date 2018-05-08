@@ -2,6 +2,7 @@ const Location = `
   type Location {
     id: ID!
     placeId: String!
+    verified: Boolean
     CountryId: ID
     country: Country
     name: String
@@ -11,7 +12,7 @@ const Location = `
     longitude: Float
     utcOffset: Int
     openingHours: [openingHoursPeriods]
-    openingHoursText: [String],
+    openingHoursText: [String]
     imageUrl: String
   }
   type openingHoursPeriods {

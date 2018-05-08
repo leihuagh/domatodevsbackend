@@ -3,6 +3,8 @@ const airports = require('../../../data/airports.json')
 const fetch = require('node-fetch')
 const findOrCreateLocation = require('./findOrCreateLocation')
 
+// UPDATED TO EVENT -> NO MORE AIRPORT SEARCH. THIS HELPER WILL NOT BE USED.
+
 // this fxn takes in IATA code and returns found/created LocationId
 
 function findOrCreateAirportLocation (iata) {
@@ -56,11 +58,11 @@ function findOrCreateAirportLocation (iata) {
             // fetch google place photos api and shorten url
             var photoApiUrl = `https://maps.googleapis.com/maps/api/place/photo?maxwidth=200&photoreference=${photoReference}&key=${apiKey}`
             var googlePlaceData = fetch(photoApiUrl)
-            .then(response => {
-              console.log('imageUrl', response.url)
-              temp.imageUrl = response.imageUrl
-              return Promise.resolve(temp)
-            })
+              .then(response => {
+                console.log('imageUrl', response.url)
+                temp.imageUrl = response.imageUrl
+                return Promise.resolve(temp)
+              })
           } else {
             googlePlaceData = Promise.resolve(temp)
           }

@@ -11,14 +11,14 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
+      description: {
+        type: Sequelize.STRING
+      },
       days: {
         type: Sequelize.INTEGER
       },
       startDate: {
         type: Sequelize.INTEGER
-      },
-      description: {
-        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: true,
