@@ -17,7 +17,13 @@ const Itinerary = {
         })
     },
     events (itinerary) {
+      // return eventsArr sorted by day, then loadSequence
       return itinerary.getEvents()
+        .then(eventsArr => {
+          return eventsArr.sort((a, b) => {
+            return a.day - b.day || a.loadSequence - b.loadSequence
+          })
+        })
     }
   },
   Query: {

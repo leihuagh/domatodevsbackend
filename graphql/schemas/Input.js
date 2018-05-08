@@ -6,6 +6,7 @@ const Input = `
   }
 
   input locationDataInput {
+    id: ID
     placeId: String!
     countryCode: String
     name: String
