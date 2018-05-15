@@ -111,6 +111,14 @@ module.exports = {
           updatedAt: new Date()
         })
       }
+      seedArr.push({
+        ItineraryId: i,
+        eventType: 'Lunch, no Location',
+        startDay: 1,
+        loadSequence: 11,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      })
       // seedArr = [event1, event2, event3, event4, event5, event6, event7, event8, event9, event10]
     }
     return queryInterface.bulkInsert('Events', seedArr, {})
