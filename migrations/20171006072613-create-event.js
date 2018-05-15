@@ -36,7 +36,8 @@ module.exports = {
         type: Sequelize.TEXT
       },
       cost: {
-        type: Sequelize.INTEGER
+        // type: Sequelize.INTEGER
+        type: Sequelize.STRING
       },
       currency: {
         type: Sequelize.STRING

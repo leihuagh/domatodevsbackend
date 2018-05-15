@@ -1,4 +1,7 @@
 'use strict'
+
+// LOCATION MODEL NEEDS TO CHANGE. MAPBOX DOES NOT PROVIDE THESE FIELDS.
+
 module.exports = function (sequelize, DataTypes) {
   var Location = sequelize.define('Location', {
     CountryId: DataTypes.INTEGER,

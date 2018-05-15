@@ -21,7 +21,7 @@ const Itinerary = {
       return itinerary.getEvents()
         .then(eventsArr => {
           return eventsArr.sort((a, b) => {
-            return a.day - b.day || a.loadSequence - b.loadSequence
+            return a.startDay - b.startDay || a.loadSequence - b.loadSequence
           })
         })
     }

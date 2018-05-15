@@ -8,7 +8,7 @@ const Event = `
     endTime: Int
     loadSequence: Int
     notes: String
-    cost: Int
+    cost: String
     currency: String
     bookingService: String
     bookingConfirmation: String

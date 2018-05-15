@@ -11,7 +11,8 @@ module.exports = function (sequelize, DataTypes) {
     // load seq is within the day
     loadSequence: DataTypes.INTEGER,
     notes: DataTypes.TEXT,
-    cost: DataTypes.INTEGER,
+    // cost: DataTypes.INTEGER,
+    cost: DataTypes.STRING,
     currency: DataTypes.STRING,
     bookingService: DataTypes.STRING,
     bookingConfirmation: DataTypes.STRING,
