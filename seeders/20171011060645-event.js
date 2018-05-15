@@ -12,16 +12,16 @@ module.exports = {
       for (var j = 1; j <= 6; j++) {
         seedArr.push({
           ItineraryId: i,
-          eventType: '{"blocks":[{"key":"dhq60","text":"Sightseeing","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
+          eventType: 'Sightseeing',
           startDay: 1,
           startTime: 28800 + (j * 3600),
           endTime: 28800 + (j * 3600) + 3600,
           loadSequence: j,
-          notes: '{"blocks":[{"key":"dhq60","text":"Seeded notes in Draft.js JSON. Blah blah blah.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
-          cost: '{"blocks":[{"key":"dhq60","text":"30","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
-          currency: '{"blocks":[{"key":"dhq60","text":"SGD","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
-          bookingService: `{"blocks":[{"key":"dhq60","text":"${faker.internet.url()}","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
-          bookingConfirmation: `{"blocks":[{"key":"dhq60","text":"1234567abcdefg","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
+          notes: 'Seeded notes blah blah blah\nAnother new line',
+          cost: '30',
+          currency: 'SGD',
+          bookingService: faker.internet.url(),
+          bookingConfirmation: '123456abcdefg',
           LocationId: j,
           createdAt: new Date(),
           updatedAt: new Date()
@@ -30,16 +30,16 @@ module.exports = {
       for (var k = 7; k <= 10; k++) {
         seedArr.push({
           ItineraryId: i,
-          eventType: '{"blocks":[{"key":"dhq60","text":"Sightseeing","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
+          eventType: 'Sightseeing',
           startDay: 2,
           startTime: 28800 + ((k - 6) * 3600),
           endTime: 28800 + ((k - 6) * 3600) + 3600,
           loadSequence: (k - 6),
-          notes: '{"blocks":[{"key":"dhq60","text":"Seeded notes in Draft.js JSON. Blah blah blah.","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
-          cost: '{"blocks":[{"key":"dhq60","text":"30","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
-          currency: '{"blocks":[{"key":"dhq60","text":"SGD","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
-          bookingService: `{"blocks":[{"key":"dhq60","text":"${faker.internet.url()}","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
-          bookingConfirmation: `{"blocks":[{"key":"dhq60","text":"1234567abcdefg","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}`,
+          notes: 'More seeded notes',
+          cost: '20000',
+          currency: 'KRW',
+          bookingService: faker.internet.url(),
+          bookingConfirmation: 'abcdef12345',
           LocationId: k,
           createdAt: new Date(),
           updatedAt: new Date()
@@ -47,7 +47,7 @@ module.exports = {
       }
       seedArr.push({
         ItineraryId: i,
-        eventType: '{"blocks":[{"key":"dhq60","text":"Event with NO LOCATION","type":"unstyled","depth":0,"inlineStyleRanges":[],"entityRanges":[],"data":{}}],"entityMap":{}}',
+        eventType: 'Event with NO LOCATION',
         startDay: 2,
         loadSequence: 5,
         createdAt: new Date(),
