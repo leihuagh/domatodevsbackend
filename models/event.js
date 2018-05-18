@@ -16,7 +16,7 @@ module.exports = function (sequelize, DataTypes) {
     currency: DataTypes.STRING,
     bookingService: DataTypes.STRING,
     bookingConfirmation: DataTypes.STRING,
-    LocationId: DataTypes.INTEGER, // Location data is either verified or custom
+    LocationId: DataTypes.INTEGER,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   })
@@ -24,8 +24,6 @@ module.exports = function (sequelize, DataTypes) {
   Event.associate = function (models) {
     Event.belongsTo(models.Itinerary)
     Event.belongsTo(models.Location)
-    // Event.belongsTo(models.CustomLocation)
-    // custom location table, or location table with extra property (custom - Boolean)?
     Event.hasMany(models.Attachment)
   }
 

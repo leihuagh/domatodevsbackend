@@ -2,9 +2,9 @@ const db = require('../connectors')
 
 const Location = {
   Location: {
-    country (location) {
-      return location.getCountry()
-    }
+    // country (location) {
+    //   return location.getCountry()
+    // }
   },
   Query: {
     findLocation: (__, data) => {
