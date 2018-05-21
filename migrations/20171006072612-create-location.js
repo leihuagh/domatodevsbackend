@@ -8,28 +8,28 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      CountryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'Countries'
-          },
-          key: 'id'
-        }
-      },
+      // CountryId: {
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: 'Countries'
+      //     },
+      //     key: 'id'
+      //   }
+      // },
       verified: {
         type: Sequelize.BOOLEAN
       },
-      placeId: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
+      // placeId: {
+      //   allowNull: false,
+      //   type: Sequelize.STRING
+      // },
       name: {
         type: Sequelize.STRING
       },
-      telephone: {
-        type: Sequelize.STRING
-      },
+      // telephone: {
+      //   type: Sequelize.STRING
+      // },
       address: {
         type: Sequelize.STRING
       },
@@ -39,18 +39,18 @@ module.exports = {
       longitude: {
         type: Sequelize.FLOAT
       },
-      utcOffset: {
-        type: Sequelize.INTEGER
-      },
-      openingHours: {
-        type: Sequelize.JSON
-      },
-      openingHoursText: {
-        type: Sequelize.JSON
-      },
-      imageUrl: {
-        type: Sequelize.STRING
-      },
+      // utcOffset: {
+      //   type: Sequelize.INTEGER
+      // },
+      // openingHours: {
+      //   type: Sequelize.JSON
+      // },
+      // openingHoursText: {
+      //   type: Sequelize.JSON
+      // },
+      // imageUrl: {
+      //   type: Sequelize.STRING
+      // },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE

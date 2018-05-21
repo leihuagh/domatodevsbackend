@@ -16,4 +16,5 @@ const Event = `
     attachments: [Attachment]
   }
 `
+
 module.exports = Event

@@ -7,17 +7,11 @@ const Input = `
 
   input locationDataInput {
     id: ID
-    placeId: String!
-    countryCode: String
+    verified: Boolean
     name: String
     address: String
-    telephone: String
     latitude: Float
     longitude: Float
-    utcOffset: Int
-    openingHours: [openingHoursPeriodsInput]
-    openingHoursText: [String]
-    imageUrl: String
   }
 
   input openingHoursPeriodsInput {
@@ -80,3 +74,18 @@ const Input = `
 `
 
 module.exports = Input
+
+// input locationDataInput {
+//   id: ID
+//   placeId: String!
+//   countryCode: String
+//   name: String
+//   address: String
+//   telephone: String
+//   latitude: Float
+//   longitude: Float
+//   utcOffset: Int
+//   openingHours: [openingHoursPeriodsInput]
+//   openingHoursText: [String]
+//   imageUrl: String
+// }
