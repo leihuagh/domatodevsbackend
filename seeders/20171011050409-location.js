@@ -2,7 +2,7 @@
 // const casual = require('casual')
 
 var location1 = {
-  // CountryId: 200,
+  CountryId: 200,
   verified: true,
   // placeId: 'ChIJ483Qk9YX2jERA0VOQV7d1tY',
   name: 'Singapore Changi Airport',
@@ -24,7 +24,7 @@ var location1 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipNnHWWvYGWLjprsAVgRY2d-MONTg_dDzvQTgcOG=w200-k'
 }
 var location2 = {
-  // CountryId: 135,
+  CountryId: 135,
   verified: true,
   // placeId: 'ChIJERKi1IC_zTERC_q1Z7t4J5g',
   name: 'Kuala Lumpur International Airport',
@@ -46,7 +46,7 @@ var location2 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipO6HVtRN8bFWhUmCnJ5-RN2zBYukiGuWmyC2Enk=w200-k'
 }
 var location3 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJWfpeOoOaezUR1L5cy5agS40',
   name: 'Incheon International Airport',
@@ -60,7 +60,7 @@ var location3 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipMtGRXJbYKJlmF8A0Pbh1YbCj-NuhYBZ0ynoM_I=w200-k'
 }
 var location4 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJK_gSweWifDURQr02_87Rayw',
   name: 'Lotte City Hotel Myeongdong',
@@ -74,7 +74,7 @@ var location4 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipNzZakD1Nc4KldwdnqW3Dtvwxwoh39fXvxZ9up4=w200-k'
 }
 var location5 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJ1w5MZ-WifDUR4eOq20PjdpM',
   name: 'MyeongDong Croquette 32G',
@@ -103,7 +103,7 @@ var location5 = {
   // imageUrl: null
 }
 var location6 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJqxQ_G_GifDURDI7jheBrQzs',
   name: 'Myeong-dong',
@@ -117,7 +117,7 @@ var location6 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipOU-XrQBXA8-Zj7H2oa5_air8zwF2WJ0YBBKrlK=w200-k'
 }
 var location7 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJ61qvjvCifDURsgRneJ9Fsg0',
   name: 'Myeongdong Underground Shopping Area',
@@ -147,7 +147,7 @@ var location7 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipMuF82Qmq9Z201EIcXx6SVYi0Z_sO_Vxs1Q_J37=w200-k'
 }
 var location8 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJ1Y4f-PGifDURo2AFC7eDnCY',
   name: 'Lotteria',
@@ -177,7 +177,7 @@ var location8 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipPTWEl81aanh8TyQte73giYSeUOFzN3a3HCr4Yd=w200-k'
 }
 var location9 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJp67IMGeifDURYdGoC7xacH0',
   name: 'Seoul Station',
@@ -191,7 +191,7 @@ var location9 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipMKFrNdgVY0Nd0_xIu9qH5qCHqCENbPjvUlXxjP=w200-k'
 }
 var location10 = {
-  // CountryId: 119,
+  CountryId: 119,
   verified: true,
   // placeId: 'ChIJVZuLL33paDUR9rDfjolmUXI',
   name: 'Busan Station',
