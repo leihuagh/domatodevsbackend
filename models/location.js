@@ -25,6 +25,7 @@ module.exports = function (sequelize, DataTypes) {
       autoIncrement: true,
       type: DataTypes.INTEGER
     },
+    CountryId: DataTypes.INTEGER,
     verified: DataTypes.BOOLEAN,
     name: DataTypes.STRING,
     address: DataTypes.STRING,
@@ -35,7 +36,7 @@ module.exports = function (sequelize, DataTypes) {
   })
 
   Location.associate = function (models) {
-    // Location.belongsTo(models.Country)
+    Location.belongsTo(models.Country)
     Location.hasMany(models.Event)
     Location.hasMany(models.Post)
   }

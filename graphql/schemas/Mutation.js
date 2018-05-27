@@ -18,8 +18,6 @@ const Mutation = `
 
     deleteItinerary(id: ID!): Boolean
 
-    createLocation(placeId: String!, verified: Boolean, CountryId: ID, name:String, telephone: String, latitude:String, longitude:String, address:String, utcOffset: Int, openingHours: String, openingHoursText: String, imageUrl: String): Location
-
     createEvent(ItineraryId: ID!, eventType: String, startDay: Int!, startTime: Int, endTime: Int, loadSequence: Int!, notes: String, cost: String, currency: String, bookingService: String, bookingConfirmation: String, locationData: locationDataInput, LocationId: ID): Event
 
     updateEvent(id: ID!, eventType: String, startDay: Int, startTime: Int, endTime: Int, loadSequence: Int, notes: String, cost: String, currency: String, bookingService: String, bookingConfirmation: String, locationData: locationDataInput, LocationId: ID): Event
@@ -94,3 +92,7 @@ const Mutation = `
   }
 `
 module.exports = Mutation
+
+/*
+createLocation(placeId: String!, verified: Boolean, CountryId: ID, name:String, telephone: String, latitude:String, longitude:String, address:String, utcOffset: Int, openingHours: String, openingHoursText: String, imageUrl: String): Location
+*/

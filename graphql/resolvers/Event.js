@@ -34,13 +34,34 @@ const Event = {
             })
         } else {
           // if unverified, create new row (custom locations r unique to user)
-          eventObj = db.Location.create({
+          let countryCode = data.locationData.countryCode
+          let tempObjForLocation = {
             verified: false,
-            name: locationData.name,
-            address: locationData.address,
-            latitude: locationData.latitude,
-            longitude: locationData.longitude
-          })
+            name: data.locationData.name,
+            address: data.locationData.address,
+            latitude: data.locationData.latitude,
+            longitude: data.locationData.longitude
+          }
+          if (countryCode) {
+            var locationObj = db.Country.find({where: {code: countryCode}})
+              .then(foundCountry => {
+                tempObjForLocation.CountryId = foundCountry.id
+                return tempObjForLocation
+              })
+          } else {
+            locationObj = Promise.resolve(tempObjForLocation)
+          }
+          eventObj = locationObj
+            .then(locationObj => {
+              return db.Location.create({
+                verified: false,
+                name: locationObj.name,
+                address: locationObj.address,
+                latitude: locationObj.latitude,
+                longitude: locationObj.longitude,
+                CountryId: locationObj.CountryId
+              })
+            })
             .then(created => {
               temp.LocationId = created.id
               return temp
@@ -75,13 +96,34 @@ const Event = {
             })
         } else {
           // custom row
-          updatesObj = db.Location.create({
+          let countryCode = data.locationData.countryCode
+          let tempObjForLocation = {
             verified: false,
-            name: locationData.name,
-            address: locationData.address,
-            latitude: locationData.latitude,
-            longitude: locationData.longitude
-          })
+            name: data.locationData.name,
+            address: data.locationData.address,
+            latitude: data.locationData.latitude,
+            longitude: data.locationData.longitude
+          }
+          if (countryCode) {
+            var locationObj = db.Country.find({where: {code: countryCode}})
+              .then(foundCountry => {
+                tempObjForLocation.CountryId = foundCountry.id
+                return tempObjForLocation
+              })
+          } else {
+            locationObj = Promise.resolve(tempObjForLocation)
+          }
+          updatesObj = locationObj
+            .then(locationObj => {
+              return db.Location.create({
+                verified: false,
+                name: locationObj.name,
+                address: locationObj.address,
+                latitude: locationObj.latitude,
+                longitude: locationObj.longitude,
+                CountryId: locationObj.CountryId
+              })
+            })
             .then(created => {
               temp.LocationId = created.id
               return temp

@@ -1,6 +1,8 @@
 const Location = `
   type Location {
     id: ID!
+    CountryId: ID
+    country: Country
     verified: Boolean!
     name: String
     address: String

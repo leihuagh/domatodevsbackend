@@ -12,15 +12,7 @@ const Input = `
     address: String
     latitude: Float
     longitude: Float
-  }
-
-  input openingHoursPeriodsInput {
-    close: periodObjInput
-    open: periodObjInput
-  }
-  input periodObjInput {
-    day: Int
-    time: String
+    countryCode: String
   }
 
   input updateMultiplePostsInput {
@@ -88,4 +80,12 @@ module.exports = Input
 //   openingHours: [openingHoursPeriodsInput]
 //   openingHoursText: [String]
 //   imageUrl: String
+// }
+// input openingHoursPeriodsInput {
+//   close: periodObjInput
+//   open: periodObjInput
+// }
+// input periodObjInput {
+//   day: Int
+//   time: String
 // }

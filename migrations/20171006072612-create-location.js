@@ -8,15 +8,15 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      // CountryId: {
-      //   type: Sequelize.INTEGER,
-      //   references: {
-      //     model: {
-      //       tableName: 'Countries'
-      //     },
-      //     key: 'id'
-      //   }
-      // },
+      CountryId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Countries'
+          },
+          key: 'id'
+        }
+      },
       verified: {
         type: Sequelize.BOOLEAN
       },
