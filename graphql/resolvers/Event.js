@@ -24,6 +24,8 @@ const Event = {
         }
       })
 
+      // NEEDS TESTING. SO FAR NEW EVENT IS EMPTY EVENT. MAP MIGHT CREATE NEW EVENT DIRECTLY FROM LOCATIONOBJ.
+
       if (data.locationData) {
         let locationData = data.locationData
         if (locationData.verified) {
@@ -86,7 +88,7 @@ const Event = {
           temp[key] = data[key]
         }
       })
-      if (data.locationData) {
+      if (('locationData' in data) && data.locationData) {
         let locationData = data.locationData
         if (locationData.verified) {
           var updatesObj = findOrCreateLocation(locationData)
@@ -129,6 +131,9 @@ const Event = {
               return temp
             })
         }
+      } else if (('locationData' in data) && !data.locationData) {
+        temp.LocationId = null
+        updatesObj = Promise.resolve(temp)
       } else {
         updatesObj = Promise.resolve(temp)
       }
