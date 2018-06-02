@@ -76,7 +76,7 @@ const Itinerary = {
           newItinerary[key] = data[key]
         }
       })
-
+      newItinerary.isPrivate = true
       let createdItineraryId = db.Itinerary.create(newItinerary)
         .then(created => {
           return created.id

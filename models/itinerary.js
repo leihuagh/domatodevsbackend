@@ -4,7 +4,8 @@ module.exports = function (sequelize, DataTypes) {
     name: DataTypes.STRING, // eg. Trip to Japan
     description: DataTypes.STRING,
     days: DataTypes.INTEGER, // needed
-    startDate: DataTypes.INTEGER // optional
+    startDate: DataTypes.INTEGER, // optional
+    isPrivate: DataTypes.BOOLEAN
   })
 
   Itinerary.associate = function (models) {

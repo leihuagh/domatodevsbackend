@@ -2,9 +2,10 @@ const Itinerary = `
   type Itinerary {
     id: ID!
     name: String!
-    days: Int!
-    startDate: Int
     description: String
+    days: Int!
+    startDate: Int,
+    isPrivate: Boolean,
     countries: [Country]
     owner: User
     users: [User]

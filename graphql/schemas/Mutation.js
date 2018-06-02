@@ -10,7 +10,7 @@ const Mutation = `
 
     createItinerary(UserId: String!, CountryId: Int, name:String!, days: Int!, startDate:Int, description: String): Itinerary
 
-    updateItineraryDetails(id: ID!, name:String, days: Int, startDate:Int, description: String): Itinerary
+    updateItineraryDetails(id: ID!, name:String, days: Int, startDate:Int, description: String, isPrivate: Boolean): Itinerary
 
     createCountriesItineraries(ItineraryId: ID!, CountryId: ID!): CountriesItineraries
 

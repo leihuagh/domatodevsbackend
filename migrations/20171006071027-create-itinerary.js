@@ -20,6 +20,9 @@ module.exports = {
       startDate: {
         type: Sequelize.INTEGER
       },
+      isPrivate: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: true,
         type: Sequelize.DATE
