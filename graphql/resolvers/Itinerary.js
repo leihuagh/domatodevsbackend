@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 const db = require('../connectors')
 
 const Itinerary = {
@@ -118,9 +120,29 @@ const Itinerary = {
           updates[key] = data[key]
         }
       })
+
       return db.Itinerary.findById(data.id)
-        .then(found => {
-          return found.update(updates)
+        .then(foundItinerary => {
+          let currentDays = foundItinerary.days
+          let newDays = updates.days
+
+          if (newDays < currentDays) {
+            console.log('delete events')
+            return db.Event.destroy({where: {
+              ItineraryId: data.id,
+              startDay: {
+                [Op.gt]: newDays
+              }
+            }})
+              .then(() => {
+                return foundItinerary
+              })
+          } else {
+            return foundItinerary
+          }
+        })
+        .then(foundItinerary => {
+          return foundItinerary.update(updates)
         })
     },
     createCountriesItineraries: (__, data) => {
