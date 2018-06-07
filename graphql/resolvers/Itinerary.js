@@ -1,4 +1,7 @@
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 const db = require('../connectors')
+const _ = require('lodash')
 
 const Itinerary = {
   Itinerary: {
@@ -93,20 +96,20 @@ const Itinerary = {
               return createdItineraryId
             })
         })
-        .then(createdItineraryId => {
-          // if CountryId is passed, create join table row as well
-          if (data.CountryId) {
-            return db.CountriesItineraries.create({
-              CountryId: data.CountryId,
-              ItineraryId: createdItineraryId
-            })
-              .then(() => {
-                return createdItineraryId
-              })
-          } else {
-            return createdItineraryId
-          }
-        })
+        // .then(createdItineraryId => {
+        //   // if CountryId is passed, create join table row as well
+        //   if (data.CountryId) {
+        //     return db.CountriesItineraries.create({
+        //       CountryId: data.CountryId,
+        //       ItineraryId: createdItineraryId
+        //     })
+        //       .then(() => {
+        //         return createdItineraryId
+        //       })
+        //   } else {
+        //     return createdItineraryId
+        //   }
+        // })
         .then(createdItineraryId => {
           return db.Itinerary.findById(createdItineraryId)
         })
@@ -114,13 +117,79 @@ const Itinerary = {
     updateItineraryDetails: (__, data) => {
       var updates = {}
       Object.keys(data).forEach(key => {
-        if (key !== 'id') {
+        if (key !== 'id' && key !== 'countries') {
           updates[key] = data[key]
         }
       })
+
       return db.Itinerary.findById(data.id)
-        .then(found => {
-          return found.update(updates)
+        .then(foundItinerary => {
+          let currentDays = foundItinerary.days
+          let newDays = updates.days
+
+          if (newDays < currentDays) {
+            // console.log('delete events')
+            return db.Event.destroy({where: {
+              ItineraryId: data.id,
+              startDay: {
+                [Op.gt]: newDays
+              }
+            }})
+              .then(() => {
+                return foundItinerary
+              })
+          } else {
+            return foundItinerary
+          }
+        })
+        .then(foundItinerary => {
+          // check countries arr
+          let incomingCountriesArr = data.countries
+          let currentCountriesArr = foundItinerary.getCountries()
+            .then(joinTableRows => {
+              let idArr = joinTableRows.map(e => {
+                // keep all ids as strings for lodash comparison
+                return (e.dataValues.id).toString()
+              })
+              return idArr
+            })
+
+          currentCountriesArr
+            .then(currentCountriesArr => {
+              // console.log('ID ARRAY', currentCountriesArr)
+              // console.log('INCOMING IDS', incomingCountriesArr)
+              let countriesToAdd = _.difference(incomingCountriesArr, currentCountriesArr)
+              let countriesToRemove = _.difference(currentCountriesArr, incomingCountriesArr)
+
+              let countriesPromiseArr = []
+
+              // console.log('countries to add', countriesToAdd)
+              // console.log('countries to remove', countriesToRemove)
+
+              countriesToAdd.forEach(CountryId => {
+                let addRowPromise = db.CountriesItineraries.create({
+                  ItineraryId: data.id,
+                  CountryId: CountryId
+                })
+                countriesPromiseArr.push(addRowPromise)
+              })
+              countriesToRemove.forEach(CountryId => {
+                let removeRowPromise = db.CountriesItineraries.destroy({where: {
+                  ItineraryId: data.id,
+                  CountryId: CountryId
+                }})
+                countriesPromiseArr.push(removeRowPromise)
+              })
+
+              return Promise.all(countriesPromiseArr)
+                // .then(returning => {
+                //   console.log('returning', returning)
+                // })
+            })
+          return foundItinerary
+        })
+        .then(foundItinerary => {
+          return foundItinerary.update(updates)
         })
     },
     createCountriesItineraries: (__, data) => {
