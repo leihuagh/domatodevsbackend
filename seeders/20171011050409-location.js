@@ -9,7 +9,9 @@ var location1 = {
   address: 'Airport Boulevard, Singapore',
   // telephone: '+65 6595 6868',
   latitude: 1.3644202,
-  longitude: 103.9915308
+  longitude: 103.9915308,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 480,
   // openingHours: JSON.stringify([{open: {day: 0, time: '0000'}}]),
   // openingHoursText: JSON.stringify([
@@ -31,7 +33,9 @@ var location2 = {
   address: '64000 Sepang, Selangor, Malaysia',
   // telephone: '+60 3 2000-8776',
   latitude: 2.7350439,
-  longitude: 101.7010435
+  longitude: 101.7010435,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 480,
   // openingHours: JSON.stringify([{open: {day: 0, time: '0000'}}]),
   // openingHoursText: JSON.stringify([
@@ -54,6 +58,8 @@ var location3 = {
   // telephone: '(+82) 1577-2600',
   latitude: 37.4601908,
   longitude: 126.44069569999999,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: null,
   // openingHoursText: null,
@@ -68,6 +74,8 @@ var location4 = {
   // telephone: '(+82) 2-6112-1000',
   latitude: 37.5669163,
   longitude: 126.98797850000005,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: null,
   // openingHoursText: null,
@@ -81,7 +89,9 @@ var location5 = {
   address: '83 Myeongdong-gil, Jeodong 1(il)-ga, Jung-gu, Seoul, South Korea',
   // telephone: '(+82) 2-777-7376',
   latitude: 37.5644811,
-  longitude: 126.98669480000001
+  longitude: 126.98669480000001,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: JSON.stringify([
   //   {open: {day: 0, time: '0900'}, close: {day: 0, time: '1200'}},
@@ -110,7 +120,9 @@ var location6 = {
   address: 'Myeong-dong, Jung-gu, Seoul, South Korea',
   // telephone: null,
   latitude: 37.55997999999999,
-  longitude: 126.98582959999999
+  longitude: 126.98582959999999,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: null,
   // openingHoursText: null,
@@ -124,7 +136,9 @@ var location7 = {
   address: 'South Korea, Seoul, Jung-gu, Chungmuro 2(i)-ga, 65-9 -ga',
   // telephone: null,
   latitude: 37.561131,
-  longitude: 126.98535830000003
+  longitude: 126.98535830000003,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: JSON.stringify([
   //   {open: {day: 0, time: '1000'}, close: {day: 0, time: '2300'}},
@@ -154,7 +168,9 @@ var location8 = {
   address: '81 Namdaemun-ro, Euljiro 1(il)-ga, Jung-gu, Seoul, South Korea',
   // telephone: '(+82) 2-756-7858',
   latitude: 37.56514620000001,
-  longitude: 126.98171920000004
+  longitude: 126.98171920000004,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: JSON.stringify([
   //   {open: {day: 0, time: '0800'}, close: {day: 0, time: '2100'}},
@@ -184,7 +200,9 @@ var location9 = {
   address: '378 Cheongpa-ro, Dongja-dong, Yongsan-gu, 서울특별시 South Korea',
   // telephone: null,
   latitude: 37.553577,
-  longitude: 126.97386800000004
+  longitude: 126.97386800000004,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: null,
   // openingHoursText: null,
@@ -198,7 +216,9 @@ var location10 = {
   address: 'Jungang-daero, Choryang 3(sam)-dong, Dong-gu, 부산광역시 South Korea',
   // telephone: '(+82) 1544-7788',
   latitude: 35.114512,
-  longitude: 129.039356
+  longitude: 129.039356,
+  createdAt: new Date(),
+  updatedAt: new Date()
   // utcOffset: 540,
   // openingHours: null,
   // openingHoursText: null,

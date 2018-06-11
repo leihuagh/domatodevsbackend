@@ -1,37 +1,43 @@
 'use strict'
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('MediaPosts', {
+  up: function (queryInterface, Sequelize) {
+    return queryInterface.createTable('Buckets', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
         autoIncrement: true
       },
-      MediumId: {
-        type: Sequelize.INTEGER,
+      UserId: {
+        type: Sequelize.STRING,
         references: {
           model: {
-            tableName: 'Media'
+            tableName: 'Users'
           },
           key: 'id'
         }
       },
-      PostId: {
+      LocationId: {
         type: Sequelize.INTEGER,
         references: {
           model: {
-            tableName: 'Posts'
+            tableName: 'Locations'
           },
           key: 'id'
         }
       },
-      loadSequence: {
-        type: Sequelize.INTEGER
-      },
-      caption: {
+      notes: {
         type: Sequelize.STRING
+      },
+      eventType: {
+        type: Sequelize.STRING
+      },
+      thumbnailUrl: {
+        type: Sequelize.STRING
+      },
+      visited: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         type: Sequelize.DATE
@@ -42,7 +48,7 @@ module.exports = {
     })
   },
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('MediaPosts')
+  down: function (queryInterface, Sequelize) {
+    return queryInterface.dropTable('Buckets')
   }
 }

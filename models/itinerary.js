@@ -1,11 +1,33 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
   var Itinerary = sequelize.define('Itinerary', {
-    name: DataTypes.STRING, // eg. Trip to Japan
-    description: DataTypes.STRING,
-    days: DataTypes.INTEGER, // needed
-    startDate: DataTypes.INTEGER, // optional
-    isPrivate: DataTypes.BOOLEAN
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    name: {
+      type: DataTypes.STRING
+    },
+    description: {
+      type: DataTypes.STRING
+    },
+    days: {
+      type: DataTypes.INTEGER
+    },
+    startDate: {
+      type: DataTypes.INTEGER
+    },
+    isPrivate: {
+      type: DataTypes.BOOLEAN
+    },
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
   })
 
   Itinerary.associate = function (models) {

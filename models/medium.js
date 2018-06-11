@@ -1,11 +1,39 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
   var Medium = sequelize.define('Medium', {
-    AlbumId: DataTypes.INTEGER,
-    type: DataTypes.STRING, // 'Photo' or 'Youtube',
-    objectName: DataTypes.STRING,
-    imageUrl: DataTypes.TEXT, // either photo url in storage, or youtube thumbnail
-    youtubeUrl: DataTypes.TEXT // full embed url
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    AlbumId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Albums'
+        },
+        key: 'id'
+      }
+    },
+    type: {
+      type: DataTypes.STRING
+    },
+    objectName: {
+      type: DataTypes.STRING
+    },
+    imageUrl: {
+      type: DataTypes.TEXT
+    },
+    youtubeUrl: {
+      type: DataTypes.TEXT
+    },
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
   })
 
   Medium.associate = function (models) {

@@ -7,10 +7,36 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
       autoIncrement: true
     },
-    MediumId: DataTypes.INTEGER,
-    PostId: DataTypes.INTEGER,
-    loadSequence: DataTypes.INTEGER,
-    caption: DataTypes.STRING
+    MediumId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Media'
+        },
+        key: 'id'
+      }
+    },
+    PostId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Posts'
+        },
+        key: 'id'
+      }
+    },
+    loadSequence: {
+      type: DataTypes.INTEGER
+    },
+    caption: {
+      type: DataTypes.STRING
+    },
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
   })
   return MediaPosts
 }

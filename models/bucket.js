@@ -1,35 +1,41 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
-  var MediaBlogs = sequelize.define('MediaBlogs', {
+  var Bucket = sequelize.define('Bucket', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
       autoIncrement: true
     },
-    MediumId: {
-      type: DataTypes.INTEGER,
+    UserId: {
+      type: DataTypes.STRING,
       references: {
         model: {
-          tableName: 'Media'
+          tableName: 'Users'
         },
         key: 'id'
       }
     },
-    BlogId: {
+    LocationId: {
       type: DataTypes.INTEGER,
       references: {
         model: {
-          tableName: 'Blogs'
+          tableName: 'Locations'
         },
         key: 'id'
       }
     },
-    loadSequence: {
-      type: DataTypes.INTEGER
-    },
-    caption: {
+    notes: {
       type: DataTypes.STRING
+    },
+    eventType: {
+      type: DataTypes.STRING
+    },
+    thumbnailUrl: {
+      type: DataTypes.STRING
+    },
+    visited: {
+      type: DataTypes.BOOLEAN
     },
     createdAt: {
       type: DataTypes.DATE
@@ -39,14 +45,10 @@ module.exports = function (sequelize, DataTypes) {
     }
   })
 
-  // MediaBlogs.associate = function (models) {
-  //   MediaBlogs.belongsTo(models.Medium, {
-  //     foreignKey: 'MediumId'
-  //   })
-  //   MediaBlogs.belongsTo(models.Blog, {
-  //     foreignKey: 'BlogId'
-  //   })
-  // }
+  Bucket.associate = function (models) {
+    Bucket.belongsTo(models.User)
+    Bucket.belongsTo(models.Location)
+  }
 
-  return MediaBlogs
+  return Bucket
 }

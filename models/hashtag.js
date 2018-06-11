@@ -1,7 +1,22 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
   var Hashtag = sequelize.define('Hashtag', {
-    name: DataTypes.STRING
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    name: {
+      type: DataTypes.STRING,
+      unique: true
+    },
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
   })
 
   Hashtag.associate = function (models) {

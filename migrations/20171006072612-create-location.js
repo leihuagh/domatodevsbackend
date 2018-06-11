@@ -20,16 +20,9 @@ module.exports = {
       verified: {
         type: Sequelize.BOOLEAN
       },
-      // placeId: {
-      //   allowNull: false,
-      //   type: Sequelize.STRING
-      // },
       name: {
         type: Sequelize.STRING
       },
-      // telephone: {
-      //   type: Sequelize.STRING
-      // },
       address: {
         type: Sequelize.STRING
       },
@@ -39,24 +32,10 @@ module.exports = {
       longitude: {
         type: Sequelize.FLOAT
       },
-      // utcOffset: {
-      //   type: Sequelize.INTEGER
-      // },
-      // openingHours: {
-      //   type: Sequelize.JSON
-      // },
-      // openingHoursText: {
-      //   type: Sequelize.JSON
-      // },
-      // imageUrl: {
-      //   type: Sequelize.STRING
-      // },
       createdAt: {
-        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE
       }
     })

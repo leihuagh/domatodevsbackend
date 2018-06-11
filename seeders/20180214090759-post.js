@@ -9,7 +9,9 @@ module.exports = {
         loadSequence: 2,
         textContent: '',
         title: 'e-Visa',
-        contentOnly: true
+        contentOnly: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
       seedArr.push({
         BlogId: i,
@@ -21,7 +23,9 @@ module.exports = {
         description: 'Seeded Description 2',
         startDay: 1,
         endDay: 1,
-        LocationId: 1
+        LocationId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
       seedArr.push({
         BlogId: i,
@@ -34,7 +38,9 @@ module.exports = {
         description: 'Seeded Description 3',
         startDay: 1,
         endDay: 1,
-        LocationId: 1
+        LocationId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
     }
     return queryInterface.bulkInsert('Posts', seedArr, {})

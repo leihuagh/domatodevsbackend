@@ -7,12 +7,16 @@ module.exports = {
       seedArr.push({
         BlogId: i,
         loadSequence: 1,
-        title: 'Seeded Header 1 --- Before the Trip'
+        title: 'Seeded Header 1 --- Before the Trip',
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
       seedArr.push({
         BlogId: i,
         loadSequence: 3,
-        title: 'Seeded Header 2 --- Day 1'
+        title: 'Seeded Header 2 --- Day 1',
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
     }
     return queryInterface.bulkInsert('BlogHeadings', seedArr, {})

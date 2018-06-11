@@ -93,14 +93,18 @@ module.exports = {
           MediumId: j,
           PostId: (3 * i) + 1,
           loadSequence: j,
-          caption: `Seeded caption ${j}`
+          caption: `Seeded caption ${j}`,
+          createdAt: new Date(),
+          updatedAt: new Date()
         })
       }
       seedArr.push({
         MediumId: 1,
         PostId: (3 * i) + 2,
         loadSequence: 1,
-        caption: `Seeded caption`
+        caption: `Seeded caption`,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
     }
 
