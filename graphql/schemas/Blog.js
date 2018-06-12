@@ -11,6 +11,7 @@ const Blog = `
     headings: [BlogHeading]
     posts: [Post]
     medium: Medium
+    caption: String
     hashtags: [Hashtag]
     views: Int
     shares: Int

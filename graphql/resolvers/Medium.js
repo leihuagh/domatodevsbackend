@@ -143,65 +143,65 @@ const Medium = {
 
     /* ----------------------------- */
 
-    createMediaBlog: (__, data) => {
-      // console.log('data', data)
-      return db.MediaBlogs.create({
-        MediumId: data.MediumId,
-        BlogId: data.BlogId,
-        loadSequence: data.loadSequence,
-        caption: data.caption
-      })
-        .then(created => {
-          // console.log('created', created)
-          return created
-        })
-    },
-    deleteMediaBlog: (__, data) => {
-      console.log('data', data)
-      // remove by join table row id.
-      return db.MediaBlogs.destroy({where: {
-        id: data.id
-      }})
-    },
-    updateMediaBlog: (__, data) => {
-      // console.log('data received', data)
-      // join table row id
-      var updatesObj = {}
-      let fields = ['loadSequence', 'caption']
-      fields.forEach(field => {
-        if (field in data) {
-          updatesObj[field] = data[field]
-        }
-      })
-      // if (data.loadSequence) {
-      //   updatesObj.loadSequence = data.loadSequence
-      // }
-      // if (data.caption) {
-      //   updatesObj.caption = data.caption
-      // }
-      return db.MediaBlogs.findById(data.id)
-        .then(found => {
-          return found.update(updatesObj)
-        })
-    },
-    reorderMediaBlog: (__, data) => {
-      // console.log('data', data)
-      let arr = data.input
-      // console.log('arr', arr)
-      let promiseArr = []
-      arr.forEach(e => {
-        let updatePromise = db.MediaBlogs.findById(e.id)
-          .then(found => {
-            return found.update({loadSequence: e.loadSequence})
-          })
-        promiseArr.push(updatePromise)
-      })
-      return Promise.all(promiseArr)
-        .then(values => {
-          console.log('values', values)
-          return values
-        })
-    },
+    // createMediaBlog: (__, data) => {
+    //   // console.log('data', data)
+    //   return db.MediaBlogs.create({
+    //     MediumId: data.MediumId,
+    //     BlogId: data.BlogId,
+    //     loadSequence: data.loadSequence,
+    //     caption: data.caption
+    //   })
+    //     .then(created => {
+    //       // console.log('created', created)
+    //       return created
+    //     })
+    // },
+    // deleteMediaBlog: (__, data) => {
+    //   console.log('data', data)
+    //   // remove by join table row id.
+    //   return db.MediaBlogs.destroy({where: {
+    //     id: data.id
+    //   }})
+    // },
+    // updateMediaBlog: (__, data) => {
+    //   // console.log('data received', data)
+    //   // join table row id
+    //   var updatesObj = {}
+    //   let fields = ['loadSequence', 'caption']
+    //   fields.forEach(field => {
+    //     if (field in data) {
+    //       updatesObj[field] = data[field]
+    //     }
+    //   })
+    //   // if (data.loadSequence) {
+    //   //   updatesObj.loadSequence = data.loadSequence
+    //   // }
+    //   // if (data.caption) {
+    //   //   updatesObj.caption = data.caption
+    //   // }
+    //   return db.MediaBlogs.findById(data.id)
+    //     .then(found => {
+    //       return found.update(updatesObj)
+    //     })
+    // },
+    // reorderMediaBlog: (__, data) => {
+    //   // console.log('data', data)
+    //   let arr = data.input
+    //   // console.log('arr', arr)
+    //   let promiseArr = []
+    //   arr.forEach(e => {
+    //     let updatePromise = db.MediaBlogs.findById(e.id)
+    //       .then(found => {
+    //         return found.update({loadSequence: e.loadSequence})
+    //       })
+    //     promiseArr.push(updatePromise)
+    //   })
+    //   return Promise.all(promiseArr)
+    //     .then(values => {
+    //       console.log('values', values)
+    //       return values
+    //     })
+    // },
 
     /* ----------------------------- */
 

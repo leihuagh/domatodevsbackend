@@ -30,7 +30,7 @@
 
     createBlog(UserId: ID!, title: String, textContent: String) : Blog
 
-    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean, hashtags:[String], media:[updateBlogMediaInput]): Blog
+    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean, hashtags:[String]): Blog
 
     deleteBlog(id: ID!): Boolean
 
@@ -77,6 +77,10 @@
     createHashtagPost(PostId: ID!, name: String!): HashtagsPosts
 
     deleteHashtagPost(id: ID!): Boolean
+
+    createHashtagBlog(BlogId: ID!, name: String!): HashtagsBlogs
+
+    deleteHashtagBlog(id: ID!): Boolean
   }
 `
 module.exports = Mutation
@@ -86,9 +90,6 @@ createLocation(placeId: String!, verified: Boolean, CountryId: ID, name:String, 
 */
 
 /*
-createHashtagBlog(BlogId: ID!, name: String!): HashtagsBlogs
-
-deleteHashtagBlog(id: ID!): Boolean
 
 reorderMediaBlog(input: [reorderMediaBlogInput]): Boolean
 
