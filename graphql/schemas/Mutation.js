@@ -1,4 +1,4 @@
-const Mutation = `
+ const Mutation = `
   type Mutation {
     changingLoadSequence(input:[changingLoadSequenceInput]): Boolean
 
@@ -62,12 +62,6 @@ const Mutation = `
 
     deleteMedia(input: [ID]!): Boolean
 
-    createMediaBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
-
-    deleteMediaBlog(id: ID!): Boolean
-
-    updateMediaBlog(id:ID!, loadSequence: Int, caption: String): MediaBlogs
-
     createMediaPost(PostId: ID!, MediumId: ID!, loadSequence: Int!, caption: String): MediaPosts
 
     deleteMediaPost(id: ID!): Boolean
@@ -76,15 +70,9 @@ const Mutation = `
 
     toggleBlogLikes(BlogId: ID!, UserId: ID!): Boolean
 
-    reorderMediaBlog(input: [reorderMediaBlogInput]): Boolean
-
     reorderMediaPost(input: [reorderMediaPostInput]): Boolean
 
     reorderBlogContent(input: [reorderBlogContentInput]): Boolean
-
-    createHashtagBlog(BlogId: ID!, name: String!): HashtagsBlogs
-
-    deleteHashtagBlog(id: ID!): Boolean
 
     createHashtagPost(PostId: ID!, name: String!): HashtagsPosts
 
@@ -95,4 +83,18 @@ module.exports = Mutation
 
 /*
 createLocation(placeId: String!, verified: Boolean, CountryId: ID, name:String, telephone: String, latitude:String, longitude:String, address:String, utcOffset: Int, openingHours: String, openingHoursText: String, imageUrl: String): Location
+*/
+
+/*
+createHashtagBlog(BlogId: ID!, name: String!): HashtagsBlogs
+
+deleteHashtagBlog(id: ID!): Boolean
+
+reorderMediaBlog(input: [reorderMediaBlogInput]): Boolean
+
+createMediaBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
+
+deleteMediaBlog(id: ID!): Boolean
+
+updateMediaBlog(id:ID!, loadSequence: Int, caption: String): MediaBlogs
 */

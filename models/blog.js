@@ -25,28 +25,38 @@ module.exports = function (sequelize, DataTypes) {
         key: 'id'
       }
     },
-    textContent: DataTypes.TEXT, // draft js json string
+    // textContent: DataTypes.TEXT, // draft js json string
     title: DataTypes.STRING,
     published: DataTypes.BOOLEAN,
     publishDate: DataTypes.DATE, // js date obj
     views: DataTypes.INTEGER,
     shares: DataTypes.INTEGER,
     days: DataTypes.INTEGER,
+    MediumId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Media'
+        },
+        key: 'id'
+      }
+    },
+    caption: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   })
 
   Blog.associate = function (models) {
     Blog.belongsTo(models.User)
+    Blog.belongsTo(models.Itinerary)
+
     Blog.hasMany(models.BlogHeading)
     Blog.hasMany(models.Post)
+    Blog.belongsTo(models.Medium)
     // belongsToMany (join tables)
     Blog.belongsToMany(models.User, {
       as: 'Likes',
       through: 'BlogLikesUsers'
-    })
-    Blog.belongsToMany(models.Medium, {
-      through: 'MediaBlogs'
     })
     Blog.belongsToMany(models.Hashtag, {
       through: 'HashtagsBlogs'

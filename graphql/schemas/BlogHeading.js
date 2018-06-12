@@ -4,6 +4,8 @@ const BlogHeading = `
     BlogId: ID!
     loadSequence: Int
     title: String
+    medium: Medium
+    caption: String
   }
 `
 module.exports = BlogHeading

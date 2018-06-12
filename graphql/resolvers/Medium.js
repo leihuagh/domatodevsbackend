@@ -16,13 +16,13 @@ const Medium = {
           return found
         })
     },
-    findMediaBlog: (__, data) => {
-      return db.MediaBlogs.findById(data.id)
-        .then(found => {
-          console.log('found', found)
-          return found
-        })
-    },
+    // findMediaBlog: (__, data) => {
+    //   return db.MediaBlogs.findById(data.id)
+    //     .then(found => {
+    //       console.log('found', found)
+    //       return found
+    //     })
+    // },
     findMediaPost: (__, data) => {
       return db.MediaPosts.findById(data.id)
         .then(found => {

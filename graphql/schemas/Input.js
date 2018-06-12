@@ -29,11 +29,6 @@ const Input = `
     eventType: String
   }
 
-  input reorderMediaBlogInput {
-    id: ID!
-    loadSequence: Int!
-  }
-
   input reorderMediaPostInput {
     id: ID!
     loadSequence: Int!
@@ -51,12 +46,6 @@ const Input = `
     caption: String
   }
 
-  input updateBlogMediaInput {
-    MediumId: ID!
-    loadSequence: Int
-    caption: String
-  }
-
   input createMediaInput {
     type: String!
     objectName: String
@@ -67,25 +56,14 @@ const Input = `
 
 module.exports = Input
 
-// input locationDataInput {
-//   id: ID
-//   placeId: String!
-//   countryCode: String
-//   name: String
-//   address: String
-//   telephone: String
-//   latitude: Float
-//   longitude: Float
-//   utcOffset: Int
-//   openingHours: [openingHoursPeriodsInput]
-//   openingHoursText: [String]
-//   imageUrl: String
-// }
-// input openingHoursPeriodsInput {
-//   close: periodObjInput
-//   open: periodObjInput
-// }
-// input periodObjInput {
-//   day: Int
-//   time: String
-// }
+/*
+input reorderMediaBlogInput {
+  id: ID!
+  loadSequence: Int!
+}
+input updateBlogMediaInput {
+  MediumId: ID!
+  loadSequence: Int
+  caption: String
+}
+*/

@@ -38,11 +38,10 @@ module.exports = function (sequelize, DataTypes) {
 
   Medium.associate = function (models) {
     Medium.belongsTo(models.Album)
+    Medium.hasMany(models.Blog)
+    Medium.hasMany(models.BlogHeading)
     Medium.belongsToMany(models.Post, {
       through: 'MediaPosts'
-    })
-    Medium.belongsToMany(models.Blog, {
-      through: 'MediaBlogs'
     })
   }
 

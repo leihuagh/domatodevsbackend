@@ -25,10 +25,11 @@ var db = {
   Album: sequelize.import('../models/album'),
   Medium: sequelize.import('../models/medium'),
   MediaPosts: sequelize.import('../models/mediaposts'),
-  MediaBlogs: sequelize.import('../models/mediablogs'),
+  // MediaBlogs: sequelize.import('../models/mediablogs'),
   Hashtag: sequelize.import('../models/hashtag'),
   HashtagsBlogs: sequelize.import('../models/hashtagsblogs'),
-  HashtagsPosts: sequelize.import('../models/hashtagsposts')
+  HashtagsPosts: sequelize.import('../models/hashtagsposts'),
+  Bucket: sequelize.import('../models/bucket')
 }
 
 Object.keys(db).forEach(function (modelName) {

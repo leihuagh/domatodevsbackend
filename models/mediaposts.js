@@ -38,5 +38,11 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.DATE
     }
   })
+
+  // MediaPosts.associate = function (models) {
+  //   MediaPosts.belongsTo(models.Post)
+  //   MediaPosts.belongsTo(models.Medium)
+  // }
+
   return MediaPosts
 }

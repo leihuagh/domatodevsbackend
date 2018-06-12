@@ -6,6 +6,8 @@ module.exports = {
     for (var i = 1; i <= 10; i++) {
       seedArr.push({
         BlogId: i,
+        MediumId: 2,
+        caption: 'Photo for blog header page',
         loadSequence: 1,
         title: 'Seeded Header 1 --- Before the Trip',
         createdAt: new Date(),
@@ -13,6 +15,8 @@ module.exports = {
       })
       seedArr.push({
         BlogId: i,
+        MediumId: 3,
+        caption: 'Another photo for blog header',
         loadSequence: 3,
         title: 'Seeded Header 2 --- Day 1',
         createdAt: new Date(),

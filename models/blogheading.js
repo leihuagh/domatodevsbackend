@@ -16,6 +16,16 @@ module.exports = function (sequelize, DataTypes) {
       },
       key: 'id'
     },
+    MediumId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Media'
+        },
+        key: 'id'
+      }
+    },
+    caption: DataTypes.STRING,
     loadSequence: DataTypes.INTEGER,
     title: DataTypes.STRING,
     createdAt: DataTypes.DATE,
@@ -24,6 +34,7 @@ module.exports = function (sequelize, DataTypes) {
 
   BlogHeading.associate = function (models) {
     BlogHeading.belongsTo(models.Blog)
+    BlogHeading.belongsTo(models.Medium)
   }
 
   return BlogHeading

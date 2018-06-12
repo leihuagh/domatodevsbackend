@@ -34,6 +34,8 @@ module.exports = function (sequelize, DataTypes) {
     Itinerary.belongsToMany(models.User, {through: 'UsersItineraries'})
     Itinerary.belongsToMany(models.Country, {through: 'CountriesItineraries'})
     Itinerary.hasMany(models.Event)
+
+    Itinerary.hasMany(models.Blog)
   }
 
   Itinerary.beforeDestroy((instance, options) => {

@@ -21,7 +21,6 @@ const Query = `
     findAlbum(id: ID!): Album
     getUserAlbums: [Album]
     findMedium(id: ID!): Medium
-    findMediaBlog(id: ID!): MediaBlogs
     findMediaPost(id: ID!): MediaPosts
     findHashtag(id: ID!): Hashtag
     getAllHashtags: [Hashtag]

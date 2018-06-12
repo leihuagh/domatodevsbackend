@@ -17,6 +17,16 @@ module.exports = {
         },
         key: 'id'
       },
+      MediumId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Media'
+          },
+          key: 'id'
+        }
+      },
+      caption: Sequelize.STRING,
       loadSequence: {
         type: Sequelize.INTEGER
       },
