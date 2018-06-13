@@ -17,16 +17,6 @@ module.exports = function (sequelize, DataTypes) {
       },
       key: 'id'
     },
-    // ParentPostId: {
-    //   allowNull: true,
-    //   type: DataTypes.INTEGER,
-    //   references: {
-    //     model: {
-    //       tableName: 'Posts'
-    //     }
-    //   },
-    //   key: 'id'
-    // },
     LocationId: {
       allowNull: true,
       type: DataTypes.INTEGER,

@@ -16,13 +16,6 @@ const Medium = {
           return found
         })
     },
-    // findMediaBlog: (__, data) => {
-    //   return db.MediaBlogs.findById(data.id)
-    //     .then(found => {
-    //       console.log('found', found)
-    //       return found
-    //     })
-    // },
     findMediaPost: (__, data) => {
       return db.MediaPosts.findById(data.id)
         .then(found => {
@@ -32,14 +25,6 @@ const Medium = {
     }
   },
   Mutation: {
-    // frontend will pass an arr of medium to create. might be photo or video
-    // createMedium: (__, data) => {
-    //   return db.Medium.create({
-    //     type: data.type,
-    //     imageUrl: data.imageUrl,
-    //     youtubeUrl: data.youtubeUrl
-    //   })
-    // },
     // type is either Photo or Youtube
     createMedia: (__, data) => {
       let mediaInputArr = data.media
@@ -62,7 +47,7 @@ const Medium = {
     },
     /*
     ( ) exchange credentials for cloud token
-    ( ) for each MediumId, find MediaBlog, MediaPost and delete
+    ( ) for each MediumId, find MediaPost and delete
     ( ) if type is 'Photo', delete from cloud
     ( ) finally, delete Medium row
     ( ) wait for all medium row promises. then return boolean
@@ -79,11 +64,9 @@ const Medium = {
           let mediaPromiseArr = []
 
           data.input.forEach(id => {
-            let deleteMediaBlogsPromise = db.MediaBlogs.destroy({where: {MediumId: id}})
             let deleteMediaPostsPromise = db.MediaPosts.destroy({where: {MediumId: id}})
-            // let foundMedium = db.Medium.findById(id)
 
-            let deleteMediumCombinedPromise = Promise.all([deleteMediaBlogsPromise, deleteMediaPostsPromise])
+            deleteMediaPostsPromise
               .then(() => {
                 return db.Medium.findById(id)
                   .then(foundMedium => {
@@ -113,7 +96,7 @@ const Medium = {
                     return foundMedium.destroy()
                   })
               })
-            mediaPromiseArr.push(deleteMediumCombinedPromise)
+            mediaPromiseArr.push(deleteMediaPostsPromise)
           }) // close input.foreach
           return Promise.all(mediaPromiseArr)
             .then(values => {
@@ -143,68 +126,6 @@ const Medium = {
 
     /* ----------------------------- */
 
-    // createMediaBlog: (__, data) => {
-    //   // console.log('data', data)
-    //   return db.MediaBlogs.create({
-    //     MediumId: data.MediumId,
-    //     BlogId: data.BlogId,
-    //     loadSequence: data.loadSequence,
-    //     caption: data.caption
-    //   })
-    //     .then(created => {
-    //       // console.log('created', created)
-    //       return created
-    //     })
-    // },
-    // deleteMediaBlog: (__, data) => {
-    //   console.log('data', data)
-    //   // remove by join table row id.
-    //   return db.MediaBlogs.destroy({where: {
-    //     id: data.id
-    //   }})
-    // },
-    // updateMediaBlog: (__, data) => {
-    //   // console.log('data received', data)
-    //   // join table row id
-    //   var updatesObj = {}
-    //   let fields = ['loadSequence', 'caption']
-    //   fields.forEach(field => {
-    //     if (field in data) {
-    //       updatesObj[field] = data[field]
-    //     }
-    //   })
-    //   // if (data.loadSequence) {
-    //   //   updatesObj.loadSequence = data.loadSequence
-    //   // }
-    //   // if (data.caption) {
-    //   //   updatesObj.caption = data.caption
-    //   // }
-    //   return db.MediaBlogs.findById(data.id)
-    //     .then(found => {
-    //       return found.update(updatesObj)
-    //     })
-    // },
-    // reorderMediaBlog: (__, data) => {
-    //   // console.log('data', data)
-    //   let arr = data.input
-    //   // console.log('arr', arr)
-    //   let promiseArr = []
-    //   arr.forEach(e => {
-    //     let updatePromise = db.MediaBlogs.findById(e.id)
-    //       .then(found => {
-    //         return found.update({loadSequence: e.loadSequence})
-    //       })
-    //     promiseArr.push(updatePromise)
-    //   })
-    //   return Promise.all(promiseArr)
-    //     .then(values => {
-    //       console.log('values', values)
-    //       return values
-    //     })
-    // },
-
-    /* ----------------------------- */
-
     createMediaPost: (__, data) => {
       // console.log('data', data)
       return db.MediaPosts.create({
@@ -229,12 +150,6 @@ const Medium = {
           updatesObj[field] = data[field]
         }
       })
-      // if (data.loadSequence) {
-      //   updatesObj.loadSequence = data.loadSequence
-      // }
-      // if (data.caption) {
-      //   updatesObj.caption = data.caption
-      // }
       return db.MediaPosts.findById(data.id)
         .then(found => {
           return found.update(updatesObj)

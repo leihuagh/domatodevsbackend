@@ -5,15 +5,15 @@ const findOrCreateHashtag = require('./helpers/findOrCreateHashtag')
 
 const Blog = {
   Blog: {
-    posts (blog) {
-      return blog.getPosts()
-    },
+    // posts (blog) {
+    //   return blog.getPosts()
+    // },
     hashtags (blog) {
       return blog.getHashtags()
     },
-    headings (blog) {
-      return blog.getBlogHeadings()
-    },
+    // headings (blog) {
+    //   return blog.getBlogHeadings()
+    // },
     user (blog) {
       return blog.getUser()
     },
@@ -119,9 +119,6 @@ const Blog = {
     }
   },
   Query: {
-    // allBlogs: () => {
-    //   return db.Blog.findAll()
-    // },
     getAllPublishedBlogs: () => {
       return db.Blog.findAll({where: {published: true}})
         .then(foundBlogs => {
@@ -141,8 +138,6 @@ const Blog = {
         where: {UserId: context.user}
       })
         .then(foundBlogs => {
-          // console.log('GET USER BLOGS', foundBlogs)
-          // sort by most recent?
           let sortedArray = foundBlogs.sort((a, b) => {
             return moment(a.publishDate).isBefore(moment(b.publishDate))
           })
@@ -344,18 +339,54 @@ const Blog = {
     deleteBlog: (__, data) => {
       // DELETE EVERYTHING TO DO WITH BLOG
       /*
-      perhaps write a beforeDestroy hook.
-      (X) delete all MediaBlogs
-      (X) delete all HashtagsBlogs
-      (X) delete all BlogHeadings
-      (X) delete all MediaPosts
-      (X) delete all HashtagsPosts
-      (X) delete all ChildPosts
-      (X) delete all ParentPosts
-      (X) delete all blogslikesusers
-      (X) then deleteBlog
+        (X) delete HashtagsBlogs
+        (X) delete BlogHeading
+        (X) delete mediaPosts
+        (X) deleteHashtagPosts
+        (X) delete Posts
+        (X) delete BlogLikesUsers
+        (X) delete Blog
       */
+      let BlogId = data.id
 
+      return db.HashtagsBlogs.destroy({where: {BlogId: BlogId}})
+        .then(() => {
+          return db.BlogHeading.destroy({where: {BlogId: BlogId}})
+        })
+        .then(() => {
+          // delete post and its join tables
+          return db.Post.findAll({where: {BlogId: BlogId}})
+            .then(foundPosts => {
+              let deletePostsPromiseArr = []
+              foundPosts.forEach(post => {
+                let deleteMediaPostsPromise = db.MediaPosts.destroy({where: {
+                  PostId: post.id
+                }})
+                let deleteHashtagsPostsPromise = db.HashtagsPosts.destroy({where: {
+                  PostId: post.id
+                }})
+                let deletePostPromise = Promise.all([deleteMediaPostsPromise, deleteHashtagsPostsPromise])
+                  .then(() => {
+                    return post.destroy()
+                  })
+                deletePostsPromiseArr.push(deletePostPromise)
+              }) // close for each
+
+              return Promise.all(deletePostsPromiseArr)
+                .then(values => {
+                  console.log('delete all posts and join tables', values)
+                  return true
+                })
+            })
+        })
+        .then(() => {
+          return db.BlogLikesUsers.destroy({where: {
+            BlogId: BlogId
+          }})
+        })
+        .then(() => {
+          return db.Blog.destroy({where: {id: BlogId}})
+        })
       // var BlogId = data.id
       // return db.Blog.findById(BlogId)
       //   .then(() => {

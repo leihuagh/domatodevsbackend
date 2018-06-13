@@ -23,7 +23,10 @@ module.exports = function (sequelize, DataTypes) {
           tableName: 'Media'
         },
         key: 'id'
-      }
+      },
+      allowNull: true,
+      hooks: true,
+      onDelete: 'CASCADE'
     },
     caption: DataTypes.STRING,
     loadSequence: DataTypes.INTEGER,
@@ -34,7 +37,7 @@ module.exports = function (sequelize, DataTypes) {
 
   BlogHeading.associate = function (models) {
     BlogHeading.belongsTo(models.Blog)
-    BlogHeading.belongsTo(models.Medium)
+    BlogHeading.belongsTo(models.Medium, {onDelete: 'CASCADE', hooks: true})
   }
 
   return BlogHeading

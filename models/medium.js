@@ -45,5 +45,32 @@ module.exports = function (sequelize, DataTypes) {
     })
   }
 
+  Medium.beforeDestroy((instance, options) => {
+    // set null on blog, blog headings
+    let removeForeignKeyFromBlogs = sequelize.models.Blog.findAll({where: {
+      MediumId: instance.id
+    }})
+      .then(foundBlogs => {
+        let updateBlogPromiseArr = []
+        foundBlogs.forEach(blog => {
+          let updatePromise = blog.update({MediumId: null})
+          updateBlogPromiseArr.push(updatePromise)
+        })
+        return Promise.all(updateBlogPromiseArr)
+      })
+    let removeForeignKeyFromBlogHeadings = sequelize.models.BlogHeading.findAll({where: {
+      MediumId: instance.id
+    }})
+      .then(foundHeadings => {
+        let updateHeadingsPromiseArr = []
+        foundHeadings.forEach(heading => {
+          let updatePromise = heading.update({MediumId: null})
+          updateHeadingsPromiseArr.push(updatePromise)
+        })
+        return Promise.all(updateHeadingsPromiseArr)
+      })
+    return Promise.all([removeForeignKeyFromBlogs, removeForeignKeyFromBlogHeadings])
+  })
+
   return Medium
 }

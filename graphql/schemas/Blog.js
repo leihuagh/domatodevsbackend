@@ -8,8 +8,6 @@ const Blog = `
     days: Int
     likes: [User]
     pages: [BlogPage]
-    headings: [BlogHeading]
-    posts: [Post]
     medium: Medium
     caption: String
     hashtags: [Hashtag]
@@ -32,4 +30,6 @@ module.exports = Blog
 /*
 media: [MediaBlogObject]
 textContent: String
+headings: [BlogHeading]
+posts: [Post]
 */

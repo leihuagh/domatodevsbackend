@@ -11,14 +11,11 @@ const Post = {
     hashtags (post) {
       return post.getHashtags()
     },
-    // childPosts (post) {
-    //   return post.getChildPosts()
-    // },
     location (post) {
       return post.getLocation()
     },
     media (post) {
-      // REWRITE WITHOUT THE FOR EACH LOOP. MAKE MEDIAPOSTOBJECT
+      // MAKE MEDIAPOSTOBJECT
       let PostId = post.id
       let mediaPostsJoinTableRows = db.MediaPosts.findAll({where: {PostId: PostId}})
 

@@ -39,7 +39,10 @@ module.exports = function (sequelize, DataTypes) {
           tableName: 'Media'
         },
         key: 'id'
-      }
+      },
+      allowNull: true,
+      hooks: true,
+      onDelete: 'CASCADE'
     },
     caption: DataTypes.STRING,
     createdAt: DataTypes.DATE,
@@ -52,7 +55,7 @@ module.exports = function (sequelize, DataTypes) {
 
     Blog.hasMany(models.BlogHeading)
     Blog.hasMany(models.Post)
-    Blog.belongsTo(models.Medium)
+    Blog.belongsTo(models.Medium, {onDelete: 'CASCADE', hooks: true})
     // belongsToMany (join tables)
     Blog.belongsToMany(models.User, {
       as: 'Likes',
