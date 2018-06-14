@@ -44,7 +44,6 @@ module.exports = function (sequelize, DataTypes) {
       hooks: true,
       onDelete: 'CASCADE'
     },
-    caption: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   })

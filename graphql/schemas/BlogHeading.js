@@ -5,7 +5,6 @@ const BlogHeading = `
     loadSequence: Int
     title: String
     medium: Medium
-    caption: String
   }
 `
 module.exports = BlogHeading

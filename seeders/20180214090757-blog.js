@@ -16,8 +16,7 @@ module.exports = {
         published: true,
         publishDate: new Date(2018, 3, i + 1), // (i + 1)th april. 2nd to 11th april
         // ItineraryId: 1
-        MediumId: 1,
-        caption: 'Cover photo for blog'
+        MediumId: 1
       })
     }
     return queryInterface.bulkInsert('Blogs', seedArr, {})

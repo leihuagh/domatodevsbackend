@@ -28,7 +28,6 @@ module.exports = function (sequelize, DataTypes) {
       hooks: true,
       onDelete: 'CASCADE'
     },
-    caption: DataTypes.STRING,
     loadSequence: DataTypes.INTEGER,
     title: DataTypes.STRING,
     createdAt: DataTypes.DATE,

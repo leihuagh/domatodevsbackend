@@ -56,7 +56,6 @@ module.exports = {
           key: 'id'
         }
       },
-      caption: Sequelize.STRING,
       createdAt: {
         type: Sequelize.DATE
       },

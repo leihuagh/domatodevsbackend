@@ -9,7 +9,6 @@ const Blog = `
     likes: [User]
     pages: [BlogPage]
     medium: Medium
-    caption: String
     hashtags: [Hashtag]
     views: Int
     shares: Int

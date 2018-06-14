@@ -28,9 +28,9 @@
 
     deleteAttachment(id: ID!): Boolean
 
-    createBlog(UserId: ID!, title: String, textContent: String) : Blog
+    createBlog(UserId: ID!, title: String) : Blog
 
-    updateBlog(id: ID!, ItineraryId: ID, title: String, textContent: String, days: Int, published: Boolean, hashtags:[String]): Blog
+    updateBlog(id: ID!, ItineraryId: ID, title: String, days: Int, published: Boolean, MediumId: ID, hashtags:[String]): Blog
 
     deleteBlog(id: ID!): Boolean
 
