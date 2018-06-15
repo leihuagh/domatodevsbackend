@@ -57,13 +57,5 @@ const Input = `
 module.exports = Input
 
 /*
-input reorderMediaBlogInput {
-  id: ID!
-  loadSequence: Int!
-}
-input updateBlogMediaInput {
-  MediumId: ID!
-  loadSequence: Int
-  caption: String
-}
+
 */

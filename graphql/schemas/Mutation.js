@@ -38,13 +38,13 @@
 
     createBlogHeading(BlogId: ID!, loadSequence: Int!, title: String): BlogHeading
 
-    updateBlogHeading(id: ID!, loadSequence: Int, title: String): BlogHeading
+    updateBlogHeading(id: ID!, loadSequence: Int, title: String, MediumId: ID): BlogHeading
 
     deleteBlogHeading(id: ID!): Boolean
 
-    createPost(BlogId: ID!, ParentPostId: ID, loadSequence: Int!, title: String): Post
+    createPost(BlogId: ID!, loadSequence: Int!, title: String): Post
 
-    updatePost(id: ID!, ParentPostId: ID, loadSequence: Int, locationData: locationDataInput, LocationId: ID, contentOnly: Boolean, title: String, textContent: String, description: String, eventType: String, start: Boolean, startDay: Int, endDay: Int, startTime: Int, endTime: Int, hashtags: [String], media: [updatePostMediaInput]): Post
+    updatePost(id: ID!, loadSequence: Int, locationData: locationDataInput, LocationId: ID, title: String, textContent: String, eventType: String, bucketCategory: String, startDay: Int, startTime: Int, endTime: Int, hashtags: [String], media: [updatePostMediaInput]): Post
 
     updateMultiplePosts(input: [updateMultiplePostsInput]): Boolean
 
@@ -87,15 +87,4 @@ module.exports = Mutation
 
 /*
 createLocation(placeId: String!, verified: Boolean, CountryId: ID, name:String, telephone: String, latitude:String, longitude:String, address:String, utcOffset: Int, openingHours: String, openingHoursText: String, imageUrl: String): Location
-*/
-
-/*
-
-reorderMediaBlog(input: [reorderMediaBlogInput]): Boolean
-
-createMediaBlog(BlogId: ID!, MediumId:ID!, loadSequence: Int!, caption: String): MediaBlogs
-
-deleteMediaBlog(id: ID!): Boolean
-
-updateMediaBlog(id:ID!, loadSequence: Int, caption: String): MediaBlogs
 */
