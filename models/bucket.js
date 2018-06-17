@@ -31,6 +31,9 @@ module.exports = function (sequelize, DataTypes) {
     eventType: {
       type: DataTypes.STRING
     },
+    bucketCategory: {
+      type: DataTypes.STRING
+    },
     thumbnailUrl: {
       type: DataTypes.STRING
     },

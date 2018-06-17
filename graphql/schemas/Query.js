@@ -24,6 +24,8 @@ const Query = `
     findMediaPost(id: ID!): MediaPosts
     findHashtag(id: ID!): Hashtag
     getAllHashtags: [Hashtag]
+    getUserBucketList: [Bucket]
+    findBucket(id: ID!): Bucket
   }
 `
 module.exports = Query

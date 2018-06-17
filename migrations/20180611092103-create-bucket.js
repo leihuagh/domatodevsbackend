@@ -33,6 +33,9 @@ module.exports = {
       eventType: {
         type: Sequelize.STRING
       },
+      bucketCategory: {
+        type: Sequelize.STRING
+      },
       thumbnailUrl: {
         type: Sequelize.STRING
       },

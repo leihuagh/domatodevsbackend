@@ -225,7 +225,18 @@ var location10 = {
   // imageUrl: 'https://lh3.googleusercontent.com/p/AF1QipOcqRTzEwfYCEa5FF6cScoWaK6J53ZHmVdDJUJ0=w200-k'
 }
 
-var seedArr = [location1, location2, location3, location4, location5, location6, location7, location8, location9, location10]
+var location11 = {
+  CountryId: 200,
+  verified: true,
+  name: 'Fort Siloso',
+  address: 'Siloso Rd, 099981',
+  latitude: 1.258889,
+  longitude: 103.808056,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
+var seedArr = [location1, location2, location3, location4, location5, location6, location7, location8, location9, location10, location11]
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
