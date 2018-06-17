@@ -1,4 +1,5 @@
 const db = require('../connectors')
+const _ = require('lodash')
 
 const Bucket = {
   Bucket: {
@@ -16,9 +17,28 @@ const Bucket = {
         where: {UserId: context.user},
         order: db.sequelize.col('id')
       })
-        .then(bucketList => {
-          console.log('bucket list arr', bucketList)
-          return bucketList
+        .then(bucketRows => {
+          // console.log('bucket rows', bucketRows)
+
+          let countryRows = []
+          bucketRows.forEach(bucket => {
+            let countryRow = bucket.getLocation()
+              .then(locationRow => {
+                // console.log('locationRow', locationRow)
+                return locationRow.getCountry()
+              })
+            countryRows.push(countryRow)
+          })
+
+          return Promise.all(countryRows)
+            .then(unfilteredRows => {
+              let uniqueRows = _.uniqBy(unfilteredRows, 'id')
+              console.log('uniqueRows', uniqueRows)
+              return {
+                buckets: bucketRows,
+                countries: uniqueRows
+              }
+            })
         })
     },
     findBucket: (__, data) => {

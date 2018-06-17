@@ -14,6 +14,94 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date()
     })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 11,
+      notes: 'Duplicate',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 11,
+      notes: 'Duplicate',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 11,
+      notes: 'Duplicate',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 11,
+      notes: 'Duplicate',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 11,
+      notes: 'Duplicate',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 10,
+      notes: 'Remember to bring an umbrella',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 10,
+      notes: 'Remember to bring an umbrella',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
+    seedArr.push({
+      UserId: 'auth0|5ab1dce98bd5067ff5786507',
+      LocationId: 10,
+      notes: 'Remember to bring an umbrella',
+      eventType: 'Sightseeing',
+      bucketCategory: 'Activity',
+      thumbnailUrl: 'http://www.fortsiloso.com/z_images/entrance.jpg',
+      visited: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    })
     return queryInterface.bulkInsert('Buckets', seedArr, {})
   },
 

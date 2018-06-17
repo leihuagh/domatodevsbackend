@@ -60,7 +60,7 @@ function verifyAuth0Token (req, res, next) {
     ignoreExpiration: false,
     algorithms: ['RS256']}, function (err, payload) {
     if (err) {
-      console.log('ACCESS TOKEN MISSING OR NOT VALID')
+      console.log('ACCESS TOKEN MISSING OR NOT VALID', err)
     }
     if (payload) {
       // console.log('payload', payload)

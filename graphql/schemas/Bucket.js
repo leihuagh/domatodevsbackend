@@ -11,6 +11,12 @@ const Bucket = `
     thumbnailUrl: String
     visited: Boolean
   }
+  type BucketList {
+    buckets: [Bucket]
+    countries: [Country]
+  }
 `
 
 module.exports = Bucket
+
+// bucket list is an obj containing user's bucket rows + countries arr

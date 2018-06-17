@@ -24,7 +24,7 @@ const Query = `
     findMediaPost(id: ID!): MediaPosts
     findHashtag(id: ID!): Hashtag
     getAllHashtags: [Hashtag]
-    getUserBucketList: [Bucket]
+    getUserBucketList: BucketList
     findBucket(id: ID!): Bucket
   }
 `
