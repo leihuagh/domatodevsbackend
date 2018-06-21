@@ -236,7 +236,62 @@ var location11 = {
   updatedAt: new Date()
 }
 
-var seedArr = [location1, location2, location3, location4, location5, location6, location7, location8, location9, location10, location11]
+var location12 = {
+  CountryId: 200,
+  verified: true,
+  name: 'Buddha Tooth Relic Temple',
+  address: '288 South Bridge Rd Singapore 058840',
+  latitude: 1.281492,
+  longitude: 103.844319,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
+var location13 = {
+  CountryId: 200,
+  verified: true,
+  name: 'ArtScience Museum',
+  address: '10 Bayfront Avenue, Singapore 018956',
+  latitude: 1.286137,
+  longitude: 103.859276,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
+var location14 = {
+  CountryId: 112,
+  verified: true,
+  name: 'Shinjuky Gyoen National Garden',
+  address: 'Japan, 〒160-0014 Tōkyō-to, Shinjuku-ku, Naitōmachi, 11',
+  latitude: 35.685630,
+  longitude: 139.707707,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
+var location15 = {
+  CountryId: 112,
+  verified: true,
+  name: 'Haneda Airport',
+  address: 'Japan, 〒144-0041 Tokyo, Ōta, Hanedakuko, 3 Chome',
+  latitude: 35.549343,
+  longitude: 139.779996,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
+var location16 = {
+  CountryId: 112,
+  verified: true,
+  name: 'Tokyo Dome',
+  address: 'Japan, 〒112-0004 Tōkyō-to, Bunkyō-ku, Kōraku, 1 Chome−3−61',
+  latitude: 35.705561,
+  longitude: 139.751700,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
+var seedArr = [location1, location2, location3, location4, location5, location6, location7, location8, location9, location10, location11, location12, location13, location14, location15, location16]
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
