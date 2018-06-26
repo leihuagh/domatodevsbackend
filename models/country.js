@@ -1,8 +1,24 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
   var Country = sequelize.define('Country', {
-    name: DataTypes.STRING,
-    code: DataTypes.STRING
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    name: {
+      type: DataTypes.STRING
+    },
+    code: {
+      type: DataTypes.STRING
+    },
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
   })
 
   Country.associate = function (models) {

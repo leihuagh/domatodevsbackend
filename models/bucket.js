@@ -1,35 +1,44 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
-  var MediaPosts = sequelize.define('MediaPosts', {
+  var Bucket = sequelize.define('Bucket', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
       autoIncrement: true
     },
-    MediumId: {
-      type: DataTypes.INTEGER,
+    UserId: {
+      type: DataTypes.STRING,
       references: {
         model: {
-          tableName: 'Media'
+          tableName: 'Users'
         },
         key: 'id'
       }
     },
-    PostId: {
+    LocationId: {
       type: DataTypes.INTEGER,
       references: {
         model: {
-          tableName: 'Posts'
+          tableName: 'Locations'
         },
         key: 'id'
       }
     },
-    loadSequence: {
-      type: DataTypes.INTEGER
-    },
-    caption: {
+    notes: {
       type: DataTypes.STRING
+    },
+    eventType: {
+      type: DataTypes.STRING
+    },
+    bucketCategory: {
+      type: DataTypes.STRING
+    },
+    thumbnailUrl: {
+      type: DataTypes.STRING
+    },
+    visited: {
+      type: DataTypes.BOOLEAN
     },
     createdAt: {
       type: DataTypes.DATE
@@ -39,10 +48,10 @@ module.exports = function (sequelize, DataTypes) {
     }
   })
 
-  // MediaPosts.associate = function (models) {
-  //   MediaPosts.belongsTo(models.Post)
-  //   MediaPosts.belongsTo(models.Medium)
-  // }
+  Bucket.associate = function (models) {
+    Bucket.belongsTo(models.User)
+    Bucket.belongsTo(models.Location)
+  }
 
-  return MediaPosts
+  return Bucket
 }

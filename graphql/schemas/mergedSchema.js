@@ -27,8 +27,9 @@ const Album = require('./Album')
 const Medium = require('./Medium')
 const MediaObject = require('./MediaObject')
 const Hashtag = require('./Hashtag')
+const Bucket = require('./Bucket')
 
 module.exports = makeExecutableSchema({
-  typeDefs: [SchemaDefinition, Query, Mutation, Input, Country, User, Itinerary, Location, Event, Attachment, Event, Blog, BlogHeading, Post, BlogPage, Album, Medium, MediaObject, Hashtag],
+  typeDefs: [SchemaDefinition, Query, Mutation, Input, Country, User, Itinerary, Location, Event, Attachment, Event, Blog, BlogHeading, Post, BlogPage, Album, Medium, MediaObject, Hashtag, Bucket],
   resolvers: mergedResolvers
 })

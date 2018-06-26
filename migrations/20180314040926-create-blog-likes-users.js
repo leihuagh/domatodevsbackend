@@ -3,12 +3,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('BlogLikesUsers', {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: Sequelize.INTEGER
-      // },
       BlogId: {
         type: Sequelize.INTEGER,
         references: {
@@ -28,11 +22,9 @@ module.exports = {
         }
       },
       createdAt: {
-        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE
       }
     })

@@ -8,33 +8,43 @@ module.exports = {
         BlogId: i,
         loadSequence: 2,
         textContent: '',
-        title: 'e-Visa',
-        contentOnly: true
+        title: 'Seeded Post Title',
+        // contentOnly: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
       seedArr.push({
         BlogId: i,
         loadSequence: 4,
         textContent: '',
-        contentOnly: false,
-        eventType: 'Activity',
-        start: true,
-        description: 'Seeded Description 2',
+        title: 'Another Post title',
+        // contentOnly: false,
+        eventType: 'Sight-seeing',
+        bucketCategory: 'Activity',
+        // start: true,
+        // description: 'Seeded Description 2',
         startDay: 1,
-        endDay: 1,
-        LocationId: 1
+        // endDay: 1,
+        LocationId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
       seedArr.push({
         BlogId: i,
-        ParentPostId: (3 * i) - 1,
+        // ParentPostId: (3 * i) - 1,
         loadSequence: 5,
         textContent: '',
-        contentOnly: false,
-        eventType: 'Activity',
-        start: true,
-        description: 'Seeded Description 3',
+        title: 'Yet another post title',
+        // contentOnly: false,
+        eventType: 'Hiking',
+        bucketCategory: 'Location',
+        // start: true,
+        // description: 'Seeded Description 3',
         startDay: 1,
-        endDay: 1,
-        LocationId: 1
+        // endDay: 1,
+        LocationId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
     }
     return queryInterface.bulkInsert('Posts', seedArr, {})

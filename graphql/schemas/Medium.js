@@ -15,13 +15,6 @@ const Medium = `
     loadSequence: Int!
     caption: String
   }
-  type MediaBlogs {
-    id: ID!
-    MediumId: ID!
-    BlogId: ID!
-    loadSequence: Int!
-    caption: String
-  }
 `
 
 module.exports = Medium

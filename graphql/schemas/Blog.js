@@ -3,23 +3,20 @@ const Blog = `
     id: ID!
     UserId: ID
     ItineraryId: ID
-    published: Boolean
     title: String
-    textContent: String
     user: User
-    views: Int
-    shares: Int
     days: Int
     likes: [User]
-    headings: [BlogHeading]
-    posts: [Post]
     pages: [BlogPage]
-    media: [MediaBlogObject]
+    medium: Medium
     hashtags: [Hashtag]
-    createdAt: String
-    updatedAt: String
+    views: Int
+    shares: Int
+    published: Boolean
     publishDate: String
     timeFromPublishDate: String
+    createdAt: String
+    updatedAt: String
   }
 
   type BlogLikesUsers {
@@ -28,3 +25,10 @@ const Blog = `
   }
 `
 module.exports = Blog
+
+/*
+media: [MediaBlogObject]
+textContent: String
+headings: [BlogHeading]
+posts: [Post]
+*/

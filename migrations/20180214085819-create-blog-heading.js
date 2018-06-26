@@ -17,6 +17,15 @@ module.exports = {
         },
         key: 'id'
       },
+      MediumId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Media'
+          },
+          key: 'id'
+        }
+      },
       loadSequence: {
         type: Sequelize.INTEGER
       },
@@ -24,11 +33,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       createdAt: {
-        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE
       }
     })

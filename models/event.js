@@ -1,7 +1,30 @@
 'use strict'
 module.exports = function (sequelize, DataTypes) {
   var Event = sequelize.define('Event', {
-    ItineraryId: DataTypes.INTEGER,
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    ItineraryId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Itineraries'
+        },
+        key: 'id'
+      }
+    },
+    LocationId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Locations'
+        },
+        key: 'id'
+      }
+    },
     // user defined string like brunch, train etc
     eventType: DataTypes.STRING,
     startDay: DataTypes.INTEGER,
@@ -16,7 +39,6 @@ module.exports = function (sequelize, DataTypes) {
     currency: DataTypes.STRING,
     bookingService: DataTypes.STRING,
     bookingConfirmation: DataTypes.STRING,
-    LocationId: DataTypes.INTEGER,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   })

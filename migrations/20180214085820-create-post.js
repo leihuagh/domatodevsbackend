@@ -17,16 +17,16 @@ module.exports = {
         },
         key: 'id'
       },
-      ParentPostId: {
-        allowNull: true,
-        type: Sequelize.INTEGER,
-        references: {
-          model: {
-            tableName: 'Posts'
-          }
-        },
-        key: 'id'
-      },
+      // ParentPostId: {
+      //   allowNull: true,
+      //   type: Sequelize.INTEGER,
+      //   references: {
+      //     model: {
+      //       tableName: 'Posts'
+      //     }
+      //   },
+      //   key: 'id'
+      // },
       LocationId: {
         allowNull: true,
         type: Sequelize.INTEGER,
@@ -46,21 +46,21 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
-      contentOnly: {
-        type: Sequelize.BOOLEAN
-      },
-      description: {
-        type: Sequelize.STRING
-      },
-      start: {
-        type: Sequelize.BOOLEAN
-      },
+      // contentOnly: {
+      //   type: Sequelize.BOOLEAN
+      // },
+      // description: {
+      //   type: Sequelize.STRING
+      // },
+      // start: {
+      //   type: Sequelize.BOOLEAN
+      // },
       startDay: {
         type: Sequelize.INTEGER
       },
-      endDay: {
-        type: Sequelize.INTEGER
-      },
+      // endDay: {
+      //   type: Sequelize.INTEGER
+      // },
       startTime: {
         type: Sequelize.INTEGER
       },
@@ -70,12 +70,13 @@ module.exports = {
       eventType: {
         type: Sequelize.STRING
       },
+      bucketCategory: {
+        type: Sequelize.STRING
+      },
       createdAt: {
-        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE
       }
     })

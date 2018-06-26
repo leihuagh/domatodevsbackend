@@ -11,14 +11,11 @@ const Post = {
     hashtags (post) {
       return post.getHashtags()
     },
-    childPosts (post) {
-      return post.getChildPosts()
-    },
     location (post) {
       return post.getLocation()
     },
     media (post) {
-      // REWRITE WITHOUT THE FOR EACH LOOP. MAKE MEDIAPOSTOBJECT
+      // MAKE MEDIAPOSTOBJECT
       let PostId = post.id
       let mediaPostsJoinTableRows = db.MediaPosts.findAll({where: {PostId: PostId}})
 
@@ -61,13 +58,11 @@ const Post = {
   },
   Mutation: {
     createPost: (__, data) => {
-      // console.log('data', data)
+      console.log('data', data)
       return db.Post.create({
         BlogId: data.BlogId,
-        ParentPostId: data.ParentPostId,
         loadSequence: data.loadSequence,
-        title: data.title || 'Default title',
-        contentOnly: true
+        title: data.title || 'Default title'
       })
         .then(created => {
           console.log('createdPost', created)
@@ -77,19 +72,18 @@ const Post = {
     updatePost: (__, data) => {
       console.log('RECEIVED IN UPDATEPOST RESOLVER', data)
       var temp = {}
-      var fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'eventType', 'startDay', 'endDay', 'startTime', 'endTime', 'start', 'contentOnly']
-
-      // if key is passed, update value. might be empty string (delete field)
+      var fields = ['loadSequence', 'title', 'textContent', 'eventType', 'bucketCategory', 'startDay', 'startTime', 'endTime']
       fields.forEach(field => {
         if (field in data) {
           temp[field] = data[field]
         }
       })
 
-      // find or create LocationId if data.googlePlaceData exists
+      // find or create LocationId if data.locationData exists
+      // what if LocationId was passed directly?
       let updatesObj
-      if (data.googlePlaceData) {
-        updatesObj = findOrCreateLocation(data.googlePlaceData)
+      if (data.locationData) {
+        updatesObj = findOrCreateLocation(data.locationData)
           .then(LocationId => {
             temp.LocationId = LocationId
             return temp
@@ -102,8 +96,7 @@ const Post = {
         updatesObj = Promise.resolve(temp)
       }
 
-      // NEED TO CHANGE RESOLVERS. HASHTAGS ARR AND MEDIA ARR MIGHT NOT BE PASSED. IF PROPERTY NOT IN DATA, SKIP THE PROMISE.
-
+      // HASHTAGS ARR AND MEDIA ARR MIGHT NOT BE PASSED. IF PROPERTY NOT IN DATA, SKIP THE PROMISE.
       let incomingHashtags = data.hashtags
       // currentHashtags is [name: String]
       let currentHashtags = db.HashtagsPosts.findAll({where: {PostId: data.id}})
@@ -134,33 +127,30 @@ const Post = {
         .then(currentHashtags => {
           // check if incomingHashtags property exists
           if (incomingHashtags) {
-            // compare incoming hashtags arr with preexisting hashtags
             let hashtagPromiseArr = []
-
             let hashtagsToRemoveFromPost = _.difference(currentHashtags, incomingHashtags)
+            let hashtagsToAddToPost = _.difference(incomingHashtags, currentHashtags)
 
             hashtagsToRemoveFromPost.forEach(string => {
               let deletePromise = db.Hashtag.find({where: {name: string}})
-              .then(found => {
-                return db.HashtagsPosts.destroy({where: {
-                  PostId: data.id,
-                  HashtagId: found.id
-                }})
-              })
+                .then(found => {
+                  return db.HashtagsPosts.destroy({where: {
+                    PostId: data.id,
+                    HashtagId: found.id
+                  }})
+                })
               hashtagPromiseArr.push(deletePromise)
             })
 
-            let hashtagsToAddToPost = _.difference(incomingHashtags, currentHashtags)
-
             hashtagsToAddToPost.forEach(string => {
               let createPromise = findOrCreateHashtag(string)
-              .then(id => {
-                console.log('returning id from helper', id)
-                return db.HashtagsPosts.create({
-                  PostId: data.id,
-                  HashtagId: id
+                .then(id => {
+                  console.log('returning id from helper', id)
+                  return db.HashtagsPosts.create({
+                    PostId: data.id,
+                    HashtagId: id
+                  })
                 })
-              })
               hashtagPromiseArr.push(createPromise)
             })
 
@@ -246,59 +236,55 @@ const Post = {
         })
     },
     updateMultiplePosts: (__, data) => {
+      // DO WE STILL NEED UPDATE MULTIPLE POSTS IF THERE ARE NO PARENT POSTS?
       // console.log('arr of input objs', data.input)
       // for each input obj, modify the post
-      let promiseArr = []
-      let inputArr = data.input
-      inputArr.forEach(obj => {
-        console.log('input obj', obj)
-        let updatesObj = {}
-        // check fields
-        let fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType', 'contentOnly', 'start']
-
-        // Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
-        fields.forEach(field => {
-          if (field in obj) {
-            updatesObj[field] = obj[field]
-          }
-        })
-        // if ('contentOnly' in obj) {
-        //   updatesObj.contentOnly = obj.contentOnly
-        // }
-        // if ('start' in obj) {
-        //   updatesObj.start = obj.start
-        // }
-        // find Post, then update
-        let updatePromise = db.Post.findById(obj.id)
-          .then(foundPost => {
-            return foundPost.update(updatesObj)
-          })
-        promiseArr.push(updatePromise)
-      })
-      return Promise.all(promiseArr)
-        .then(values => {
-          console.log('values', values)
-          return true
-        })
-        .catch(err => {
-          console.log('err', err)
-          return false
-        })
+      // let promiseArr = []
+      // let inputArr = data.input
+      // inputArr.forEach(obj => {
+      //   console.log('input obj', obj)
+      //   let updatesObj = {}
+      //   // check fields
+      //   let fields = ['ParentPostId', 'loadSequence', 'title', 'textContent', 'description', 'startDay', 'endDay', 'eventType', 'contentOnly', 'start']
+      //
+      //   // Object.hasOwnProperty doesn't work with input obj. reference: graphql-js Object.create(null)
+      //   fields.forEach(field => {
+      //     if (field in obj) {
+      //       updatesObj[field] = obj[field]
+      //     }
+      //   })
+      //   // if ('contentOnly' in obj) {
+      //   //   updatesObj.contentOnly = obj.contentOnly
+      //   // }
+      //   // if ('start' in obj) {
+      //   //   updatesObj.start = obj.start
+      //   // }
+      //   // find Post, then update
+      //   let updatePromise = db.Post.findById(obj.id)
+      //     .then(foundPost => {
+      //       return foundPost.update(updatesObj)
+      //     })
+      //   promiseArr.push(updatePromise)
+      // })
+      // return Promise.all(promiseArr)
+      //   .then(values => {
+      //     console.log('values', values)
+      //     return true
+      //   })
+      //   .catch(err => {
+      //     console.log('err', err)
+      //     return false
+      //   })
     },
     deletePost: (__, data) => {
       // should write beforeDestroy hook.
       /*
-      (X) delete parentPost-Media join table rows
-      (X) delete parentPost-Hashtag join table rows
-      (X) delete childPost-Media join table rows
-      (X) delete childPost-Hashtag join table rows
-      (X) delete childPosts
-      (X) delete parent post
+      (X) delete media-posts join table rows
+      (X) delete hashtags-posts join table rows
+      (X) delete post itself
       */
       return db.Post.findById(data.id)
         .then(foundPost => {
-          console.log('foundPost', foundPost)
-          // delete all parent mediaPosts
           return db.MediaPosts.destroy({where: {PostId: foundPost.id}})
             .then(() => {
               return foundPost
@@ -310,36 +296,7 @@ const Post = {
               return foundPost
             })
         })
-        .then(foundPost => {
-          // might not have children
-          return foundPost.getChildPosts()
-            .then(arr => {
-              console.log('arr', arr)
-
-              var deleteChildPostPromiseArr = []
-              arr.forEach(childPost => {
-
-                // delete both childPostMedia and childPostHashtag first
-                let deleteMediaPost = db.MediaPosts.destroy({where: {PostId: childPost.id}})
-                let deleteHashtagPost = db.HashtagsPosts.destroy({where: {PostId: childPost.id}})
-
-                let deleteChildPostPromise = Promise.all([deleteMediaPost, deleteHashtagPost])
-                  .then(() => {
-                    return db.Post.destroy({where: {id: childPost.id}})
-                  })
-
-                // var deleteChildPostPromise = db.MediaPosts.destroy({where: {PostId: childPost.id}})
-                //   .then(() => {
-                //     db.Post.destroy({where: {id: childPost.id}})
-                //   })
-                deleteChildPostPromiseArr.push(deleteChildPostPromise)
-              })
-
-              return Promise.all(deleteChildPostPromiseArr)
-            })
-        })
         .then(() => {
-          // lastly actually delete the post
           return db.Post.destroy({where: {id: data.id}})
         })
     }

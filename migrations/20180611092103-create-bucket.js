@@ -1,36 +1,46 @@
 'use strict'
+
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.createTable('Attachments', {
+    return queryInterface.createTable('Buckets', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      EventId: {
-        allowNull: true,
         type: Sequelize.INTEGER,
-        onDelete: 'CASCADE',
-        hooks: true,
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true
+      },
+      UserId: {
+        type: Sequelize.STRING,
         references: {
           model: {
-            tableName: 'Events'
+            tableName: 'Users'
           },
           key: 'id'
         }
       },
-      fileName: {
+      LocationId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Locations'
+          },
+          key: 'id'
+        }
+      },
+      notes: {
         type: Sequelize.STRING
       },
-      fileAlias: {
+      eventType: {
         type: Sequelize.STRING
       },
-      fileType: {
+      bucketCategory: {
         type: Sequelize.STRING
       },
-      fileSize: {
+      thumbnailUrl: {
         type: Sequelize.STRING
+      },
+      visited: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         type: Sequelize.DATE
@@ -40,7 +50,8 @@ module.exports = {
       }
     })
   },
+
   down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable('Attachments')
+    return queryInterface.dropTable('Buckets')
   }
 }

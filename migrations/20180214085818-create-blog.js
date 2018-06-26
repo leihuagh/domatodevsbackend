@@ -26,9 +26,9 @@ module.exports = {
           key: 'id'
         }
       },
-      textContent: {
-        type: Sequelize.TEXT
-      },
+      // textContent: {
+      //   type: Sequelize.TEXT
+      // },
       title: {
         type: Sequelize.STRING
       },
@@ -47,12 +47,19 @@ module.exports = {
       days: {
         type: Sequelize.INTEGER
       },
+      MediumId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'Media'
+          },
+          key: 'id'
+        }
+      },
       createdAt: {
-        allowNull: true,
         type: Sequelize.DATE
       },
       updatedAt: {
-        allowNull: true,
         type: Sequelize.DATE
       }
     })

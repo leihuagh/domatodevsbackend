@@ -16,7 +16,8 @@ const Album = require('./Album')
 const Medium = require('./Medium')
 const ReorderBlogContent = require('./ReorderBlogContent')
 const Hashtag = require('./Hashtag')
+const Bucket = require('./Bucket')
 
-const resolvers = _.merge(User, Country, Location, Itinerary, Event, LoadSequence, Attachment, DeleteMultipleEvents, Blog, BlogHeading, Post, Album, Medium, ReorderBlogContent, Hashtag)
+const resolvers = _.merge(User, Country, Location, Itinerary, Event, LoadSequence, Attachment, DeleteMultipleEvents, Blog, BlogHeading, Post, Album, Medium, ReorderBlogContent, Hashtag, Bucket)
 
 module.exports = resolvers

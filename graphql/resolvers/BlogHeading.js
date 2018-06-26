@@ -1,6 +1,11 @@
 const db = require('../connectors')
 
 const BlogHeading = {
+  BlogHeading: {
+    medium (blogHeading) {
+      return blogHeading.getMedium()
+    }
+  },
   Query: {
     findBlogHeading: (__, data) => {
       return db.BlogHeading.findById(data.id)
@@ -11,7 +16,7 @@ const BlogHeading = {
       return db.BlogHeading.create({
         BlogId: data.BlogId,
         loadSequence: data.loadSequence,
-        title: data.title || 'Default title'
+        title: data.title || 'Default header'
       })
         .then(created => {
           console.log('created', created)
@@ -20,18 +25,12 @@ const BlogHeading = {
     },
     updateBlogHeading: (__, data) => {
       var updatesObj = {}
-      let fields = ['loadSequence', 'title']
+      let fields = ['loadSequence', 'title', 'MediumId']
       fields.forEach(field => {
         if (field in data) {
           updatesObj[field] = data[field]
         }
       })
-      // if (data.loadSequence) {
-      //   updatesObj.loadSequence = data.loadSequence
-      // }
-      // if (data.title) {
-      //   updatesObj.title = data.title
-      // }
       return db.BlogHeading.findById(data.id)
         .then(found => {
           return found.update(updatesObj)

@@ -2,24 +2,28 @@ const Post = `
   type Post {
     id: ID!
     BlogId: ID!
-    ParentPostId: ID
-    LocationId: ID
+    blog: Blog
     loadSequence: Int!
-    contentOnly: Boolean
     textContent: String
     title: String
-    description: String
     eventType: String
-    start: Boolean
+    bucketCategory: String
     startDay: Int
-    endDay: Int
     startTime: Int
     endTime: Int
-    blog: Blog
+    LocationId: ID
     location: Location
-    childPosts: [Post]
     media: [MediaPostObject]
     hashtags: [Hashtag]
   }
 `
 module.exports = Post
+
+/*
+ParentPostId: ID
+contentOnly: Boolean
+description: String
+start: Boolean
+endDay: Int
+childPosts: [Post]
+*/

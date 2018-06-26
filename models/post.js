@@ -1,41 +1,85 @@
 'use strict'
 
-// EVENT REFERS TO EVENT IN A BLOGPOST. NOT ITINERARY
 module.exports = function (sequelize, DataTypes) {
   var Post = sequelize.define('Post', {
-    BlogId: DataTypes.INTEGER,
-    ParentPostId: DataTypes.INTEGER,
-    LocationId: DataTypes.INTEGER,
-    loadSequence: DataTypes.INTEGER,
-    textContent: DataTypes.TEXT,
-    title: DataTypes.STRING,
-    contentOnly: DataTypes.BOOLEAN,
-    description: DataTypes.STRING,
-    start: DataTypes.BOOLEAN,
-    startDay: DataTypes.INTEGER,
-    endDay: DataTypes.INTEGER,
-    startTime: DataTypes.INTEGER,
-    endTime: DataTypes.INTEGER,
-    eventType: DataTypes.STRING
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: DataTypes.INTEGER
+    },
+    BlogId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Blogs'
+        }
+      },
+      key: 'id'
+    },
+    LocationId: {
+      allowNull: true,
+      type: DataTypes.INTEGER,
+      references: {
+        model: {
+          tableName: 'Locations'
+        }
+      },
+      key: 'id'
+    },
+    loadSequence: {
+      type: DataTypes.INTEGER
+    },
+    textContent: {
+      type: DataTypes.TEXT
+    },
+    title: {
+      type: DataTypes.STRING
+    },
+    // contentOnly: {
+    //   type: DataTypes.BOOLEAN
+    // },
+    // description: {
+    //   type: DataTypes.STRING
+    // },
+    // start: {
+    //   type: DataTypes.BOOLEAN
+    // },
+    startDay: {
+      type: DataTypes.INTEGER
+    },
+    // endDay: {
+    //   type: DataTypes.INTEGER
+    // },
+    startTime: {
+      type: DataTypes.INTEGER
+    },
+    endTime: {
+      type: DataTypes.INTEGER
+    },
+    eventType: {
+      type: DataTypes.STRING
+    },
+    bucketCategory: {
+      type: DataTypes.STRING
+    }, // only if there is Location
+    createdAt: {
+      type: DataTypes.DATE
+    },
+    updatedAt: {
+      type: DataTypes.DATE
+    }
   })
 
   Post.associate = function (models) {
     Post.belongsTo(models.Blog)
     Post.belongsTo(models.Location)
-    Post.belongsTo(models.Post, {
-      as: 'ParentPost'
-    })
-    Post.hasMany(models.Post, {
-      as: 'ChildPosts',
-      foreignKey: 'ParentPostId'
-    })
     Post.belongsToMany(models.Medium, {
       through: 'MediaPosts'
     })
     Post.belongsToMany(models.Hashtag, {
       through: 'HashtagsPosts'
     })
-    // Post.hasMany(models.Attachment)
   }
 
   return Post
