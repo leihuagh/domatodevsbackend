@@ -30,8 +30,14 @@ const Itinerary = {
     }
   },
   Query: {
-    allItineraries: () => {
-      return db.Itinerary.findAll()
+    // allItineraries: () => {
+    //   return db.Itinerary.findAll()
+    // },
+    getAllPublishedItineraries: () => {
+      return db.Itinerary.findAll({
+        where: {isPrivate: false},
+        order: db.sequelize.col('createdAt')
+      })
     },
     itinerariesByUser: (__, data, context) => {
       // this returns all itineraries for that user, regardless of owner or collab
