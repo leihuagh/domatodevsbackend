@@ -2,6 +2,7 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 const db = require('../connectors')
 const _ = require('lodash')
+const moment = require('moment')
 
 const Itinerary = {
   Itinerary: {
@@ -27,6 +28,12 @@ const Itinerary = {
             return a.startDay - b.startDay || a.loadSequence - b.loadSequence
           })
         })
+    },
+    timeFromPublishDate (itinerary) {
+      let momentPublishDate = moment(itinerary.createdAt)
+      let timeElapsed = momentPublishDate.fromNow()
+      // console.log('timeElapsed', timeElapsed)
+      return timeElapsed
     }
   },
   Query: {

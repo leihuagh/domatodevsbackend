@@ -11,6 +11,7 @@ const Itinerary = `
     users: [User]
     events: [Event]
     createdAt: String
+    timeFromPublishDate: String
   }
   type CountriesItineraries {
     CountryId: ID!
