@@ -14,79 +14,36 @@ const Blog = {
     likes (blog) {
       return blog.getLikes()
     },
-    pages (blog) {
+    async pages (blog) {
       const blogId = blog.id
       const models = ['BlogHeading', 'Post']
-      let pageModelPromises = []
 
-      models.forEach(model => {
-        let arrModel = []
-        const pageModel =
-        db[model].findAll({where: {BlogId: blogId}})
+      let combinedRows = await Promise.all(models.map(async model => {
+        // each model (blog or header) needs to return an arr of row promises
+        // so [[blog rows], [header rows]]
+        let arrModel = await db[model].findAll({where: {BlogId: blogId}})
           .then(foundRows => {
-            foundRows.forEach(e => {
+            return foundRows.map(e => {
               const obj = {
                 type: model,
                 modelId: e.id,
                 loadSequence: e.loadSequence,
                 [model]: e
               }
-              console.log('BlogHeading or Post obj', obj)
-              arrModel.push(obj)
+              return Promise.resolve(obj)
             })
-            return Promise.all(arrModel)
           })
-        pageModelPromises.push(pageModel)
-      })
 
-      return Promise.all(pageModelPromises)
-        .then(values => {
-          var events = values.reduce(function (a, b) {
-            return a.concat(b)
-          }, [])
-          var sorted = events.sort(function (a, b) {
-            return a.loadSequence - b.loadSequence
-          })
-          return sorted
-        })
+        return arrModel
+      }))
+
+      let events = combinedRows.reduce(function (a, b) {
+        return a.concat(b)
+      })
+      return events.sort(function (a, b) {
+        return a.loadSequence - b.loadSequence
+      })
     },
-    // media (blog) {
-    //   // REWRITE WITHOUT THE FOR EACH LOOP. MAKE MEDIAPOSTOBJECT
-    //   let BlogId = blog.id
-    //   let mediaBlogsJoinTableRows = db.MediaBlogs.findAll({where: {BlogId: BlogId}})
-    //
-    //   return mediaBlogsJoinTableRows
-    //     .then(mediaBlogsJoinTableRows => {
-    //       let constructedObjPromiseArr = []
-    //
-    //       mediaBlogsJoinTableRows.forEach(join => {
-    //         let MediumId = join.MediumId
-    //
-    //         let constructedObjPromise = db.Medium.findById(MediumId)
-    //           .then(foundMedium => {
-    //             // console.log('join table row', join.dataValues)
-    //             let mergedObj = {
-    //               ...join.dataValues, // id, MediumId, BlogId, loadSeq,caption
-    //               type: foundMedium.type,
-    //               AlbumId: foundMedium.AlbumId,
-    //               objectName: foundMedium.objectName,
-    //               imageUrl: foundMedium.imageUrl,
-    //               youtubeUrl: foundMedium.youtubeUrl
-    //             }
-    //             return mergedObj
-    //           })
-    //         constructedObjPromiseArr.push(constructedObjPromise)
-    //       }) // close for each
-    //
-    //       return Promise.all(constructedObjPromiseArr)
-    //         .then(values => {
-    //           // console.log('returning promise.all', values)
-    //           return values.sort(function (a, b) {
-    //             return a.loadSequence - b.loadSequence
-    //           })
-    //         })
-    //     })
-    // },
     medium (blog) {
       return blog.getMedium()
     },
@@ -113,73 +70,61 @@ const Blog = {
     }
   },
   Query: {
-    getAllPublishedBlogs: () => {
-      return db.Blog.findAll({where: {published: true}})
-        .then(foundBlogs => {
-          // console.log('foundBlogs', foundBlogs)
-          // sort by publishDate. most recent is first, older post is last.
-          let sortedArray = foundBlogs.sort((a, b) => {
-            return moment(a.publishDate).isBefore(moment(b.publishDate))
-          })
-          return sortedArray
-        })
-    },
-    getUserBlogs: (__, data, context) => {
-      // use context to find all blogs belonging to logged in user
-      return db.Blog.findAll({
-        where: {UserId: context.user}
+    getAllPublishedBlogs: async () => {
+      let foundBlogs = await db.Blog.findAll({where: {published: true}})
+
+      return foundBlogs.sort((a, b) => {
+        return moment(a.publishDate).isBefore(moment(b.publishDate))
       })
-        .then(foundBlogs => {
-          let sortedArray = foundBlogs.sort((a, b) => {
-            return moment(a.publishDate).isBefore(moment(b.publishDate))
-          })
-          return sortedArray
-        })
+    },
+    getUserBlogs: async (__, data, context) => {
+      // use context to find all blogs belonging to logged in user
+      let foundBlogs = await db.Blog.findAll({where: {UserId: context.user}})
+      return foundBlogs.sort((a, b) => {
+        return moment(a.publishDate).isBefore(moment(b.publishDate))
+      })
     },
     findBlog: (__, data) => {
       return db.Blog.findById(data.id)
     }
   },
   Mutation: {
-    increaseBlogViews: (__, data) => {
-      return db.Blog.findById(data.id)
-        .then(found => {
-          return found.increment('views', {by: 1})
-        })
+    increaseBlogViews: async (__, data) => {
+      let blog = await db.Blog.findById(data.id)
+      return blog.increment('views', {by: 1})
     },
-    toggleBlogLikes: (__, data) => {
+    toggleBlogLikes: async (__, data) => {
       // if row doesnt exist, add join table row. else remove
-      return db.BlogLikesUsers.findOne({where: {BlogId: data.BlogId, UserId: data.UserId}})
-        .then(found => {
-          console.log('found', found)
-          if (found) {
-            return found.destroy() // will return true if success
-          } else {
-            return db.BlogLikesUsers.create({
-              BlogId: data.BlogId,
-              UserId: data.UserId
-            })
-              .then(created => {
-                return true
-              })
-          }
+      let joinTableRow = await db.BlogLikesUsers.findOne({where: {
+        BlogId: data.BlogId,
+        UserId: data.UserId
+      }})
+
+      if (joinTableRow) {
+        return joinTableRow.destroy()
+      } else {
+        return db.BlogLikesUsers.create({
+          BlogId: data.BlogId,
+          UserId: data.UserId
         })
+          .then(created => {
+            return true
+          })
+      }
     },
-    createBlog: (__, data) => {
+    createBlog: async (__, data) => {
       // blog cover page is created empty at first
-      return db.Blog.create({
+      let createdBlog = await db.Blog.create({
         UserId: data.UserId,
         published: false,
         title: data.title || 'Blog title',
         shares: 0,
         views: 0
       })
-        .then(createdBlog => {
-          console.log('createdBlog', createdBlog)
-          return createdBlog
-        })
+      console.log('createdBlog', createdBlog)
+      return createdBlog
     },
-    updateBlog: (__, data) => {
+    updateBlog: async (__, data) => {
       /*
       (X) compare hashtags arr and add/remove
       (X) title, days, published boolean, MediumId
@@ -196,7 +141,7 @@ const Blog = {
       console.log('updatesObj', updatesObj)
 
       let incomingHashtags = data.hashtags
-      let currentHashtags = db.HashtagsBlogs.findAll({where: {
+      let currentHashtags = await db.HashtagsBlogs.findAll({where: {
         BlogId: data.id
       }})
         .then(joinTableArr => {
@@ -211,56 +156,34 @@ const Blog = {
           return Promise.all(hashtagArr)
         })
 
-      return currentHashtags
-        .then(currentHashtags => {
-          if (incomingHashtags) {
-            let hashtagPromiseArr = []
-
-            let hashtagsToRemoveFromBlog = _.difference(currentHashtags, incomingHashtags)
-            let hashtagsToAddToBlog = _.difference(incomingHashtags, currentHashtags)
-
-            hashtagsToRemoveFromBlog.forEach(string => {
-              let deletePromise = db.Hashtag.find({where: {name: string}})
-                .then(found => {
-                  return db.HashtagsBlogs.destroy({where: {
-                    BlogId: data.id,
-                    HashtagId: found.id
-                  }})
-                })
-              hashtagPromiseArr.push(deletePromise)
-            })
-            hashtagsToAddToBlog.forEach(string => {
-              let createPromise = findOrCreateHashtag(string)
-                .then(id => {
-                  return db.HashtagsBlogs.create({
-                    BlogId: data.id,
-                    HashtagId: id
-                  })
-                })
-              hashtagPromiseArr.push(createPromise)
-            })
-            return Promise.all(hashtagPromiseArr)
-          } else {
-            return Promise.resolve(true)
-          }
+      let hashtagsToRemoveFromBlog = _.difference(currentHashtags, incomingHashtags)
+      let hashtagsToAddToBlog = _.difference(incomingHashtags, currentHashtags)
+      await hashtagsToRemoveFromBlog.map(async string => {
+        let foundHashtag = await db.Hashtag.find({where: {name: string}})
+        return db.HashtagsBlogs.destroy({where: {
+          BlogId: data.id,
+          HashtagId: foundHashtag
+        }})
+      })
+      await hashtagsToAddToBlog.map(async string => {
+        let createdHashtagId = await findOrCreateHashtag(string)
+        return db.HashtagsBlogs.create({
+          BlogId: data.id,
+          HashtagId: createdHashtagId
         })
-        .then(() => {
-          // update Blog itself
-          return db.Blog.findById(data.id)
-            .then(foundBlog => {
-              if (!foundBlog.publishDate && data.published) {
-                // set publish date if published for the first time
-                updatesObj.publishDate = new Date()
-              }
-              return foundBlog.update(updatesObj)
-                .then(updated => {
-                  console.log('updated', updated)
-                  return updated
-                })
-            })
-        })
+      })
+
+      let foundBlog = await db.Blog.findById(data.id)
+      if (!foundBlog.publishDate && data.published) {
+        updatesObj.publishDate = new Date()
+      }
+
+      let updatedBlog = await foundBlog.update(updatesObj)
+
+      console.log('updatedBlog', updatedBlog)
+      return updatedBlog
     },
-    deleteBlog: (__, data) => {
+    deleteBlog: async (__, data) => {
       /*
         (X) delete HashtagsBlogs
         (X) delete BlogHeading
@@ -272,44 +195,19 @@ const Blog = {
       */
       let BlogId = data.id
 
-      return db.HashtagsBlogs.destroy({where: {BlogId: BlogId}})
-        .then(() => {
-          return db.BlogHeading.destroy({where: {BlogId: BlogId}})
-        })
-        .then(() => {
-          // delete post and its join tables
-          return db.Post.findAll({where: {BlogId: BlogId}})
-            .then(foundPosts => {
-              let deletePostsPromiseArr = []
-              foundPosts.forEach(post => {
-                let deleteMediaPostsPromise = db.MediaPosts.destroy({where: {
-                  PostId: post.id
-                }})
-                let deleteHashtagsPostsPromise = db.HashtagsPosts.destroy({where: {
-                  PostId: post.id
-                }})
-                let deletePostPromise = Promise.all([deleteMediaPostsPromise, deleteHashtagsPostsPromise])
-                  .then(() => {
-                    return post.destroy()
-                  })
-                deletePostsPromiseArr.push(deletePostPromise)
-              }) // close for each
+      await db.HashtagsBlogs.destroy({where: {BlogId: BlogId}})
+      await db.BlogHeading.destroy({where: {BlogId: BlogId}})
 
-              return Promise.all(deletePostsPromiseArr)
-                .then(values => {
-                  console.log('delete all posts and join tables', values)
-                  return true
-                })
-            })
-        })
-        .then(() => {
-          return db.BlogLikesUsers.destroy({where: {
-            BlogId: BlogId
-          }})
-        })
-        .then(() => {
-          return db.Blog.destroy({where: {id: BlogId}})
-        })
+      let postsArr = await db.Post.findAll({where: {BlogId: BlogId}})
+      await Promise.all(postsArr.map(async post => {
+        await db.MediaPosts.destroy({where: {PostId: post.id}})
+        await db.HashtagsPosts.destroy({where: {PostId: post.id}})
+        return post.destroy()
+      }))
+
+      await db.BlogLikesUsers.destroy({where: {BlogId: BlogId}})
+
+      return db.Blog.destroy({where: {id: BlogId}})
     }
   }
 }

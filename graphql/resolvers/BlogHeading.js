@@ -12,18 +12,16 @@ const BlogHeading = {
     }
   },
   Mutation: {
-    createBlogHeading: (__, data) => {
-      return db.BlogHeading.create({
+    createBlogHeading: async (__, data) => {
+      let createdHeading = await db.BlogHeading.create({
         BlogId: data.BlogId,
         loadSequence: data.loadSequence,
         title: data.title || 'Default header'
       })
-        .then(created => {
-          console.log('created', created)
-          return created
-        })
+      console.log('createdHeading', createdHeading)
+      return createdHeading
     },
-    updateBlogHeading: (__, data) => {
+    updateBlogHeading: async (__, data) => {
       var updatesObj = {}
       let fields = ['loadSequence', 'title', 'MediumId']
       fields.forEach(field => {
@@ -31,10 +29,8 @@ const BlogHeading = {
           updatesObj[field] = data[field]
         }
       })
-      return db.BlogHeading.findById(data.id)
-        .then(found => {
-          return found.update(updatesObj)
-        })
+      let foundHeading = db.BlogHeading.findById(data.id)
+      return foundHeading.update(updatesObj)
     },
     deleteBlogHeading: (__, data) => {
       return db.BlogHeading.destroy({where: {id: data.id}})

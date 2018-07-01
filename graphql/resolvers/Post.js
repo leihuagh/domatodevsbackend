@@ -14,41 +14,29 @@ const Post = {
     location (post) {
       return post.getLocation()
     },
-    media (post) {
+    async media (post) {
       // MAKE MEDIAPOSTOBJECT
       let PostId = post.id
-      let mediaPostsJoinTableRows = db.MediaPosts.findAll({where: {PostId: PostId}})
 
-      return mediaPostsJoinTableRows
-        .then(mediaPostsJoinTableRows => {
-          let constructedObjPromiseArr = []
+      let mediaPostsRows = await db.MediaPosts.findAll({where: {PostId: PostId}})
+      let constructedRows = await Promise.all(mediaPostsRows.map(async join => {
+        // each row e
+        let mediumRow = await db.Medium.findById(join.MediumId)
+        let mergedObj = {
+          ...join.dataValues,
+          type: mediumRow.type,
+          AlbumId: mediumRow.AlbumId,
+          objectName: mediumRow.objectName,
+          imageUrl: mediumRow.imageUrl,
+          youtubeUrl: mediumRow.youtubeUrl
+        }
+        return Promise.resolve(mergedObj)
+      }))
 
-          mediaPostsJoinTableRows.forEach(join => {
-            let MediumId = join.MediumId
-
-            let constructedObjPromise = db.Medium.findById(MediumId)
-              .then(foundMedium => {
-                // console.log('join table row', join.dataValues)
-                let mergedObj = {
-                  ...join.dataValues, // id, MediumId, PostId, loadSeq,caption
-                  type: foundMedium.type,
-                  AlbumId: foundMedium.AlbumId,
-                  objectName: foundMedium.objectName,
-                  imageUrl: foundMedium.imageUrl,
-                  youtubeUrl: foundMedium.youtubeUrl
-                }
-                return mergedObj
-              })
-            constructedObjPromiseArr.push(constructedObjPromise)
-          }) // close for each
-
-          return Promise.all(constructedObjPromiseArr)
-            .then(values => {
-              return values.sort(function (a, b) {
-                return a.loadSequence - b.loadSequence
-              })
-            })
-        })
+      console.log('constructedRows', constructedRows)
+      return constructedRows.sort((a, b) => {
+        return a.loadSequence - b.loadSequence
+      })
     }
   },
   Query: {
@@ -57,19 +45,16 @@ const Post = {
     }
   },
   Mutation: {
-    createPost: (__, data) => {
+    createPost: async (__, data) => {
       console.log('data', data)
-      return db.Post.create({
+      let createdPost = await db.Post.create({
         BlogId: data.BlogId,
         loadSequence: data.loadSequence,
         title: data.title || 'Default title'
       })
-        .then(created => {
-          console.log('createdPost', created)
-          return created
-        })
+      return createdPost
     },
-    updatePost: (__, data) => {
+    updatePost: async (__, data) => {
       console.log('RECEIVED IN UPDATEPOST RESOLVER', data)
       var temp = {}
       var fields = ['loadSequence', 'title', 'textContent', 'eventType', 'bucketCategory', 'startDay', 'startTime', 'endTime']
@@ -96,144 +81,226 @@ const Post = {
         updatesObj = Promise.resolve(temp)
       }
 
-      // HASHTAGS ARR AND MEDIA ARR MIGHT NOT BE PASSED. IF PROPERTY NOT IN DATA, SKIP THE PROMISE.
+      // check hashtags
       let incomingHashtags = data.hashtags
-      // currentHashtags is [name: String]
-      let currentHashtags = db.HashtagsPosts.findAll({where: {PostId: data.id}})
-        .then(joinTableArr => {
-          let hashtagArr = []
-          joinTableArr.forEach(row => {
-            let string = db.Hashtag.findById(row.HashtagId)
-              .then(foundHashtag => {
-                return foundHashtag.name
-              })
-            hashtagArr.push(string)
+      let hashtagsPostsRows = await db.HashtagsPosts.findAll({where: {PostId: data.id}})
+      let currentHashtags = await Promise.all(hashtagsPostsRows.map(async row => {
+        let indivHashtagRow = await db.Hashtag.findById(row.HashtagId)
+        return indivHashtagRow.name
+      }))
+      if (incomingHashtags) {
+        let hashtagsToRemoveFromPost = _.difference(currentHashtags, incomingHashtags)
+        let hashtagsToAddToPost = _.difference(incomingHashtags, currentHashtags)
+        await Promise.all(hashtagsToRemoveFromPost.map(async name => {
+          let hashtagRow = await db.Hashtag.find({where: {name: name}})
+          return db.HashtagsPosts.destroy({where: {
+            PostId: data.id,
+            HashtagId: hashtagRow.id
+          }})
+        }))
+        await Promise.all(hashtagsToAddToPost.map(async name => {
+          let createdHashtagId = await findOrCreateHashtag(name)
+          return db.HashtagsPosts.create({
+            PostId: data.id,
+            HashtagId: createdHashtagId
           })
-          return Promise.all(hashtagArr)
-        })
+        }))
+      }
 
+      //check media
       let incomingMediaArr = data.media
-      console.log('incomingMediaArr', incomingMediaArr)
-      let currentMediaArr = db.MediaPosts.findAll({where: {PostId: data.id}})
-        .then(joinTableRows => {
-          // need to extract out the arr of objects from sequelize obj arr
-          let scrubbedArr = joinTableRows.map(e => {
-            return e.dataValues
+      if (incomingMediaArr) {
+        let mediaPostsRows = await db.MediaPosts.findAll({where: {PostId: data.id}})
+        let currentMediaArr = mediaPostsRows.map(row => {
+          return row.dataValues
+        })
+        console.log('currentMediaArr', currentMediaArr)
+
+        // use loose equals. sequelize MediumId is int, but apollo may pass type ID as int, or numeric string
+        let mediaToRemoveFromPost = _.differenceWith(currentMediaArr, incomingMediaArr, function (arrVal, otherVal) {
+          return arrVal.MediumId == otherVal.MediumId
+        })
+        console.log('mediaToRemoveFromPost', mediaToRemoveFromPost)
+        let mediaToAddToPost = _.differenceWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+          return arrVal.MediumId == otherVal.MediumId
+        })
+        console.log('mediaToAddToPost', mediaToAddToPost)
+        // media to update are the objs in the incoming arr which match the MediumId of currentArr.
+        let mediaToUpdate = _.intersectionWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+          return arrVal.MediumId == otherVal.MediumId
+        })
+        console.log('mediaToUpdate', mediaToUpdate)
+
+        await Promise.all(mediaToRemoveFromPost.map(row => {
+          return db.MediaPosts.destroy({where: {
+            PostId: data.id,
+            MediumId: row.id
+          }})
+        }))
+        await Promise.all(mediaToAddToPost.map(row => {
+          return db.MediaPosts.create({
+            PostId: data.id,
+            MediumId: row.MediumId,
+            loadSequence: row.loadSequence,
+            caption: row.caption
           })
-          return scrubbedArr
-        })
+        }))
+        await Promise.all(mediaToUpdate.map(async row => {
+          let foundMediaPostRow = await db.MediaPosts.find({where: {
+            PostId: data.id,
+            MediumId: row.MediumId
+          }})
+          return foundMediaPostRow.update({
+            loadSequence: row.loadSequence,
+            caption: row.caption
+          })
+        }))
+      }
 
-      return currentHashtags
-        .then(currentHashtags => {
-          // check if incomingHashtags property exists
-          if (incomingHashtags) {
-            let hashtagPromiseArr = []
-            let hashtagsToRemoveFromPost = _.difference(currentHashtags, incomingHashtags)
-            let hashtagsToAddToPost = _.difference(incomingHashtags, currentHashtags)
+      let foundPost = await db.Post.findById(data.id)
+      let updatedPost = await foundPost.update(updatesObj)
 
-            hashtagsToRemoveFromPost.forEach(string => {
-              let deletePromise = db.Hashtag.find({where: {name: string}})
-                .then(found => {
-                  return db.HashtagsPosts.destroy({where: {
-                    PostId: data.id,
-                    HashtagId: found.id
-                  }})
-                })
-              hashtagPromiseArr.push(deletePromise)
-            })
+      console.log('updatedPost', updatedPost)
+      return updatedPost
 
-            hashtagsToAddToPost.forEach(string => {
-              let createPromise = findOrCreateHashtag(string)
-                .then(id => {
-                  console.log('returning id from helper', id)
-                  return db.HashtagsPosts.create({
-                    PostId: data.id,
-                    HashtagId: id
-                  })
-                })
-              hashtagPromiseArr.push(createPromise)
-            })
-
-            return Promise.all(hashtagPromiseArr)
-          } else {
-            // if hashtags arr was not passed
-            return Promise.resolve(true)
-          }
-        })
-        .then(() => {
-          currentMediaArr
-            .then(currentMediaArr => {
-              // incoming media arr is optional
-              if (incomingMediaArr) {
-                let mediaPostPromiseArr = []
-                /*
-                ( ) find mediaposts to delete. MediumId in current, but not in incoming
-                ( ) find mediaposts to add. MediumId in incoming, but not in present
-                ( ) update mediaPosts for those present in both arrays. find intersect by MediumId
-                */
-                // use loose equals. sequelize MediumId is int, but apollo may pass type ID as int, or numeric string
-                let mediaToRemoveFromPost = _.differenceWith(currentMediaArr, incomingMediaArr, function (arrVal, otherVal) {
-                  return arrVal.MediumId == otherVal.MediumId
-                })
-                console.log('mediaToRemoveFromPost', mediaToRemoveFromPost)
-
-                let mediaToAddToPost = _.differenceWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
-                  return arrVal.MediumId == otherVal.MediumId
-                })
-                console.log('mediaToAddToPost', mediaToAddToPost)
-
-                // media to update are the objs in the incoming arr which match the MediumId of currentArr.
-                let mediaToUpdate = _.intersectionWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
-                  return arrVal.MediumId == otherVal.MediumId
-                })
-                console.log('mediaToUpdate', mediaToUpdate)
-
-                mediaToRemoveFromPost.forEach(row => {
-                  let removePromise = db.MediaPosts.destroy({where: {
-                    PostId: data.id,
-                    MediumId: row.MediumId
-                  }})
-                  mediaPostPromiseArr.push(removePromise)
-                })
-                mediaToAddToPost.forEach(row => {
-                  let addPromise = db.MediaPosts.create({
-                    PostId: data.id,
-                    MediumId: row.MediumId,
-                    loadSequence: row.loadSequence,
-                    caption: row.caption
-                  })
-                  mediaPostPromiseArr.push(addPromise)
-                })
-                mediaToUpdate.forEach(row => {
-                  let updatePromise = db.MediaPosts.find({where: {MediumId: row.MediumId, PostId: data.id}})
-                    .then(found => {
-                      return found.update({
-                        loadSequence: row.loadSequence,
-                        caption: row.caption
-                      })
-                    })
-                  mediaPostPromiseArr.push(updatePromise)
-                })
-                return Promise.all(mediaPostPromiseArr)
-              } else {
-                // if data.media undef (not passed)
-                return Promise.resolve(true)
-              }
-            })
-        })
-        .then(() => {
-          return updatesObj
-        })
-        .then(updatesObj => {
-          return db.Post.findById(data.id)
-            .then(foundPost => {
-              return foundPost.update(updatesObj)
-                .then(updated => {
-                  console.log('updated', updated)
-                  return updated
-                })
-            })
-        })
+      // HASHTAGS ARR AND MEDIA ARR MIGHT NOT BE PASSED. IF PROPERTY NOT IN DATA, SKIP THE PROMISE.
+      // let incomingHashtags = data.hashtags
+      // // currentHashtags is [name: String]
+      // let currentHashtags = db.HashtagsPosts.findAll({where: {PostId: data.id}})
+      //   .then(joinTableArr => {
+      //     let hashtagArr = []
+      //     joinTableArr.forEach(row => {
+      //       let string = db.Hashtag.findById(row.HashtagId)
+      //         .then(foundHashtag => {
+      //           return foundHashtag.name
+      //         })
+      //       hashtagArr.push(string)
+      //     })
+      //     return Promise.all(hashtagArr)
+      //   })
+      //
+      // let incomingMediaArr = data.media
+      // console.log('incomingMediaArr', incomingMediaArr)
+      // let currentMediaArr = db.MediaPosts.findAll({where: {PostId: data.id}})
+      //   .then(joinTableRows => {
+      //     // need to extract out the arr of objects from sequelize obj arr
+      //     let scrubbedArr = joinTableRows.map(e => {
+      //       return e.dataValues
+      //     })
+      //     return scrubbedArr
+      //   })
+      //
+      // return currentHashtags
+      //   .then(currentHashtags => {
+      //     // check if incomingHashtags property exists
+      //     if (incomingHashtags) {
+      //       let hashtagPromiseArr = []
+      //       let hashtagsToRemoveFromPost = _.difference(currentHashtags, incomingHashtags)
+      //       let hashtagsToAddToPost = _.difference(incomingHashtags, currentHashtags)
+      //
+      //       hashtagsToRemoveFromPost.forEach(string => {
+      //         let deletePromise = db.Hashtag.find({where: {name: string}})
+      //           .then(found => {
+      //             return db.HashtagsPosts.destroy({where: {
+      //               PostId: data.id,
+      //               HashtagId: found.id
+      //             }})
+      //           })
+      //         hashtagPromiseArr.push(deletePromise)
+      //       })
+      //
+      //       hashtagsToAddToPost.forEach(string => {
+      //         let createPromise = findOrCreateHashtag(string)
+      //           .then(id => {
+      //             console.log('returning id from helper', id)
+      //             return db.HashtagsPosts.create({
+      //               PostId: data.id,
+      //               HashtagId: id
+      //             })
+      //           })
+      //         hashtagPromiseArr.push(createPromise)
+      //       })
+      //
+      //       return Promise.all(hashtagPromiseArr)
+      //     } else {
+      //       // if hashtags arr was not passed
+      //       return Promise.resolve(true)
+      //     }
+      //   })
+      //   .then(() => {
+      //     currentMediaArr
+      //       .then(currentMediaArr => {
+      //         // incoming media arr is optional
+      //         if (incomingMediaArr) {
+      //           let mediaPostPromiseArr = []
+      //           /*
+      //           ( ) find mediaposts to delete. MediumId in current, but not in incoming
+      //           ( ) find mediaposts to add. MediumId in incoming, but not in present
+      //           ( ) update mediaPosts for those present in both arrays. find intersect by MediumId
+      //           */
+      //           // use loose equals. sequelize MediumId is int, but apollo may pass type ID as int, or numeric string
+      //           let mediaToRemoveFromPost = _.differenceWith(currentMediaArr, incomingMediaArr, function (arrVal, otherVal) {
+      //             return arrVal.MediumId == otherVal.MediumId
+      //           })
+      //           console.log('mediaToRemoveFromPost', mediaToRemoveFromPost)
+      //
+      //           let mediaToAddToPost = _.differenceWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+      //             return arrVal.MediumId == otherVal.MediumId
+      //           })
+      //           console.log('mediaToAddToPost', mediaToAddToPost)
+      //
+      //           // media to update are the objs in the incoming arr which match the MediumId of currentArr.
+      //           let mediaToUpdate = _.intersectionWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
+      //             return arrVal.MediumId == otherVal.MediumId
+      //           })
+      //           console.log('mediaToUpdate', mediaToUpdate)
+      //
+      //           mediaToRemoveFromPost.forEach(row => {
+      //             let removePromise = db.MediaPosts.destroy({where: {
+      //               PostId: data.id,
+      //               MediumId: row.MediumId
+      //             }})
+      //             mediaPostPromiseArr.push(removePromise)
+      //           })
+      //           mediaToAddToPost.forEach(row => {
+      //             let addPromise = db.MediaPosts.create({
+      //               PostId: data.id,
+      //               MediumId: row.MediumId,
+      //               loadSequence: row.loadSequence,
+      //               caption: row.caption
+      //             })
+      //             mediaPostPromiseArr.push(addPromise)
+      //           })
+      //           mediaToUpdate.forEach(row => {
+      //             let updatePromise = db.MediaPosts.find({where: {MediumId: row.MediumId, PostId: data.id}})
+      //               .then(found => {
+      //                 return found.update({
+      //                   loadSequence: row.loadSequence,
+      //                   caption: row.caption
+      //                 })
+      //               })
+      //             mediaPostPromiseArr.push(updatePromise)
+      //           })
+      //           return Promise.all(mediaPostPromiseArr)
+      //         } else {
+      //           // if data.media undef (not passed)
+      //           return Promise.resolve(true)
+      //         }
+      //       })
+      //   })
+      //   .then(() => {
+      //     return updatesObj
+      //   })
+      //   .then(updatesObj => {
+      //     return db.Post.findById(data.id)
+      //       .then(foundPost => {
+      //         return foundPost.update(updatesObj)
+      //           .then(updated => {
+      //             console.log('updated', updated)
+      //             return updated
+      //           })
+      //       })
+      //   })
     },
     updateMultiplePosts: (__, data) => {
       // DO WE STILL NEED UPDATE MULTIPLE POSTS IF THERE ARE NO PARENT POSTS?
@@ -276,29 +343,19 @@ const Post = {
       //     return false
       //   })
     },
-    deletePost: (__, data) => {
+    deletePost: async (__, data) => {
       // should write beforeDestroy hook.
       /*
       (X) delete media-posts join table rows
       (X) delete hashtags-posts join table rows
       (X) delete post itself
       */
-      return db.Post.findById(data.id)
-        .then(foundPost => {
-          return db.MediaPosts.destroy({where: {PostId: foundPost.id}})
-            .then(() => {
-              return foundPost
-            })
-        })
-        .then(foundPost => {
-          return db.HashtagsPosts.destroy({where: {PostId: foundPost.id}})
-            .then(() => {
-              return foundPost
-            })
-        })
-        .then(() => {
-          return db.Post.destroy({where: {id: data.id}})
-        })
+      let foundPost = await db.Post.findById(data.id)
+
+      await db.MediaPosts.destroy({where: {PostId: foundPost.id}})
+      await db.HashtagsPosts.destroy({where: {PostId: foundPost.id}})
+
+      return foundPost.destroy()
     }
   }
 }

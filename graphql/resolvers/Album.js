@@ -98,62 +98,6 @@ const Album = {
       await db.Medium.destroy({where: {AlbumId: AlbumId}, individualHooks: true})
 
       return db.Album.destroy({where: {id: AlbumId}})
-
-      // return db.Medium.findAll({where: {AlbumId: AlbumId}})
-      //   .then(mediaArr => {
-      //     let promiseArr = []
-      //     mediaArr.forEach(obj => {
-      //       let deleteMediaPostsPromise = db.MediaPosts.destroy({where: {MediumId: obj.id}})
-      //       promiseArr.push(deleteMediaPostsPromise)
-      //     })
-      //     return Promise.all(promiseArr)
-      //       .then(values => {
-      //         return mediaArr
-      //       })
-      //   })
-      //   .then(mediaArr => {
-      //     // delete media from cloud
-      //     return cloudStorageToken
-      //       .then(cloudStorageToken => {
-      //         let cloudDeletePromiseArr = []
-      //         // console.log('mediaArr', mediaArr)
-      //         mediaArr.forEach(medium => {
-      //           // console.log('medium', medium)
-      //           if (medium.type === 'Photo' && medium.objectName) {
-      //             let objectName = medium.objectName
-      //             let replaceSlash = objectName.replace(/\//g, '%2F')
-      //             let finalReplace = replaceSlash.replace(/\|/g, '%7C')
-      //             return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
-      //               method: 'DELETE',
-      //               headers: {
-      //                 'Authorization': `Bearer ${cloudStorageToken}`
-      //               }
-      //             })
-      //               .then(response => {
-      //                 if (response.status !== 204) {
-      //                   console.log('err?', response)
-      //                 }
-      //                 cloudDeletePromiseArr.push(true)
-      //               })
-      //           } else {
-      //             cloudDeletePromiseArr.push(true)
-      //           }
-      //         }) // close for each
-      //         return Promise.all(cloudDeletePromiseArr)
-      //           .then(values => {
-      //             return true
-      //           })
-      //       })
-      //   })
-      //   .then(() => {
-      //     // delete all media rows
-      //     // need individualHooks: true to trigger instance beforeDestroy hook in medium model. sets foreign key to null for affected blogs and headers
-      //     return db.Medium.destroy({where: {AlbumId: AlbumId}, individualHooks: true})
-      //   })
-      //   .then(() => {
-      //     // delete the album
-      //     return db.Album.destroy({where: {id: AlbumId}})
-      //   })
     }
   }
 }

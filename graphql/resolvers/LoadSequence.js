@@ -2,24 +2,18 @@ const db = require('../connectors')
 
 const LoadSequence = {
   Mutation: {
-    changingLoadSequence: (__, data) => {
-      let promiseArr = []
+    changingLoadSequence: async (__, data) => {
       let inputArr = data.input
-      inputArr.forEach(input => {
-        let updatePromise = db.Event.findById(input.EventId)
-          .then(foundEvent => {
-            return foundEvent.update({
-              startDay: input.startDay,
-              loadSequence: input.loadSequence
-            })
-          })
-        promiseArr.push(updatePromise)
-      })
-      return Promise.all(promiseArr)
-        .then(values => {
-          console.log('values', values)
-          return true
+      let updatePromiseArr = await Promise.all(inputArr.map(async input => {
+        let event = await db.Event.findById(input.EventId)
+        return event.update({
+          startDay: input.startDay,
+          loadSequence: input.loadSequence
         })
+      }))
+
+      console.log('resolved values', updatePromiseArr)
+      return Promise.resolve(true)
     }
   }
 }
