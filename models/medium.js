@@ -46,6 +46,7 @@ module.exports = function (sequelize, DataTypes) {
   }
 
   Medium.beforeDestroy((instance, options) => {
+    console.log('MEDIUM BEFORE DESTROY HOOK')
     // set null on blog, blog headings
     let removeForeignKeyFromBlogs = sequelize.models.Blog.findAll({where: {
       MediumId: instance.id

@@ -38,7 +38,7 @@ const User = {
     }
   },
   Mutation: {
-    onAuth0UserAuthentication: (__, data, context) => {
+    onAuth0UserAuthentication: async (__, data, context) => {
       // console.log('onAuth0UserAuthentication', data)
       console.log('context.user', context.user)
       if (!context.user) {
@@ -57,19 +57,17 @@ const User = {
         email: idTokenClaims.email
       }
       console.log('newUser', newUser)
-      // find or create users
-      return db.User.findCreateFind({
+
+      let userResult = await db.User.findCreateFind({
         where: {id: newUser.id},
         defaults: newUser
       })
-        .then(results => {
-          // console.log('results', results)
-          return results[0]
-        })
+      console.log('userResult', userResult)
+      return userResult[0]
     },
-    updateUserProfile: (__, data, context) => {
-      console.log('data received', data)
-      console.log('context.user', context.user)
+    updateUserProfile: async (__, data, context) => {
+      // console.log('data received', data)
+      // console.log('context.user', context.user)
       if (!context.user) {
         console.log('access token is invalid')
         return null
@@ -77,19 +75,17 @@ const User = {
       let updatesObj = {}
       let fields = ['profilePic', 'fullName', 'CountryId', 'bio']
       fields.forEach(field => {
-        if (data.hasOwnProperty(field)) {
+        if (field in data) {
           updatesObj[field] = data[field]
         }
       })
       console.log('updatesObj', updatesObj)
-      return db.User.findById(context.user)
-        .then(foundUser => {
-          return foundUser.update(updatesObj)
-            .then(updated => {
-              console.log('updated', updated)
-              return updated
-            })
-        })
+
+      let foundUser = await db.User.findById(context.user)
+      let updatedUser = await foundUser.update(updatesObj)
+
+      console.log('updated', updatedUser)
+      return updatedUser
     }
   }
 }

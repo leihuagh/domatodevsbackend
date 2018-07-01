@@ -15,16 +15,14 @@ const Album = {
     findAlbum: (__, data) => {
       return db.Album.findById(data.id)
     },
-    getUserAlbums: (__, data, context) => {
+    getUserAlbums: async (__, data, context) => {
       console.log('context', context)
-      return db.Album.findAll({
+      let foundAlbums = await db.Album.findAll({
         where: {UserId: context.user},
         order: db.sequelize.col('id')
       })
-        .then(albumsArr => {
-          console.log('all user albums', albumsArr)
-          return albumsArr
-        })
+      console.log('all user albums', foundAlbums)
+      return foundAlbums
     }
   },
   Mutation: {
@@ -42,103 +40,120 @@ const Album = {
         description: data.description
       })
     },
-    updateAlbum: (__, data) => {
+    updateAlbum: async (__, data) => {
       let updatesObj = {}
-      if (data.hasOwnProperty('title')) {
+      if ('title' in data) {
         updatesObj.title = data.title
         if (data.title === '') {
           updatesObj.title = 'Untitled Album'
         }
       }
-      if (data.hasOwnProperty('description')) {
+      if ('description' in data) {
         updatesObj.description = data.description
-        // if (data.description === '') {
-        //   updatesObj.description = 'No description available'
-        // }
       }
-      return db.Album.findById(data.id)
-        .then(found => {
-          return found.update(updatesObj)
-        })
+      let foundAlbum = await db.Album.findById(data.id)
+      return foundAlbum.update(updatesObj)
     },
-    deleteAlbum: (__, data) => {
+    deleteAlbum: async (__, data) => {
       let AlbumId = data.id
       /*
       (X) find all media rows in album to be deleted
-      (X) delete all join table rows for each media. MediaBlogs, MediaPosts
-      (X) delete media themselves
+      (X) delete all mediaposts
+      (X) delete media themselves (will cascade to set blog n header MediumId to null)
       (X) finally delete album
-      ( ) KIV deleting join table rows will require a front-end reorder load sequence
       */
-      let cloudStorageToken = generateCloudStorageToken()
+      let cloudStorageToken = await generateCloudStorageToken()
         .then(tokenObj => {
           return tokenObj.token
         })
 
-      return db.Medium.findAll({where: {AlbumId: AlbumId}})
-        .then(mediaArr => {
-          // console.log('mediaArr', mediaArr)
+      let mediaArr = await db.Medium.findAll({where: {AlbumId: AlbumId}})
 
-          let promiseArr = []
-          mediaArr.forEach(obj => {
-            // delete from MediaBlog, MediaPost
-            let MediaBlogPromise = db.MediaBlogs.destroy({where: {MediumId: obj.id}})
-            let MediaPostPromise = db.MediaPosts.destroy({where: {MediumId: obj.id}})
+      // instead of pushing into arr, just map and return promise?
+      await Promise.all(mediaArr.map(obj => {
+        return db.MediaPosts.destroy({where: {MediumId: obj.id}})
+      }))
 
-            let deletePromise = Promise.all([MediaBlogPromise, MediaPostPromise])
-              .then(values => {
-                return true
-              })
-            promiseArr.push(deletePromise)
+      await Promise.all(mediaArr.map(obj => {
+        if (obj.type === 'Photo' && obj.objectName) {
+          let objectName = obj.objectName
+          let replaceSlash = objectName.replace(/\//g, '%2F')
+          let finalReplace = replaceSlash.replace(/\|/g, '%7C')
+          return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${cloudStorageToken}`
+            }
           })
+            .then(response => {
+              if (response.status !== 204) {
+                console.log('err?', response)
+              }
+            })
+        } else {
+          return true
+        }
+      }))
 
-          return Promise.all(promiseArr)
-            .then(values => {
-              return mediaArr
-            })
-        })
-        .then(mediaArr => {
-          // delete media from cloud
-          return cloudStorageToken
-            .then(cloudStorageToken => {
-              let cloudDeletePromiseArr = []
-              // console.log('mediaArr', mediaArr)
-              mediaArr.forEach(medium => {
-                // console.log('medium', medium)
-                if (medium.type === 'Photo' && medium.objectName) {
-                  let objectName = medium.objectName
-                  let replaceSlash = objectName.replace(/\//g, '%2F')
-                  let finalReplace = replaceSlash.replace(/\|/g, '%7C')
-                  return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
-                    method: 'DELETE',
-                    headers: {
-                      'Authorization': `Bearer ${cloudStorageToken}`
-                    }
-                  })
-                    .then(response => {
-                      if (response.status !== 204) {
-                        console.log('err?', response)
-                      }
-                      cloudDeletePromiseArr.push(true)
-                    })
-                } else {
-                  cloudDeletePromiseArr.push(true)
-                }
-              }) // close for each
-              return Promise.all(cloudDeletePromiseArr)
-                .then(values => {
-                  return true
-                })
-            })
-        })
-        .then(() => {
-          // delete all media rows
-          return db.Medium.destroy({where: {AlbumId: AlbumId}})
-        })
-        .then(() => {
-          // delete the album
-          return db.Album.destroy({where: {id: AlbumId}})
-        })
+      await db.Medium.destroy({where: {AlbumId: AlbumId}, individualHooks: true})
+
+      return db.Album.destroy({where: {id: AlbumId}})
+
+      // return db.Medium.findAll({where: {AlbumId: AlbumId}})
+      //   .then(mediaArr => {
+      //     let promiseArr = []
+      //     mediaArr.forEach(obj => {
+      //       let deleteMediaPostsPromise = db.MediaPosts.destroy({where: {MediumId: obj.id}})
+      //       promiseArr.push(deleteMediaPostsPromise)
+      //     })
+      //     return Promise.all(promiseArr)
+      //       .then(values => {
+      //         return mediaArr
+      //       })
+      //   })
+      //   .then(mediaArr => {
+      //     // delete media from cloud
+      //     return cloudStorageToken
+      //       .then(cloudStorageToken => {
+      //         let cloudDeletePromiseArr = []
+      //         // console.log('mediaArr', mediaArr)
+      //         mediaArr.forEach(medium => {
+      //           // console.log('medium', medium)
+      //           if (medium.type === 'Photo' && medium.objectName) {
+      //             let objectName = medium.objectName
+      //             let replaceSlash = objectName.replace(/\//g, '%2F')
+      //             let finalReplace = replaceSlash.replace(/\|/g, '%7C')
+      //             return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
+      //               method: 'DELETE',
+      //               headers: {
+      //                 'Authorization': `Bearer ${cloudStorageToken}`
+      //               }
+      //             })
+      //               .then(response => {
+      //                 if (response.status !== 204) {
+      //                   console.log('err?', response)
+      //                 }
+      //                 cloudDeletePromiseArr.push(true)
+      //               })
+      //           } else {
+      //             cloudDeletePromiseArr.push(true)
+      //           }
+      //         }) // close for each
+      //         return Promise.all(cloudDeletePromiseArr)
+      //           .then(values => {
+      //             return true
+      //           })
+      //       })
+      //   })
+      //   .then(() => {
+      //     // delete all media rows
+      //     // need individualHooks: true to trigger instance beforeDestroy hook in medium model. sets foreign key to null for affected blogs and headers
+      //     return db.Medium.destroy({where: {AlbumId: AlbumId}, individualHooks: true})
+      //   })
+      //   .then(() => {
+      //     // delete the album
+      //     return db.Album.destroy({where: {id: AlbumId}})
+      //   })
     }
   }
 }
