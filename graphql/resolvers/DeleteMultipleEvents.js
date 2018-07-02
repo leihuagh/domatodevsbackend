@@ -13,7 +13,8 @@ const DeleteMultipleEvents = {
         let eventToBeDeleted = await db.Event.findById(EventId)
         return eventToBeDeleted.destroy({individualHooks: true})
       }))
-      return Promise.resolve(true)
+
+      return deleteEventPromiseArr
     }
   }
 }

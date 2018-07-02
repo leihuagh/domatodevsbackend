@@ -1,7 +1,7 @@
 const db = require('../../connectors')
 
 // will either find or create hastag and return HashtagId
-function findOrCreateHashtag (string) {
+const findOrCreateHashtag = async string => {
 // no spaces or special chars allowed. restrict in input field
   console.log('tag name', string)
   return db.Hashtag.findOrCreate({where: {name: string}})

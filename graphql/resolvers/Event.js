@@ -16,137 +16,87 @@ const Event = {
     }
   },
   Mutation: {
-    createEvent: (__, data) => {
-      let temp = {}
+    createEvent: async (__, data) => {
+      let eventObj = {}
       Object.keys(data).forEach(key => {
         if (key !== 'locationData' && key !== 'LocationId') {
-          temp[key] = data[key]
+          eventObj[key] = data[key]
         }
       })
 
-      // NEEDS TESTING. SO FAR NEW EVENT IS EMPTY EVENT. MAP MIGHT CREATE NEW EVENT DIRECTLY FROM LOCATIONOBJ.
-
+      // locationData, locationId, or none
       if (data.locationData) {
-        let locationData = data.locationData
-        if (locationData.verified) {
-          var eventObj = findOrCreateLocation(locationData)
-            .then(LocationId => {
-              temp.LocationId = LocationId
-              return temp
-            })
+        if (data.locationData.verified) {
+          let LocationId = await findOrCreateLocation(data.locationData)
+          eventObj.LocationId = LocationId
         } else {
-          // if unverified, create new row (custom locations r unique to user)
-          let countryCode = data.locationData.countryCode
-          let tempObjForLocation = {
-            verified: false,
-            name: data.locationData.name,
-            address: data.locationData.address,
-            latitude: data.locationData.latitude,
-            longitude: data.locationData.longitude
-          }
+          // create custom row
+          let {name, address, latitude, longitude, countryCode} = data.locationData
+          let CountryId
           if (countryCode) {
-            var locationObj = db.Country.find({where: {code: countryCode}})
-              .then(foundCountry => {
-                tempObjForLocation.CountryId = foundCountry.id
-                return tempObjForLocation
-              })
-          } else {
-            locationObj = Promise.resolve(tempObjForLocation)
+            let foundCountry = await db.Country.find({where: {code: countryCode}})
+            CountryId = foundCountry.id
           }
-          eventObj = locationObj
-            .then(locationObj => {
-              return db.Location.create({
-                verified: false,
-                name: locationObj.name,
-                address: locationObj.address,
-                latitude: locationObj.latitude,
-                longitude: locationObj.longitude,
-                CountryId: locationObj.CountryId
-              })
-            })
-            .then(created => {
-              temp.LocationId = created.id
-              return temp
-            })
+          let createdLocation = await db.Location.create({
+            verified: false,
+            name,
+            address,
+            latitude,
+            longitude,
+            CountryId
+          })
+          console.log('createdLocation')
+          eventObj.LocationId = createdLocation.id
         }
       } else if (data.LocationId) {
-        temp.LocationId = data.LocationId
-        eventObj = Promise.resolve(temp)
-      } else if (!data.LocationId && !data.locationData) {
-        eventObj = Promise.resolve(temp)
+        eventObj.LocationId = data.LocationId
       }
 
-      return eventObj
-        .then(eventObj => {
-          return db.Event.create(eventObj)
-        })
+      let createdEvent = await db.Event.create(eventObj)
+      console.log('createdEvent', createdEvent)
+      return createdEvent
     },
-    updateEvent: (__, data) => {
-      let temp = {}
+    updateEvent: async (__, data) => {
+      let updatesObj = {}
       Object.keys(data).forEach(key => {
         if (key !== 'id' && key !== 'locationData' && key !== 'LocationId') {
-          temp[key] = data[key]
+          updatesObj[key] = data[key]
         }
       })
+
       if (('locationData' in data) && data.locationData) {
-        let locationData = data.locationData
-        if (locationData.verified) {
-          var updatesObj = findOrCreateLocation(locationData)
-            .then(LocationId => {
-              temp.LocationId = LocationId
-              return temp
-            })
+        if (data.locationData.verified) {
+          let LocationId = await findOrCreateLocation(data.locationData)
+          updatesObj.LocationId = LocationId
         } else {
-          // custom row
-          let countryCode = data.locationData.countryCode
-          let tempObjForLocation = {
-            verified: false,
-            name: data.locationData.name,
-            address: data.locationData.address,
-            latitude: data.locationData.latitude,
-            longitude: data.locationData.longitude
-          }
+          // custom
+          let {name, address, latitude, longitude, countryCode} = data.locationData
+          let CountryId
           if (countryCode) {
-            var locationObj = db.Country.find({where: {code: countryCode}})
-              .then(foundCountry => {
-                tempObjForLocation.CountryId = foundCountry.id
-                return tempObjForLocation
-              })
-          } else {
-            locationObj = Promise.resolve(tempObjForLocation)
+            let foundCountry = await db.Country.find({where: {code: countryCode}})
+            CountryId = foundCountry.id
           }
-          updatesObj = locationObj
-            .then(locationObj => {
-              return db.Location.create({
-                verified: false,
-                name: locationObj.name,
-                address: locationObj.address,
-                latitude: locationObj.latitude,
-                longitude: locationObj.longitude,
-                CountryId: locationObj.CountryId
-              })
-            })
-            .then(created => {
-              temp.LocationId = created.id
-              return temp
-            })
+
+          let createdLocation = await db.Location.create({
+            verified: false,
+            name,
+            address,
+            latitude,
+            longitude,
+            CountryId
+          })
+
+          updatesObj.LocationId = createdLocation.id
         }
-      } else if (('locationData' in data) && !data.locationData) {
-        temp.LocationId = null
-        updatesObj = Promise.resolve(temp)
-      } else {
-        updatesObj = Promise.resolve(temp)
+      } else if ('LocationId' in data) {
+        updatesObj.LocationId = data.LocationId
       }
-      return updatesObj
-        .then(updatesObj => {
-          return db.Event.findById(data.id)
-            .then(foundEvent => {
-              return foundEvent.update(updatesObj)
-            })
-        })
+
+      let foundEvent = await db.Event.findById(data.id)
+      return foundEvent.update(updatesObj)
     },
     deleteEvent: (__, data) => {
-      // NEEDS CLEANUP FXN TO DESTROY ALL UNUSED CUSTOM ROWS.
+      // location rows are not deleted
       return db.Event.destroy({
         where: {id: data.id},
         individualHooks: true

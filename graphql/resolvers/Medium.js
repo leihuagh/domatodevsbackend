@@ -22,12 +22,13 @@ const Medium = {
       let mediaInputArr = data.media
 
       let createMediaPromises = await Promise.all(mediaInputArr.map(async input => {
+        let {type, objectName, imageUrl, youtubeUrl} = input
         return db.Medium.create({
           AlbumId: data.AlbumId,
-          type: input.type,
-          objectName: input.objectName,
-          imageUrl: input.imageUrl,
-          youtubeUrl: input.youtubeUrl
+          type,
+          objectName,
+          imageUrl,
+          youtubeUrl
         })
       }))
 
@@ -95,18 +96,17 @@ const Medium = {
 
     /* ----------------------------- */
 
-    createMediaPost: (__, data) => {
+    createMediaPost: async (__, data) => {
       // console.log('data', data)
-      return db.MediaPosts.create({
-        MediumId: data.MediumId,
-        PostId: data.PostId,
-        loadSequence: data.loadSequence,
-        caption: data.caption
+      let {MediumId, PostId, loadSequence, caption} = data
+      let createdMediaPostsRow = await db.MediaPosts.create({
+        MediumId,
+        PostId,
+        loadSequence,
+        caption
       })
-        .then(created => {
-          console.log('created', created)
-          return created
-        })
+      console.log('created', createdMediaPostsRow)
+      return createdMediaPostsRow
     },
     deleteMediaPost: (__, data) => {
       return db.MediaPosts.destroy({where: {id: data.id}})
