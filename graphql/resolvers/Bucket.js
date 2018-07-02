@@ -11,35 +11,25 @@ const Bucket = {
     }
   },
   Query: {
-    getUserBucketList: (__, data, context) => {
+    getUserBucketList: async (__, data, context) => {
       console.log('context', context.user)
-      return db.Bucket.findAll({
+
+      let bucketRows = await db.Bucket.findAll({
         where: {UserId: context.user},
         order: db.sequelize.col('id')
       })
-        .then(bucketRows => {
-          // console.log('bucket rows', bucketRows)
 
-          let countryRows = []
-          bucketRows.forEach(bucket => {
-            let countryRow = bucket.getLocation()
-              .then(locationRow => {
-                // console.log('locationRow', locationRow)
-                return locationRow.getCountry()
-              })
-            countryRows.push(countryRow)
-          })
+      let allCountryRows = await Promise.all(bucketRows.map(async bucket => {
+        let locationRow = await bucket.getLocation()
+        return locationRow.getCountry()
+      }))
 
-          return Promise.all(countryRows)
-            .then(unfilteredRows => {
-              let uniqueRows = _.uniqBy(unfilteredRows, 'id')
-              console.log('uniqueRows', uniqueRows)
-              return {
-                buckets: bucketRows,
-                countries: uniqueRows
-              }
-            })
-        })
+      let uniqueCountryRows = _.uniqBy(allCountryRows, 'id')
+
+      return {
+        buckets: bucketRows,
+        countries: uniqueCountryRows
+      }
     },
     findBucket: (__, data) => {
       return db.Bucket.findById(data.id)
@@ -62,7 +52,7 @@ const Bucket = {
       })
     },
     // update bucket cannot change location, only update metadata.
-    updateBucket: (__, data) => {
+    updateBucket: async (__, data) => {
       let updatesObj = {}
       let fields = ['bucketCategory', 'eventType', 'notes', 'thumbnailUrl', 'visited']
       fields.forEach(field => {
@@ -70,10 +60,8 @@ const Bucket = {
           updatesObj[field] = data[field]
         }
       })
-      return db.Bucket.findById(data.id)
-        .then(found => {
-          return found.update(updatesObj)
-        })
+      let foundBucket = await db.Bucket.findById(data.id)
+      return foundBucket.update(updatesObj)
     },
     deleteBucket: (__, data) => {
       return db.Bucket.destroy({where: {id: data.id}})

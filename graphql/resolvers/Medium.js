@@ -11,39 +11,29 @@ const Medium = {
   Query: {
     findMedium: (__, data) => {
       return db.Medium.findById(data.id)
-        .then(found => {
-          console.log('found', found)
-          return found
-        })
     },
     findMediaPost: (__, data) => {
       return db.MediaPosts.findById(data.id)
-        .then(found => {
-          console.log('found', found)
-          return found
-        })
     }
   },
   Mutation: {
     // type is either Photo or Youtube
-    createMedia: (__, data) => {
+    createMedia: async (__, data) => {
       let mediaInputArr = data.media
-      let promiseArr = []
-      mediaInputArr.forEach(input => {
-        let createPromise = db.Medium.create({
+
+      let createMediaPromises = await Promise.all(mediaInputArr.map(async input => {
+        let {type, objectName, imageUrl, youtubeUrl} = input
+        return db.Medium.create({
           AlbumId: data.AlbumId,
-          type: input.type,
-          objectName: input.objectName,
-          imageUrl: input.imageUrl,
-          youtubeUrl: input.youtubeUrl
+          type,
+          objectName,
+          imageUrl,
+          youtubeUrl
         })
-        promiseArr.push(createPromise)
-      })
-      return Promise.all(promiseArr)
-        .then(values => {
-          console.log('values', values)
-          return true
-        })
+      }))
+
+      console.log('resolved promises', createMediaPromises)
+      return Promise.resolve(true)
     },
     /*
     ( ) exchange credentials for cloud token
@@ -52,97 +42,76 @@ const Medium = {
     ( ) finally, delete Medium row
     ( ) wait for all medium row promises. then return boolean
     */
-    deleteMedia: (__, data) => {
+    deleteMedia: async (__, data) => {
       // console.log('arr', data.input)
-      let cloudStorageToken = generateCloudStorageToken()
+      let inputArr = data.input
+      let cloudStorageToken = await generateCloudStorageToken()
         .then(tokenObj => {
           return tokenObj.token
         })
 
-      return cloudStorageToken
-        .then(cloudStorageToken => {
-          let mediaPromiseArr = []
+      let deleteMediaPromises = await Promise.all(inputArr.map(async MediumId => {
+        // delete mediapost, delete from cloud, delete media itself
+        await db.MediaPosts.destroy({where: {MediumId: MediumId}})
 
-          data.input.forEach(id => {
-            let deleteMediaPostsPromise = db.MediaPosts.destroy({where: {MediumId: id}})
+        let foundMedium = await db.Medium.findById(MediumId)
+        if (foundMedium.type === 'Photo' && foundMedium.objectName) {
+          let objectName = foundMedium.objectName
+          let replaceSlash = objectName.replace(/\//g, '%2F')
+          let finalReplace = replaceSlash.replace(/\|/g, '%7C')
 
-            deleteMediaPostsPromise
-              .then(() => {
-                return db.Medium.findById(id)
-                  .then(foundMedium => {
-                    if (foundMedium.type === 'Photo' && foundMedium.objectName) {
-                      let objectName = foundMedium.objectName
-                      // replace all | and / with unicode for http req
-                      let replaceSlash = objectName.replace(/\//g, '%2F')
-                      let finalReplace = replaceSlash.replace(/\|/g, '%7C')
-                      // console.log('finalReplace', finalReplace)
-                      return fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
-                        method: 'DELETE',
-                        headers: {
-                          'Authorization': `Bearer ${cloudStorageToken}`
-                        }
-                      })
-                        .then(response => {
-                          if (response.status !== 204) {
-                            console.log('err?', response)
-                          }
-                          return foundMedium
-                        })
-                    } else {
-                      return foundMedium
-                    }
-                  })
-                  .then(foundMedium => {
-                    return foundMedium.destroy()
-                  })
-              })
-            mediaPromiseArr.push(deleteMediaPostsPromise)
-          }) // close input.foreach
-          return Promise.all(mediaPromiseArr)
-            .then(values => {
-              // console.log('values', values)
+          await fetch(`${process.env.CLOUD_DELETE_URI}${finalReplace}`, {
+            method: 'DELETE',
+            headers: {
+              'Authorization': `Bearer ${cloudStorageToken}`
+            }
+          })
+            .then(response => {
+              if (response.status !== 204) {
+                console.log('err?', response)
+              }
               return true
             })
-        })
+        }
+
+        return foundMedium.destroy()
+      }))
+
+      console.log('resolved', deleteMediaPromises)
+      return Promise.resolve(true)
     },
 
-    moveMediaToAlbum: (__, data) => {
+    moveMediaToAlbum: async (__, data) => {
       let newAlbumId = data.AlbumId
       let mediumIdArr = data.media
-      let promiseArr = []
-      mediumIdArr.forEach(id => {
-        let updatePromise = db.Medium.findById(id)
-          .then(foundMedium => {
-            return foundMedium.update({AlbumId: newAlbumId})
-          })
-        promiseArr.push(updatePromise)
-      })
-      return Promise.all(promiseArr)
-        .then(values => {
-          console.log('values', values)
-          return true
-        })
+
+      let updatePromises = await Promise.all(mediumIdArr.map(async id => {
+        let foundMedium = await db.Medium.findById(id)
+        return foundMedium.update({AlbumId: newAlbumId})
+      }))
+
+      console.log('resolved updates arr', updatePromises)
+      return Promise.resolve(true)
     },
 
     /* ----------------------------- */
 
-    createMediaPost: (__, data) => {
+    createMediaPost: async (__, data) => {
       // console.log('data', data)
-      return db.MediaPosts.create({
-        MediumId: data.MediumId,
-        PostId: data.PostId,
-        loadSequence: data.loadSequence,
-        caption: data.caption
+      let {MediumId, PostId, loadSequence, caption} = data
+      let createdMediaPostsRow = await db.MediaPosts.create({
+        MediumId,
+        PostId,
+        loadSequence,
+        caption
       })
-        .then(created => {
-          console.log('created', created)
-          return created
-        })
+      console.log('created', createdMediaPostsRow)
+      return createdMediaPostsRow
     },
     deleteMediaPost: (__, data) => {
       return db.MediaPosts.destroy({where: {id: data.id}})
     },
-    updateMediaPost: (__, data) => {
+    updateMediaPost: async (__, data) => {
       var updatesObj = {}
       let fields = ['loadSequence', 'caption']
       fields.forEach(field => {
@@ -150,26 +119,19 @@ const Medium = {
           updatesObj[field] = data[field]
         }
       })
-      return db.MediaPosts.findById(data.id)
-        .then(found => {
-          return found.update(updatesObj)
-        })
+      let mediaPostsRow = await db.MediaPosts.findById(data.id)
+      return mediaPostsRow.update(updatesObj)
     },
-    reorderMediaPost: (__, data) => {
-      let arr = data.input
-      let promiseArr = []
-      arr.forEach(e => {
-        let updatePromise = db.MediaPosts.findById(e.id)
-          .then(found => {
-            return found.update({loadSequence: e.loadSequence})
-          })
-        promiseArr.push(updatePromise)
-      })
-      return Promise.all(promiseArr)
-        .then(values => {
-          console.log('values', values)
-          return values
-        })
+    reorderMediaPost: async (__, data) => {
+      let inputArr = data.input
+
+      let reorderPromises = await Promise.all(inputArr.map(async input => {
+        let mediaPostsRow = await db.MediaPosts.findById(input.id)
+        return mediaPostsRow.update({loadSequence: input.loadSequence})
+      }))
+
+      console.log('resolved arr', reorderPromises)
+      return reorderPromises
     }
   }
 }

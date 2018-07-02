@@ -19,35 +19,25 @@ const Hashtag = {
     }
   },
   Mutation: {
-    createHashtagBlog: (__, data) => {
+    createHashtagBlog: async (__, data) => {
       // console.log('data received', data)
-      let HashtagId = findOrCreateHashtag(data.name)
-
-      return HashtagId
-        .then(id => {
-          // console.log('id', id)
-          return db.HashtagsBlogs.create({
-            BlogId: data.BlogId,
-            HashtagId: id
-          })
-        })
+      let HashtagId = await findOrCreateHashtag(data.name)
+      return db.HashtagsBlogs.create({
+        BlogId: data.BlogId,
+        HashtagId: HashtagId
+      })
     },
     deleteHashtagBlog: (__, data) => {
       // delete join table only
       return db.HashtagsBlogs.destroy({where: {id: data.id}})
     },
-    createHashtagPost: (__, data) => {
+    createHashtagPost: async (__, data) => {
       // console.log('data received', data)
-      let HashtagId = findOrCreateHashtag(data.name)
-
-      return HashtagId
-        .then(id => {
-          // console.log('id', id)
-          return db.HashtagsPosts.create({
-            PostId: data.PostId,
-            HashtagId: id
-          })
-        })
+      let HashtagId = await findOrCreateHashtag(data.name)
+      return db.HashtagsPosts.create({
+        PostId: data.PostId,
+        HashtagId: HashtagId
+      })
     },
     deleteHashtagPost: (__, data) => {
       // delete join table only

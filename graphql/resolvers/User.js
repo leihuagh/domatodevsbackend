@@ -21,7 +21,6 @@ const User = {
       return db.User.findAll()
     },
     findUser: (__, data) => {
-      console.log('data received', data)
       return db.User.findById(data.id)
     },
     getUserProfile: (__, data, context) => {
@@ -38,7 +37,7 @@ const User = {
     }
   },
   Mutation: {
-    onAuth0UserAuthentication: (__, data, context) => {
+    onAuth0UserAuthentication: async (__, data, context) => {
       // console.log('onAuth0UserAuthentication', data)
       console.log('context.user', context.user)
       if (!context.user) {
@@ -47,29 +46,26 @@ const User = {
       }
 
       // NEED TO VERIFY NOT DECODE.
-      var idTokenClaims = jwt.decode(data.idToken)
-      // console.log('idTokenClaims', idTokenClaims)
-      var newUser = {
-        id: idTokenClaims.sub,
-        fullName: idTokenClaims.name, // can be name stored in Auth0 or just the email address associated with it.
-        username: idTokenClaims.nickname,
-        profilePic: idTokenClaims.picture,
-        email: idTokenClaims.email
-      }
+      let idTokenClaims = jwt.decode(data.idToken)
+
+      // name stored in Auth0 defaults to email address or actual name.
+      // left is original obj, right is renamed field
+      let {sub: id, name: fullName, nickname: username, picture: profilePic, email} = idTokenClaims
+
+      let newUser = {id, fullName, username, profilePic, email}
+
       console.log('newUser', newUser)
-      // find or create users
-      return db.User.findCreateFind({
+
+      let userResult = await db.User.findCreateFind({
         where: {id: newUser.id},
         defaults: newUser
       })
-        .then(results => {
-          // console.log('results', results)
-          return results[0]
-        })
+      console.log('userResult', userResult)
+      return userResult[0]
     },
-    updateUserProfile: (__, data, context) => {
-      console.log('data received', data)
-      console.log('context.user', context.user)
+    updateUserProfile: async (__, data, context) => {
+      // console.log('data received', data)
+      // console.log('context.user', context.user)
       if (!context.user) {
         console.log('access token is invalid')
         return null
@@ -77,19 +73,17 @@ const User = {
       let updatesObj = {}
       let fields = ['profilePic', 'fullName', 'CountryId', 'bio']
       fields.forEach(field => {
-        if (data.hasOwnProperty(field)) {
+        if (field in data) {
           updatesObj[field] = data[field]
         }
       })
       console.log('updatesObj', updatesObj)
-      return db.User.findById(context.user)
-        .then(foundUser => {
-          return foundUser.update(updatesObj)
-            .then(updated => {
-              console.log('updated', updated)
-              return updated
-            })
-        })
+
+      let foundUser = await db.User.findById(context.user)
+      let updatedUser = await foundUser.update(updatesObj)
+
+      console.log('updated', updatedUser)
+      return updatedUser
     }
   }
 }

@@ -2,33 +2,23 @@ const db = require('../connectors')
 
 const ReorderBlogContent = {
   Mutation: {
-    reorderBlogContent: (__, data) => {
+    reorderBlogContent: async (__, data) => {
       // console.log('input arr', data.input)
-      let promiseArr = []
       let inputArr = data.input
-      inputArr.forEach(e => {
-        let updatePromise
+      let reorderPromises = await Promise.all(inputArr.map(async e => {
         if (e.type === 'BlogHeading') {
-          updatePromise = db.BlogHeading.findById(e.modelId)
-            .then(found => {
-              return found.update({loadSequence: e.loadSequence})
-            })
+          let headingRow = await db.BlogHeading.findById(e.modelId)
+          return headingRow.update({loadSequence: e.loadSequence})
         } else if (e.type === 'Post') {
-          updatePromise = db.Post.findById(e.modelId)
-            .then(found => {
-              return found.update({loadSequence: e.loadSequence})
-            })
+          let postRow = await db.Post.findById(e.modelId)
+          return postRow.update({loadSequence: e.loadSequence})
         } else {
           return Promise.resolve(null)
         }
-        promiseArr.push(updatePromise)
-      })
+      }))
 
-      return Promise.all(promiseArr)
-        .then(values => {
-          console.log('values', values)
-          return true
-        })
+      console.log('resolved', reorderPromises)
+      return reorderPromises
     }
   }
 }

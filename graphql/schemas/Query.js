@@ -2,8 +2,8 @@ const Query = `
   type Query {
     allCountries: [Country!]!
     allUsers: [User!]!
-    allItineraries: [Itinerary]
     getAllPublishedBlogs: [Blog]
+    getAllPublishedItineraries: [Itinerary]
     itinerariesByUser: [Itinerary]
     findUser(id: ID!): User
     getUserProfile: User
@@ -29,3 +29,6 @@ const Query = `
   }
 `
 module.exports = Query
+
+
+// allItineraries: [Itinerary]
