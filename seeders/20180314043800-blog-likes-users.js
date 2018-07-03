@@ -16,7 +16,7 @@ module.exports = {
     for (var i = 1; i <= 10; i++) {
       seedArr.push({
         BlogId: i, // owner is domatodev
-        UserId: 'auth0|5ab4723ded63ab65463ddb7f', // rebecca
+        UserId: 'auth0|5b3b5066f2e63b278002c71b', // rebecca
         createdAt: new Date(),
         updatedAt: new Date()
       })
