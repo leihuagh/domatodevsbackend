@@ -38,7 +38,7 @@ module.exports = {
     }
 
     var user4 = {
-      id: 'auth0|5ab4723ded63ab65463ddb7f',
+      id: 'auth0|5b3b5066f2e63b278002c71b',
       fullName: 'rebeccatay92@gmail.com',
       username: 'rebeccatay92',
       email: 'rebeccatay92@gmail.com',
