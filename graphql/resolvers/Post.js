@@ -57,7 +57,7 @@ const Post = {
     updatePost: async (__, data) => {
       console.log('RECEIVED IN UPDATEPOST RESOLVER', data)
       var updatesObj = {}
-      var fields = ['loadSequence', 'title', 'textContent', 'eventType', 'bucketCategory', 'startDay', 'startTime', 'endTime']
+      var fields = ['loadSequence', 'title', 'textContent', 'eventType', 'bucketCategory', 'startDay', 'startTime', 'endTime', 'currency', 'cost', 'bookingService']
       fields.forEach(field => {
         if (field in data) {
           updatesObj[field] = data[field]

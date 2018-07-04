@@ -36,21 +36,9 @@ module.exports = function (sequelize, DataTypes) {
     title: {
       type: DataTypes.STRING
     },
-    // contentOnly: {
-    //   type: DataTypes.BOOLEAN
-    // },
-    // description: {
-    //   type: DataTypes.STRING
-    // },
-    // start: {
-    //   type: DataTypes.BOOLEAN
-    // },
     startDay: {
       type: DataTypes.INTEGER
     },
-    // endDay: {
-    //   type: DataTypes.INTEGER
-    // },
     startTime: {
       type: DataTypes.INTEGER
     },
@@ -63,6 +51,15 @@ module.exports = function (sequelize, DataTypes) {
     bucketCategory: {
       type: DataTypes.STRING
     }, // only if there is Location
+    currency: {
+      type: DataTypes.STRING
+    },
+    cost: {
+      type: DataTypes.FLOAT
+    },
+    bookingService: {
+      type: DataTypes.STRING
+    },
     createdAt: {
       type: DataTypes.DATE
     },

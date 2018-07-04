@@ -11,6 +11,9 @@ const Post = `
     startDay: Int
     startTime: Int
     endTime: Int
+    currency: String
+    cost: Int
+    bookingService: String
     LocationId: ID
     location: Location
     media: [MediaPostObject]
@@ -18,12 +21,3 @@ const Post = `
   }
 `
 module.exports = Post
-
-/*
-ParentPostId: ID
-contentOnly: Boolean
-description: String
-start: Boolean
-endDay: Int
-childPosts: [Post]
-*/
