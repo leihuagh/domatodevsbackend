@@ -12,7 +12,7 @@ const Post = `
     startTime: Int
     endTime: Int
     currency: String
-    cost: Int
+    cost: Float
     bookingService: String
     LocationId: ID
     location: Location

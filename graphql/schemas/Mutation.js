@@ -44,7 +44,7 @@
 
     createPost(BlogId: ID!, loadSequence: Int!, title: String): Post
 
-    updatePost(id: ID!, loadSequence: Int, locationData: locationDataInput, LocationId: ID, title: String, textContent: String, eventType: String, bucketCategory: String, startDay: Int, startTime: Int, endTime: Int, currency: String, cost: Int, bookingService: String, hashtags: [String], media: [updatePostMediaInput]): Post
+    updatePost(id: ID!, loadSequence: Int, locationData: locationDataInput, LocationId: ID, title: String, textContent: String, eventType: String, bucketCategory: String, startDay: Int, startTime: Int, endTime: Int, currency: String, cost: Float, bookingService: String, hashtags: [String], media: [updatePostMediaInput]): Post
 
     updateMultiplePosts(input: [updateMultiplePostsInput]): Boolean
 
