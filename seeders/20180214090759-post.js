@@ -12,6 +12,7 @@ module.exports = {
         currency: 'SGD',
         cost: 100,
         bookingService: 'www.marinabaysands.sg',
+        LocationId: 1,
         createdAt: new Date(),
         updatedAt: new Date()
       })
@@ -26,7 +27,7 @@ module.exports = {
         currency: 'USD',
         cost: 80.50,
         bookingService: 'www.airbnb.com.sg',
-        LocationId: 1,
+        LocationId: 2,
         createdAt: new Date(),
         updatedAt: new Date()
       })
@@ -38,7 +39,7 @@ module.exports = {
         eventType: 'Hiking',
         bucketCategory: 'Location',
         startDay: 1,
-        LocationId: 1,
+        LocationId: 3,
         createdAt: new Date(),
         updatedAt: new Date()
       })

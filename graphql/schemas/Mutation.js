@@ -82,7 +82,7 @@
 
     deleteHashtagBlog(id: ID!): Boolean
 
-    createBucket(UserId: ID!, LocationId: ID!, bucketCategory: String, eventType: String, notes: String, thumbnailUrl: String): Bucket
+    createBucket(LocationId: ID!, bucketCategory: String, eventType: String, notes: String, thumbnailUrl: String): Bucket
 
     updateBucket(id: ID!, bucketCategory: String, eventType: String, notes: String, thumbnailUrl: String, visited: Boolean): Bucket
 

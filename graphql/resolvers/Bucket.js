@@ -36,7 +36,8 @@ const Bucket = {
     }
   },
   Mutation: {
-    createBucket: (__, data) => {
+    createBucket: (__, data, context) => {
+      let UserId = context.user
       let bucketObj = {}
       let fields = ['LocationId', 'bucketCategory', 'eventType', 'notes', 'thumbnailUrl']
       fields.forEach(field => {
@@ -46,7 +47,7 @@ const Bucket = {
       })
       // console.log('bucketObj', bucketObj)
       return db.Bucket.create({
-        UserId: data.UserId,
+        UserId: UserId,
         visited: false,
         ...bucketObj
       })
