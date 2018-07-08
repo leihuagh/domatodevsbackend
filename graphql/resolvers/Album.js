@@ -16,12 +16,12 @@ const Album = {
       return db.Album.findById(data.id)
     },
     getUserAlbums: async (__, data, context) => {
-      console.log('context', context)
+      // console.log('context', context)
       let foundAlbums = await db.Album.findAll({
         where: {UserId: context.user},
         order: db.sequelize.col('id')
       })
-      console.log('all user albums', foundAlbums)
+      // console.log('all user albums', foundAlbums)
       return foundAlbums
     }
   },

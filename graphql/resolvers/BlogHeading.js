@@ -18,7 +18,7 @@ const BlogHeading = {
         loadSequence: data.loadSequence,
         title: data.title || 'Default header'
       })
-      console.log('createdHeading', createdHeading)
+      // console.log('createdHeading', createdHeading)
       return createdHeading
     },
     updateBlogHeading: async (__, data) => {

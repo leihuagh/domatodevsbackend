@@ -1,22 +1,20 @@
+require('dotenv').config()
 const Sequelize = require('sequelize')
 
-// const env = process.env.NODE_ENV || 'development'
-// const config = require('../config/config.json')['production']
-//
-// if (config.use_env_variable) {
-//   var sequelize = new Sequelize(process.env[config.use_env_variable])
-// } else {
-//   sequelize = new Sequelize(config.database, config.username, config.password, config)
-// }
+const env = process.env.NODE_ENV || 'development'
+const config = require('../config/config.js')[env]
 
-var sequelize = new Sequelize(process.env.POSTGRES_DATABASE, process.env.POSTGRES_USERNAME, process.env.POSTGRES_PASSWORD, {
-  host: process.env.POSTGRES_HOST,
-  dialect: 'postgres',
-  ssl: true,
-  dialectOptions: {
-    ssl: true
-  }
-})
+if (config.use_env_variable) {
+  var sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    ssl: true,
+    dialectOptions: {
+      ssl: true
+    }
+  })
+} else {
+  sequelize = new Sequelize(config.database, config.username, config.password, config)
+}
 
 var db = {
   Country: sequelize.import('../models/country'),

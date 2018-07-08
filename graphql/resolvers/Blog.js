@@ -130,7 +130,7 @@ const Blog = {
       (X) title, days, published boolean, MediumId
       (X) set publish date if published for first time
       */
-      console.log('data', data)
+      // console.log('data', data)
       let updatesObj = {}
       let fields = ['title', 'days', 'published', 'MediumId']
       fields.forEach(field => {
@@ -138,7 +138,7 @@ const Blog = {
           updatesObj[field] = data[field]
         }
       })
-      console.log('updatesObj', updatesObj)
+      // console.log('updatesObj', updatesObj)
 
       let incomingHashtags = data.hashtags
       let currentHashtags = await db.HashtagsBlogs.findAll({where: {
@@ -180,7 +180,7 @@ const Blog = {
 
       let updatedBlog = await foundBlog.update(updatesObj)
 
-      console.log('updatedBlog', updatedBlog)
+      // console.log('updatedBlog', updatedBlog)
       return updatedBlog
     },
     deleteBlog: async (__, data) => {

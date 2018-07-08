@@ -25,7 +25,7 @@ const User = {
     },
     getUserProfile: (__, data, context) => {
       // pull out user row for profile page
-      console.log('data', data, 'context', context)
+      // console.log('data', data, 'context', context)
       return db.User.findById(context.user)
     },
     authorization: (__, data, context) => {
@@ -54,13 +54,13 @@ const User = {
 
       let newUser = {id, fullName, username, profilePic, email}
 
-      console.log('newUser', newUser)
+      // console.log('newUser', newUser)
 
       let userResult = await db.User.findCreateFind({
         where: {id: newUser.id},
         defaults: newUser
       })
-      console.log('userResult', userResult)
+      // console.log('userResult', userResult)
       return userResult[0]
     },
     updateUserProfile: async (__, data, context) => {
@@ -77,12 +77,12 @@ const User = {
           updatesObj[field] = data[field]
         }
       })
-      console.log('updatesObj', updatesObj)
+      // console.log('updatesObj', updatesObj)
 
       let foundUser = await db.User.findById(context.user)
       let updatedUser = await foundUser.update(updatesObj)
 
-      console.log('updated', updatedUser)
+      // console.log('updated', updatedUser)
       return updatedUser
     }
   }

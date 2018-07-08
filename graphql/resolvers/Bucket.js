@@ -12,7 +12,7 @@ const Bucket = {
   },
   Query: {
     getUserBucketList: async (__, data, context) => {
-      console.log('context', context.user)
+      // console.log('context', context.user)
 
       let bucketRows = await db.Bucket.findAll({
         where: {UserId: context.user},

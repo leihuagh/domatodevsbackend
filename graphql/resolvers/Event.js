@@ -45,7 +45,7 @@ const Event = {
             longitude,
             CountryId
           })
-          console.log('createdLocation')
+          // console.log('createdLocation')
           eventObj.LocationId = createdLocation.id
         }
       } else if (data.LocationId) {
@@ -53,7 +53,7 @@ const Event = {
       }
 
       let createdEvent = await db.Event.create(eventObj)
-      console.log('createdEvent', createdEvent)
+      // console.log('createdEvent', createdEvent)
       return createdEvent
     },
     updateEvent: async (__, data) => {

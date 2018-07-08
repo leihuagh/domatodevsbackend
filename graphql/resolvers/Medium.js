@@ -90,7 +90,7 @@ const Medium = {
         return foundMedium.update({AlbumId: newAlbumId})
       }))
 
-      console.log('resolved updates arr', updatePromises)
+      // console.log('resolved updates arr', updatePromises)
       return Promise.resolve(true)
     },
 
@@ -105,7 +105,7 @@ const Medium = {
         loadSequence,
         caption
       })
-      console.log('created', createdMediaPostsRow)
+      // console.log('created', createdMediaPostsRow)
       return createdMediaPostsRow
     },
     deleteMediaPost: (__, data) => {

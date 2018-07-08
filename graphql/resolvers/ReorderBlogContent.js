@@ -17,7 +17,7 @@ const ReorderBlogContent = {
         }
       }))
 
-      console.log('resolved', reorderPromises)
+      // console.log('resolved', reorderPromises)
       return reorderPromises
     }
   }

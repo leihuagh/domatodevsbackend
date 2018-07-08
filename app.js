@@ -13,14 +13,21 @@ const app = express()
 
 const _ = require('lodash')
 
-// only allow front end server to access
-// const corsOptions = {
-//   origin: ['http://localhost:3000']
-// }
+let whitelist = ['http://localhost:3000', 'https://domatodevs.herokuapp.com']
 
-// app.use(cors(corsOptions))
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not in list of whitelisted origins'))
+    }
+  }
+}
 
-app.use(cors())
+app.use(cors(corsOptions))
+
+// app.use(cors())
 
 app.use(bodyParser.json())
 
@@ -55,7 +62,8 @@ function verifyAuth0Token (req, res, next) {
   var accessToken = _.get(req, 'headers.authorization', '').substring(7)
   // var accessToken = req.headers.authorization.substring(7)
   jwt.verify(accessToken, pem, {
-    audience: 'http://localhost:3001',
+    // audience: 'http://localhost:3001',
+    audience: 'https://domatodevsbackend.herokuapp.com/graphql',
     issuer: 'https://domatodevs.auth0.com/',
     ignoreExpiration: false,
     algorithms: ['RS256']}, function (err, payload) {

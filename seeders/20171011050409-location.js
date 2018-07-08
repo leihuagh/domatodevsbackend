@@ -1,6 +1,4 @@
 'use strict'
-// const casual = require('casual')
-
 var location1 = {
   CountryId: 200,
   verified: true,

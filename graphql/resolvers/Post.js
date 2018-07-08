@@ -33,7 +33,7 @@ const Post = {
         return Promise.resolve(mergedObj)
       }))
 
-      console.log('constructedRows', constructedRows)
+      // console.log('constructedRows', constructedRows)
       return constructedRows.sort((a, b) => {
         return a.loadSequence - b.loadSequence
       })
@@ -46,7 +46,7 @@ const Post = {
   },
   Mutation: {
     createPost: async (__, data) => {
-      console.log('data', data)
+      // console.log('data', data)
       let createdPost = await db.Post.create({
         BlogId: data.BlogId,
         loadSequence: data.loadSequence,
@@ -55,7 +55,7 @@ const Post = {
       return createdPost
     },
     updatePost: async (__, data) => {
-      console.log('RECEIVED IN UPDATEPOST RESOLVER', data)
+      // console.log('RECEIVED IN UPDATEPOST RESOLVER', data)
       var updatesObj = {}
       var fields = ['loadSequence', 'title', 'textContent', 'eventType', 'bucketCategory', 'startDay', 'startTime', 'endTime', 'currency', 'cost', 'bookingService']
       fields.forEach(field => {
@@ -107,22 +107,22 @@ const Post = {
         let currentMediaArr = mediaPostsRows.map(row => {
           return row.dataValues
         })
-        console.log('currentMediaArr', currentMediaArr)
+        // console.log('currentMediaArr', currentMediaArr)
 
         // use loose equals. sequelize MediumId is int, but apollo may pass type ID as int, or numeric string
         let mediaToRemoveFromPost = _.differenceWith(currentMediaArr, incomingMediaArr, function (arrVal, otherVal) {
           return arrVal.MediumId == otherVal.MediumId
         })
-        console.log('mediaToRemoveFromPost', mediaToRemoveFromPost)
+        // console.log('mediaToRemoveFromPost', mediaToRemoveFromPost)
         let mediaToAddToPost = _.differenceWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
           return arrVal.MediumId == otherVal.MediumId
         })
-        console.log('mediaToAddToPost', mediaToAddToPost)
+        // console.log('mediaToAddToPost', mediaToAddToPost)
         // media to update are the objs in the incoming arr which match the MediumId of currentArr.
         let mediaToUpdate = _.intersectionWith(incomingMediaArr, currentMediaArr, function (arrVal, otherVal) {
           return arrVal.MediumId == otherVal.MediumId
         })
-        console.log('mediaToUpdate', mediaToUpdate)
+        // console.log('mediaToUpdate', mediaToUpdate)
 
         await Promise.all(mediaToRemoveFromPost.map(row => {
           return db.MediaPosts.destroy({where: {
@@ -153,7 +153,7 @@ const Post = {
       let foundPost = await db.Post.findById(data.id)
       let updatedPost = await foundPost.update(updatesObj)
 
-      console.log('updatedPost', updatedPost)
+      // console.log('updatedPost', updatedPost)
       return updatedPost
     },
     updateMultiplePosts: (__, data) => {

@@ -1,7 +1,5 @@
 'use strict'
 // const countries = require('../data/countries.json')
-// const faker = require('faker')
-// const bcrypt = require('bcrypt')
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
